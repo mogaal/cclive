@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+
+%:
+	dh  $@
+
+override_dh_auto_configure:
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config.guess
+endif
+	dh_auto_configure
