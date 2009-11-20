@@ -1,0 +1,141 @@
+
+option "version"
+    v "Print version and exit"
+    optional
+option "hosts"
+    - "List supported hosts"
+    optional
+
+section "Output"
+option "quiet"
+    q "Turn off all output"
+    optional
+option "debug"
+    - "Turn on libcurl verbose mode"
+    optional
+option "emit-csv"
+    - "Print video details in csv format to stdout"
+    optional
+option "print-fname"
+    - "Print filename before each download starts"
+    optional
+
+section "HTTP"
+option "agent"
+    - "Identify cclive as agentstring to servers"
+    string typestr="<agentstring>"
+    default="Mozilla/5.0"
+    optional
+option "proxy"
+    - "Use specified proxy"
+    string typestr="proxyhost[:port]"
+    optional
+option "no-proxy"
+    - "Do not use proxy even if http_proxy is defined"
+    optional
+option "connect-timeout"
+    - "Max time allowed connection to server take"
+    int typestr="<seconds>"
+    default="30"
+    optional
+option "connect-timeout-socks"
+    - "Same but works around 'SOCKS proxy connect timeout' bug in libcurl"
+    int typestr="<seconds>"
+    default="30"
+    optional
+option "retry"
+    t "Number of retries"
+    int typestr="<number>"
+    default="5"
+    optional
+option "retry-wait"
+    - "wait 1..seconds between retries"
+    int typestr="<seconds>"
+    default="1"
+    optional
+
+section "Download"
+option "output-video"
+    O "Write video to file"
+    string typestr="<file>"
+    optional
+option "continue"
+    c "Resume partially downloaded file"
+    optional
+option "overwrite"
+    W "Overwrite existing file"
+    optional
+option "no-extract"
+    n "Do not actually extract video, simulate only"
+    optional
+option "limit-rate"
+    l "Limit download speed to amount KB/s"
+    int typestr="<amount>"
+    optional
+option "format"
+    f "Download format of video"
+    values="flv","best",
+        # youtube:
+        "fmt17","fmt18","fmt22", "fmt34","fmt35","hq","3gp",
+        # dmotion:
+        "spark-mini","vp6-hq","vp6-hd","vp6","h264",
+        # vimeo:
+        "hd",
+        # google:
+        "mp4",
+        # golem:
+        "high", "ipod",
+        # spiegel:
+        "vp6_576", "vp6_928", "h264_1400"
+    default="flv"
+    typestr="<formatid>"
+    optional
+option "format-map"
+    M "Specify format for multiple hosts in a string"
+    string typestr="<mapstring>"
+    optional
+
+section "Filename formatting"
+option "number-videos"
+    N "Prepend a numeric prefix to output filenames"
+    optional
+option "regexp"
+    r "Regular expression to cleanup video title"
+    string typestr="<expr>"
+    optional
+option "find-all"
+    g "Match all occurences, like Perl's /g option"
+    optional
+    dependon="regexp"
+option "filename-format"
+    F "Output filename format"
+    string typestr="<formatstring>"
+    default="%h_%i.%s"
+    optional
+
+section "Subsequent"
+option "exec"
+    - "Command to invoke when transfer finishes"
+    string typestr="<expr[;|+]>"
+    optional
+option "exec-run"
+    e "Invoke command specified with --exec"
+    optional
+    dependon="exec"
+
+section "Streaming"
+option "stream-exec"
+    - "Stream command to be invoked"
+    string typestr="<expr>"
+    optional
+option "stream-pass"
+    s "Pass video link to --stream-exec command"
+    optional
+    dependon="stream-exec"
+option "stream"
+    - "Invoke --stream-exec when transfer reaches %"
+    int typestr="<percent>"
+    optional
+    dependon="stream-exec"
+
+text "\nSee the manual page for examples."

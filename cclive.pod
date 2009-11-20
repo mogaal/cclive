@@ -1,0 +1,521 @@
+=pod
+
+=head1 NAME
+
+cclive - lightweight video extraction tool
+
+=head1 SYNOPSIS
+
+cclive [options] [url...]
+
+=head1 DESCRIPTION
+
+cclive is a lightweight command line video extraction tool for Youtube and other
+similar video websites. It is a rewrite of the clive software in C++ with lower
+system footprint and fewer dependencies.
+
+cclive is primarily a "video download tool" but it can also be used along side
+with video player software, like C<mplayer>, for viewing streamed videos instead
+of the Adobe flash player.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-h, --help>
+
+Print help and exit.
+
+=item B<-v, --version>
+
+Print version and exit.
+
+=item B<--hosts>
+
+Print supported hosts and exit.
+
+=back
+
+B<Output>
+
+=over 4
+
+=item B<-q, --quiet>
+
+Turn off all output.
+
+=item B<--debug>
+
+Turn on libcurl verbose mode.
+
+=item B<--emit-csv>
+
+Print video details in CSV format and exit. Prepends "csv:" for each video.
+Ignores C<--quiet> for CSV.
+
+=item B<--print-fname>
+
+Print filename on a separate line before each download starts.
+Prepends "file:" for each video.
+
+=back
+
+B<HTTP>
+
+=over 4
+
+=item B<--agent>=I<agentstring>
+
+Identify cclive as I<agentstring> to the HTTP servers.
+
+=item B<--proxy>=I<proxyhost[:port]>
+
+Use the specified HTTP proxy. Overrides http_proxy definition.
+
+=item B<--no-proxy>
+
+Do not use HTTP proxy, even if http_proxy environment variable
+is defined.
+
+=item B<--connect-timeout>=I<seconds>
+
+Maximum time in I<seconds> allowed for connection to take.
+Defaults to 30.
+
+=item B<--connect-timeout-socks>=I<seconds>
+
+Otherwise identical to the above option but works around the known
+"SOCKS proxy connect timeout" bug in libcurl. Defaults to 30.
+
+=item B<-t, --retry>=I<number>
+
+I<number> of retries. Specify 0 for infinite. Default is 5 times, with
+the exception of errors such as "forbidden" (403) or "not found" (404).
+
+=item B<--retry-wait>=I<seconds>
+
+Wait 1..seconds between the retries. Default is 1.
+
+=back
+
+B<Download>
+
+=over 4
+
+=item B<-O, --output-video>=I<file>
+
+Write the video to I<file>. Overrides C<--filename-format>.
+
+=item B<-c, --continue>
+
+Resume a partially downloaded video file. Affects the file transfers
+prior to this invocation of cclive. You do not need to specify this
+option if you want the current invocation of cclive to retry downloading
+should the connection be lost midway through. This is the default behaviour.
+
+=item B<-W, --overwrite>
+
+Overwrite the existing file. Negates C<--continue>.
+
+=item B<-n, --no-extract>
+
+Do not actually extract any videos, simulate only. cclive parses,
+verifies the video link and exits without downloading it.
+
+=item B<l, --limit-rate>=I<amount>
+
+Limit download speed to I<amount> (KB/s). Ignored for video page
+fetches.
+
+=item B<-f, --format>=I<formatid>
+
+Download I<formatid> of the video. If set to C<best>, cclive
+attempts to download the best quality of the video. See also
+L</FORMATS>.
+
+=item B<-M, --format-map>=I<hostid:formatid|hostid:formatid...>
+
+Like C<--format> but allows specifying the format for multiple hosts.
+Note that C<--format> setting overrides this setting. See also L</EXAMPLES>.
+
+=back
+
+B<Filename formatting>
+
+=over 4
+
+=item B<-N, --number-videos>
+
+Prepend a numeric prefix (e.g. "001_") to the output filenames.
+
+=item B<-r, --regexp>=I<expression>
+
+Regular expression to cleanup the video titles before using them for output
+filenames. Used in conjunction with the C<--filename-format> option. Refer
+to the PCRE manual page for the supported regular expression syntax,
+patterns, etc. See also L</EXAMPLES>.
+
+=item B<-g, --find-all>
+
+Use repeated matching to find all occurences, like Perl's /g option.
+See also L</EXAMPLES>.
+
+=item B<-F, --filename-format>=I<formatstring>
+
+Use the specified I<formatstring> to format the output filenames.
+cclive defaults to "%h_%i.%s". Any of the following specifiers
+appearing in the format string will be replaced accordingly:
+
+  %t = video title
+  %i = video id
+  %h = website id
+  %s = file suffix
+
+Note that cclive converts any dashes ('-') to underscores ('_') in video IDs.
+See also L</EXAMPLES>.
+
+=back
+
+B<Subsequent>
+
+=over 4
+
+=item B<--exec>=I<expression>B<;>
+
+Execute I<expression> after each file transfer. Optional arguments
+may be passed to the command. The expression must be terminated by
+a semicolon (";").
+
+If the specifier "%i" appears anywhere in I<expression> it will be
+replaced with the pathname of the extracted video file.
+
+=item B<--exec>=I<expression>B<+>
+
+Same as C<--exec>, except that "%i" will be replaced with as many
+pathnames as possible for the invocation of I<expression>.
+
+=item B<-e, --exec-run>
+
+Invokes the expression specified with C<--exec> when download finishes.
+
+=back
+
+B<Streaming>
+
+=over 4
+
+=item B<--stream-exec>=I<expression>
+
+Expression to be invoked with C<--stream> and C<--stream-pass>.
+
+If a "%i" specifier is used in the I<expression>, it will be replaced
+with either the video pathname (C<--stream>) or the parsed video link
+(C<--stream-pass>).
+
+=item B<-s, --stream-pass>
+
+Pass parsed video link to the expression specified with C<--stream-exec>.
+See also L</EXAMPLES>. Inspired by a C<clive(1)> wrapper script contributed
+by Bill Squire.
+
+=item B<--stream>=I<percentage>
+
+Mimics "streaming" by forking the expression specified with C<--stream-exec>
+when the progress reaches I<percentage>. cclive continues to download the
+video while the child process works (e.g. plays) in the background.
+See also L</EXAMPLES>. 
+
+Note that this feature is very simple. For example, it does not check if
+the child process runs out of data. 
+
+If there are more than one video in the batch, cclive continues to download
+the next video only when the child process terminates.
+
+This mode is supported for historical reasons only and should be considered
+I<deprecated>. See C<--stream-pass> for a better solution.
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item cclive URL
+
+Download video from URL.
+
+=item cclive -f fmt18 Youtube_URL
+
+Download fmt18 (mp4) format of the video.
+
+=item cclive -F "%t.%s" URL
+
+Use video titles in filenames. cclive uses "%i_%h.%s" by default.
+For the supported specifiers, refer to the C<--filename-format> description.
+
+=item cclive -F "%t.%s" -r "(\w+)" URL
+
+Match a string of "word" character from the video title and use it in the
+filename replacing the "%t" specifier. cclive replaces the "%s" specifier
+with appropriate file suffix string (e.g. "flv").
+
+=item cclive -F "%t.%s" -gr "(\w|\s)" URL
+
+Match all "word" and "whitespace" characters, and use them in the filename
+replacing the "%t". Note the use of "-g" (or C<--find-all>) option.
+
+=item cclive --exec="mplayer -really-quiet %i;" -e URL
+
+Play the downloaded video with C<mplayer(1)> when download finishes.
+
+=item cclive --exec="ffmpeg -i %i -acodec libvorbis %i.ogg;" -e URL
+
+Similar but re-encode audio from the video using C<ffmpeg(1)> to a vorbis
+file.
+
+=item cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
+
+Mimics "streaming" by starting a child process (C<mplayer(1)>) when the
+progress reaches 20% complete. cclive then continues to download the video
+file while C<mplayer(1)> plays the video file in the background.
+
+See the next example for a better solution if you are not interested in
+keeping a local copy of the video.
+
+=item echo 'stream-exec = "mplayer -really-quiet %i"' E<gt>E<gt> ~/.ccliverc
+
+=item cclive -s URL
+
+Leaves streaming to C<mplayer(1)> altogether. cclive only parses the video link
+and passes it to the command specified with C<--stream-exec>. This can be used
+as an alternative to the Adobe flash player if you only want to view the streamed
+videos without getting a local copy of the video file.
+
+We have added C<--stream-exec> to the config file to save ourselves from retyping it
+later, allowing us to stream the video by just typing C<-s>.
+
+Other player software, e.g. C<vlc(1)> and C<totem(1)>, should work also.
+
+=item cat E<gt> url.lst
+
+  http://en.sevenload.com/videos/IUL3gda-Funny-Football-Clips
+  http://youtube.com/watch?v=3HD220e0bx4
+  http://break.com/index/beach-tackle-whip-lash.html
+  http://www.liveleak.com/view?i=704_1228511265
+
+=item cclive E<lt> url.lst
+
+=item cat url.lst | cclive
+
+Alternative to passing multiple links to cclive as command line arguments.
+
+=item echo 'format-map = "youtube:mp4|dailymotion:vp6_hq"' E<gt>E<gt> ~/.ccliverc
+
+=item cclive Youtube_URL Dailymotion_URL
+
+Causes cclive to download mp4 of the Youtube video and vp6_hq of
+the Dailymotion video. Note that the use of -f (or C<--format>)
+overrides this setting.
+
+=back
+
+=head1 FORMATS
+
+=over 4
+
+=item youtube.com
+
+Format: flv|fmt17|fmt18|fmt22|fmt35
+
+If --format option is not unused, cclive defaults to whatever
+Youtube defaults to. Technically speaking, we leaving the "&fmt="
+from the video link.
+
+Youtube likes to rehash these from time to time so don't be
+surprised if, for example, the quality is not what you expected.
+The same applies to the suffices listed below.
+
+ YoutubeID Alias    Suffix  Resolution
+ fmt22     hd       mp4     1280x720
+ fmt35     hq       flv      640x380
+ fmt18     mp4      mp4      480x360
+ fmt34     -        flv      320x180 (quality reportedly varies)
+ fmt17     3gp      3gp      176x144
+
+You can use either, the "alias" (e.g. "hd") or the "YoutubeID"
+(e.g. "fmt22") with --format. The aliases exist for historical
+reasons. The suffix is parsed from the content-type field of
+the returned HTTP header.
+
+cclive can also download videos that last.fm lists as Youtube
+hosted videos.
+
+=item dailymotion.com
+
+Format: flv|spark-mini|vp6-hq|vp6-hd|vp6|h264
+
+The HD and HQ videos may not always be available.
+
+  vp6-hd    .. on2   (1280x720)
+  vp6-hq    .. on2     (848x480)
+  h264      .. h264    (512x384)
+  vp6       .. on2     (320x240)
+  flv       .. flv     (320x240)
+  spark-mini.. flv       (80x60)
+
+=item spiegel.de
+
+Format: vp6_(64|576|928)|h264_1400
+
+  h264_1400 .. mp4 (996x560)
+  vp6_928   .. flv (996x560)
+  vp6_576   .. flv (560x315)
+  flv       .. flv (180x100) [default]
+
+=item golem.de
+
+Format: flv|high|ipod
+
+=item vimeo.com
+
+Format: flv|hd
+
+HD should be available for the vimeo.com/hd channel videos at least.
+Note that "flv" only means the "default flv". Some of the hosted
+"default" videos are actually "mp4", not "flv".
+
+For further reading:
+
+  http://vimeo.com/help/hd
+
+=item video.google.com
+
+Format: flv|mp4
+
+mp4 may not always be available.
+
+=item Other
+
+All other supported websites (see --host output) support
+the flv format only.
+
+=back
+
+=head1 FILES
+
+=over 4
+
+=item B<$CCLIVE_HOME|$HOME/.ccliverc>
+
+ agent      = Furball/1.0       # --agent=...
+ proxy      = http://foo:1234   # --proxy=...
+ limit-rate = 50                # --limit-rate=...
+ no-extract                     # --no-extract
+
+Most of the program options can be specified in the ~/.ccliverc
+config file.
+
+=back
+
+=head1 UNICODE
+
+If you are seeing mangled characters in output filenames (titles), this may
+be because of an invalid locale setting or a sign of terminal incapable of
+displaying unicode characters. On a typical Unix-like system, try running
+"locale -a" to get a list of the available locale names.
+
+For example, in bash and urxvt terms:
+
+  % LANG=en_US.UTF8 urxvt&
+  % cclive ... # in new terminal
+
+cclive converts the characters to unicode if the video HTML specifies
+the charset meta tag. Otherwise the characters are copied as they are.
+
+If you are missing the unicode characters when using C<--regexp> and
+C<--filename-format>, make sure the regular expression includes "\pL".
+For example:
+
+  % cclive -F "%t.%s" -gr "(\w|\s|\pL") URL
+
+"In UTF-8 mode, characters with values greater than 128 never match \d,
+\s, or \w, and always match \D, \S, and \W. This is true even when Uni-
+code character property support is available. These sequences retain
+their original meanings from before UTF-8 support was available, mainly
+for efficiency reasons. Note that this also affects \b, because it is
+defined in terms of \w and \W." -- man pcrepattern
+
+=head1 BUGS
+
+=over 4
+
+=item Sure to be some. Please report them:
+
+<http://code.google.com/p/cclive/issues/>
+
+=back
+
+=head1 DEBUGGING
+
+Useful options for debugging cclive.
+
+=over 4
+
+=item cclive --debug URL
+
+Turn on libcurl verbose mode.
+
+=item cclive -n URL
+
+Simulate only; cclive will parse and verify the video link without
+downloading it.
+
+=back
+
+=head1 EXIT STATUS
+
+cclive exits 0 on success, and E<gt>0 if an error occurs.
+
+  CCLIVE_OK           = 0
+  CCLIVE_OPT          = 1  // cmdline option parsing error
+  CCLIVE_OPTARG       = 2  // cmdline option arg error
+  CCLIVE_CURLINIT     = 3  // curl init error
+  CCLIVE_NOTHINGTODO  = 4  // file already retrieved
+  CCLIVE_SYSTEM       = 5  // system call failed
+  CCLIVE_NOSUPPORT    = 6  // host not supported
+  CCLIVE_NET          = 7  // network error
+  CCLIVE_FETCH        = 8  // fetch error
+  CCLIVE_PARSE        = 9  // parse error
+  CCLIVE_INTERNAL     = 10 // internal error (see return code)
+
+=head1 OTHER
+
+=over 4
+
+=item Project page:
+
+<http://cclive.googlecode.com/>
+
+=item Front-end:
+
+<http://abby.googlecode.com/>
+
+=item Development code:
+
+% git clone git://repo.or.cz/cclive.git
+
+=back
+
+=head1 SEE ALSO
+
+C<clive(1)>
+
+=head1 AUTHOR
+
+Toni Gundogdu <legatvs@gmail.com>
+
+Thanks to all those who have contributed to the project
+by sending patches, reporting bugs and writing feedback.
+You know who you are.
+
+=cut
