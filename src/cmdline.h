@@ -44,10 +44,17 @@ struct gengetopt_args_info
   const char *help_help; /**< @brief Print help and exit help description.  */
   const char *version_help; /**< @brief Print version and exit help description.  */
   const char *hosts_help; /**< @brief List supported hosts help description.  */
+  const char *background_help; /**< @brief Go to background immediately after startup help description.  */
   const char *quiet_help; /**< @brief Turn off all output help description.  */
   const char *debug_help; /**< @brief Turn on libcurl verbose mode help description.  */
   const char *emit_csv_help; /**< @brief Print video details in csv format to stdout help description.  */
   const char *print_fname_help; /**< @brief Print filename before each download starts help description.  */
+  char * logfile_arg;	/**< @brief Write output to file while in background (default='cclive.log').  */
+  char * logfile_orig;	/**< @brief Write output to file while in background original value given at command line.  */
+  const char *logfile_help; /**< @brief Write output to file while in background help description.  */
+  int logfile_interval_arg;	/**< @brief Update logfile every n seconds while in background (default='10').  */
+  char * logfile_interval_orig;	/**< @brief Update logfile every n seconds while in background original value given at command line.  */
+  const char *logfile_interval_help; /**< @brief Update logfile every n seconds while in background help description.  */
   char * agent_arg;	/**< @brief Identify cclive as agentstring to servers (default='Mozilla/5.0').  */
   char * agent_orig;	/**< @brief Identify cclive as agentstring to servers original value given at command line.  */
   const char *agent_help; /**< @brief Identify cclive as agentstring to servers help description.  */
@@ -83,10 +90,12 @@ struct gengetopt_args_info
   char * format_map_orig;	/**< @brief Specify format for multiple hosts in a string original value given at command line.  */
   const char *format_map_help; /**< @brief Specify format for multiple hosts in a string help description.  */
   const char *number_videos_help; /**< @brief Prepend a numeric prefix to output filenames help description.  */
-  char * regexp_arg;	/**< @brief Regular expression to cleanup video title.  */
-  char * regexp_orig;	/**< @brief Regular expression to cleanup video title original value given at command line.  */
-  const char *regexp_help; /**< @brief Regular expression to cleanup video title help description.  */
-  const char *find_all_help; /**< @brief Match all occurences, like Perl's /g option help description.  */
+  char * regexp_arg;	/**< @brief Regular expression to cleanup video title, mimics Perl's /what/(gi).  */
+  char * regexp_orig;	/**< @brief Regular expression to cleanup video title, mimics Perl's /what/(gi) original value given at command line.  */
+  const char *regexp_help; /**< @brief Regular expression to cleanup video title, mimics Perl's /what/(gi) help description.  */
+  char * substitute_arg;	/**< @brief Replace matched occurences in filename, mimics Perl's s/old/new/(gi).  */
+  char * substitute_orig;	/**< @brief Replace matched occurences in filename, mimics Perl's s/old/new/(gi) original value given at command line.  */
+  const char *substitute_help; /**< @brief Replace matched occurences in filename, mimics Perl's s/old/new/(gi) help description.  */
   char * filename_format_arg;	/**< @brief Output filename format (default='%h_%i.%s').  */
   char * filename_format_orig;	/**< @brief Output filename format original value given at command line.  */
   const char *filename_format_help; /**< @brief Output filename format help description.  */
@@ -105,10 +114,13 @@ struct gengetopt_args_info
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int hosts_given ;	/**< @brief Whether hosts was given.  */
+  unsigned int background_given ;	/**< @brief Whether background was given.  */
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
   unsigned int debug_given ;	/**< @brief Whether debug was given.  */
   unsigned int emit_csv_given ;	/**< @brief Whether emit-csv was given.  */
   unsigned int print_fname_given ;	/**< @brief Whether print-fname was given.  */
+  unsigned int logfile_given ;	/**< @brief Whether logfile was given.  */
+  unsigned int logfile_interval_given ;	/**< @brief Whether logfile-interval was given.  */
   unsigned int agent_given ;	/**< @brief Whether agent was given.  */
   unsigned int proxy_given ;	/**< @brief Whether proxy was given.  */
   unsigned int no_proxy_given ;	/**< @brief Whether no-proxy was given.  */
@@ -125,7 +137,7 @@ struct gengetopt_args_info
   unsigned int format_map_given ;	/**< @brief Whether format-map was given.  */
   unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
   unsigned int regexp_given ;	/**< @brief Whether regexp was given.  */
-  unsigned int find_all_given ;	/**< @brief Whether find-all was given.  */
+  unsigned int substitute_given ;	/**< @brief Whether substitute was given.  */
   unsigned int filename_format_given ;	/**< @brief Whether filename-format was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
   unsigned int exec_run_given ;	/**< @brief Whether exec-run was given.  */

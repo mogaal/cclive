@@ -25,7 +25,8 @@
 #include <string>
 #include <cstdlib>
 #include <cstring>
-#include <curl/curl.h>
+#include <cerrno>
+#include <vector>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -37,6 +38,7 @@
 #include "video.h"
 #include "progressbar.h"
 #include "log.h"
+#include "util.h"
 #include "curl.h"
 #include "retry.h"
 
@@ -128,13 +130,15 @@ callback_writemem(void *p, size_t size, size_t nmemb, void *data) {
 }
 
 std::string
-CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
-    logmgr.cout() << "fetch ";
-    if (what.empty())
-        logmgr.cout() << url;
-    else
-        logmgr.cout() << what;
-    logmgr.cout() << " ..." << std::flush;
+CurlMgr::fetchToMem(std::string url, const std::string &what) {
+
+    Util::fromHtmlEntities(url);
+
+    logmgr.cout()
+        << "fetch "
+        << (what.empty() ? url : what)
+        << " ..."
+        << std::flush;
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl, CURLOPT_ENCODING, "");
@@ -187,7 +191,7 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
     }
 
     if (!errmsg.empty())
-        throw FetchException(errmsg, httpcode);
+        throw FetchException(errmsg, httpcode, rc);
 
     return content;
 }
@@ -250,28 +254,20 @@ CurlMgr::queryFileLength(VideoProperties& props) {
         _FREE(mem.p);
 
     if (!errmsg.empty())
-        throw FetchException(errmsg, httpcode);
+        throw FetchException(errmsg, httpcode, rc);
 
     props.formatOutputFilename();
 }
 
 struct write_s {
-    write_s()
-        : filename(NULL), initial(0), file(NULL) { }
-    char *filename;
-    double initial;
     FILE *file;
 };
 
 static size_t
 callback_writefile(void *data, size_t size, size_t nmemb, void *p) {
     write_s *w = reinterpret_cast<write_s*>(p);
-    if (NULL != w && !w->file && NULL != w->filename) {
-        const char *mode = w->initial > 0 ? "ab" : "wb";
-        w->file = fopen(w->filename, mode);
-        if (!w->file)
-            return -1;
-    }
+    assert(w);
+    assert(w->file);
     return fwrite(data, size, nmemb, w->file);
 }
 
@@ -330,8 +326,22 @@ CurlMgr::fetchToFile(VideoProperties& props) {
     write_s write;
     memset(&write, 0, sizeof(write));
 
-    write.initial  = initial;
-    write.filename = const_cast<char*>(props.getFilename().c_str());
+    const char *mode = initial > 0 ? "ab" : "wb";
+    const char *fname = props.getFilename().c_str();
+
+    write.file = fopen(fname, mode);
+
+    if (!write.file) {
+        std::stringstream b;
+        b << fname << ": ";
+#ifdef HAVE_STRERROR
+        b << strerror(errno);
+#else
+        perror("fopen");
+        b << "unable to open file for write";
+#endif
+        throw FileOpenException(b.str());
+    }
 
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &write);
 
@@ -377,7 +387,7 @@ CurlMgr::fetchToFile(VideoProperties& props) {
         errmsg = formatError(rc);
 
     if (!errmsg.empty())
-        throw FetchException(errmsg, httpcode);
+        throw FetchException(errmsg, httpcode, rc);
 
     pb.finish();
     logmgr.cout() << std::endl;
@@ -405,14 +415,22 @@ CurlMgr::escape(std::string& url) const {
 
 CurlMgr::FetchException::FetchException(
     const std::string& error,
-    const long& httpcode)
-    : RuntimeException(CCLIVE_FETCH, error), httpcode(httpcode)
+    const long& httpcode,
+    const CURLcode& rc)
+    : RuntimeException(CCLIVE_FETCH, error),
+      httpcode(httpcode),
+      curlcode(rc)
 {
 }
 
 const long&
 CurlMgr::FetchException::getHTTPCode() const {
     return httpcode;
+}
+
+const CURLcode&
+CurlMgr::FetchException::getCurlCode() const {
+    return curlcode;
 }
 
 

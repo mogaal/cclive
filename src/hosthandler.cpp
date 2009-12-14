@@ -22,7 +22,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "hosthandler.h"
 #include "opts.h"
@@ -70,26 +69,11 @@ HostHandler::parsePage(const std::string& url) {
     std::string title = props.getTitle();
 
     // Convert predefined HTML character entities.
-    typedef std::map<std::string,std::string> maps;
-
-    maps m;
-    m["&quot;"] = "\"";
-    m["&amp;"]  = "&";
-    m["&apos;"] = "'";
-    m["&lt;"]   = "<";
-    m["&gt;"]   = ">";
-
-    for (maps::const_iterator iter = m.begin();
-        iter != m.end();
-        ++iter)
-    {
-        Util::subStrReplace(title,
-            iter->first, iter->second);
-    }
+    Util::fromHtmlEntities(title);
 
     // Apply regexp.
     if (optsmgr.getOptions().regexp_given)
-        applyRegexp(title);
+        Util::perlMatch(optsmgr.getOptions().regexp_arg, title);
 
     // Remove leading and trailing whitespace.
     pcrecpp::RE("^[\\s]+").Replace("", &title);
@@ -117,32 +101,6 @@ HostHandler::fetch(const std::string& url,
         fetch(url,what);
     }
     return tmp;
-}
-
-void
-HostHandler::applyRegexp(std::string& title) {
-
-    const Options opts = optsmgr.getOptions();
-
-    if (opts.find_all_given) {
-        pcrecpp::StringPiece sp(title);
-        pcrecpp::RE re(opts.regexp_arg, pcrecpp::UTF8());
-
-        title.clear();
-
-        std::string s;
-        while (re.FindAndConsume(&sp, &s))
-            title += s;
-    }
-    else {
-        std::string tmp = title;
-        title.clear();
-
-        pcrecpp::RE(opts.regexp_arg, pcrecpp::UTF8())
-            .PartialMatch(tmp, &title);
-    }
-
-    props.setTitle(title);
 }
 
 void

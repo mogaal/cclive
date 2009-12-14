@@ -46,8 +46,9 @@ VideoProperties::setId(const std::string& id) {
 }
 
 void
-VideoProperties::setLink(std::string link) {
-    this->link = curlmgr.unescape(link);
+VideoProperties::setLink(std::string lnk) {
+    this->link = curlmgr.unescape(lnk);
+    Util::fromHtmlEntities(this->link);
 }
 
 void
@@ -189,25 +190,21 @@ VideoProperties::formatOutputFilename() {
 
         filename = b.str();
 
-        typedef unsigned int _uint;
-
-        for (register _uint i=1;
-            i<INT_MAX && !opts.overwrite_given; ++i) {
-
-            initial = Util::fileExists(filename);
-
-            if (initial == 0)
-                break;
-            else if (initial >= length)
-                throw NothingToDoException();
-            else {
-                if (opts.continue_given)
+        if (!opts.overwrite_given) {
+            for (int i=1; i<INT_MAX; ++i) {
+                initial = Util::fileExists(filename);
+                if (initial == 0)
                     break;
+                else if (initial >= length)
+                    throw NothingToDoException();
+                else {
+                    if (opts.continue_given)
+                        break;
+                }
+                std::stringstream tmp;
+                tmp << b.str() << "." << i;
+                filename = tmp.str();
             }
-
-            std::stringstream tmp;
-            tmp << b.str() << "." << i;
-            filename = tmp.str();
         }
     }
     else {
@@ -240,6 +237,9 @@ VideoProperties::customOutputFilenameFormatter(
     Util::subStrReplace(fmt, "%i", _id);
     Util::subStrReplace(fmt, "%h", host);
     Util::subStrReplace(fmt, "%s", suffix);
+
+    if (opts.substitute_given)
+        Util::perlSubstitute(opts.substitute_arg, fmt);
 
     b << fmt;
 }

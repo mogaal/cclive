@@ -50,12 +50,12 @@ RuntimeException::what() const {
         "invalid option argument",
         "curl_easy_init returned null",
         "file already fully retrieved; nothing to do",
-        "system call failed",
+        "system", // CCLIVE_SYSTEM
         "no support",
-        "network error",
-        "fetch failed",
-        "parse failed",
-        "internal error",
+        "network",
+        "fetch",
+        "parse",
+        "internal",
     };
 
     ReturnCode _rc = rc;
@@ -79,6 +79,11 @@ RuntimeException::what() const {
 const ReturnCode&
 RuntimeException::getReturnCode() const {
     return rc;
+}
+
+FileOpenException::FileOpenException(const std::string& err)
+    : RuntimeException(CCLIVE_SYSTEM, err)
+{
 }
 
 

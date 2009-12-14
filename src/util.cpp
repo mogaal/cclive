@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cstring>
+#include <cerrno>
 
 #ifdef HAVE_ICONV
 #include <cerrno>
@@ -215,7 +217,7 @@ Util::toUnicode(std::string& src, const std::string& from) {
     if (cd == (iconv_t)-1) {
         if (errno == EINVAL) {
             logmgr.cerr()
-                << "error: conversion from \""
+                << "conversion from \""
                 << from
                 << "\" to \""
                 << to
@@ -223,7 +225,14 @@ Util::toUnicode(std::string& src, const std::string& from) {
                 << std::endl;
         }
         else {
-            perror("iconv_popen");
+#ifdef HAVE_STRERROR
+            logmgr.cerr()
+                << "iconv_open: "
+                << strerror(errno)
+                << std::endl;
+#else
+            perror("iconv_open");
+#endif
             return src;
         }
     }
@@ -262,6 +271,98 @@ Util::toUnicode(std::string& src, const std::string& from) {
         src = outbuf;
 #endif
     return src;
+}
+
+const std::string&
+Util::fromHtmlEntities(std::string& src) {
+
+    typedef std::map<std::string,std::string> maps;
+
+    maps m;
+    m["&quot;"] = "\"";
+    m["&#34;"]  = "\"";
+
+    m["&amp;"]  = "&";
+    m["&#38;"]  = "&";
+
+    m["&apos;"] = "'";
+    m["&#39;"]  = "'";
+
+    m["&lt;"]   = "<";
+    m["&#60;"]  = "<";
+
+    m["&gt;"]   = ">";
+    m["&#62;"]  = ">";
+
+    for (maps::const_iterator iter = m.begin();
+        iter != m.end();
+        ++iter)
+    {
+        Util::subStrReplace(src,
+            iter->first, iter->second);
+    }
+
+    return src;
+}
+
+const bool
+Util::perlSubstitute(const std::string& re, std::string& src) {
+    std::string pat, sub, flags;
+    if (pcrecpp::RE("^s\\/(.*)\\/(.*)\\/(.*)$", pcrecpp::UTF8())
+        .PartialMatch(re, &pat, &sub, &flags))
+    {
+        if (src.empty()) // test "re" only.
+            return true;
+
+        pcrecpp::RE_Options opts;
+
+        opts.set_caseless(strstr(flags.c_str(), "i") != 0);
+        opts.set_utf8(true);
+
+        pcrecpp::RE subs(pat, opts);
+
+        (strstr(flags.c_str(), "g"))
+            ? subs.GlobalReplace(sub, &src)
+            : subs.Replace(sub, &src);
+
+        return true;
+    }
+    return false;
+}
+
+const bool
+Util::perlMatch(const std::string& re, std::string& src) {
+    std::string pat, flags;
+    if (pcrecpp::RE("^\\/(.*)\\/(.*)$", pcrecpp::UTF8())
+        .PartialMatch(re, &pat, &flags))
+    {
+        if (src.empty())
+            return true;
+
+        pcrecpp::RE_Options opts;
+
+        opts.set_caseless(strstr(flags.c_str(), "i") != 0);
+        opts.set_utf8(true);
+
+        if (strstr(flags.c_str(), "g") != 0) {
+            pcrecpp::StringPiece sp(src);
+            pcrecpp::RE re(pat, opts);
+
+            src.clear();
+
+            std::string s;
+            while (re.FindAndConsume(&sp, &s))
+                src += s;
+        }
+        else {
+            std::string tmp = src;
+            src.clear();
+
+            pcrecpp::RE(pat, opts).PartialMatch(tmp, &src);
+        }
+        return true;
+    }
+    return false;
 }
 
 

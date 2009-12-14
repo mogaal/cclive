@@ -20,6 +20,8 @@
 #ifndef curl_h
 #define curl_h
 
+#include <curl/curl.h>
+
 #include "singleton.h"
 
 class CurlMgr : public Singleton<CurlMgr> {
@@ -30,7 +32,7 @@ public:
     virtual ~CurlMgr  ();
 public:
     void         init           ();
-    std::string  fetchToMem     (const std::string& url,
+    std::string  fetchToMem     (std::string url,
                                     const std::string& what="");
     void         queryFileLength(VideoProperties&);
     void         fetchToFile    (VideoProperties&);
@@ -41,10 +43,13 @@ private:
 public:
     class FetchException : public RuntimeException {
     public:
-        FetchException(const std::string&, const long& httpcode);
+        FetchException(const std::string&,
+            const long& httpcode, const CURLcode& curlcode);
         const long& getHTTPCode() const;
+        const CURLcode& getCurlCode() const;
     protected:
         long httpcode;
+        CURLcode curlcode;
     };
 };
 
