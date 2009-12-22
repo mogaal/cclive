@@ -30,6 +30,24 @@
 #include <iomanip>
 #include <algorithm>
 #include <tr1/memory>
+#include <cstring>
+#include <cerrno>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#ifdef HAVE_LIMITS_H
+#include <limits.h>
+#endif
+
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif
 
 #ifdef HAVE_SIGNAL_H
 #include <signal.h>
@@ -38,8 +56,6 @@
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #endif
-
-#include <curl/curl.h>
 
 #include "hosthandler.h"
 #include "hostfactory.h"
@@ -195,8 +211,11 @@ handleURL(const std::string& url) {
         VideoProperties props =
             handler->getVideoProperties();
 
-        try   { processVideo(props); }
-        catch (const NothingTodo& x) { logmgr.cerr(x, false); }
+        try { processVideo(props); }
+        catch (const FileOpenException& x)
+            { logmgr.cerr(x, false); }
+        catch (const NothingTodo& x)
+            { logmgr.cerr(x, false); }
 
         if (optsmgr.getOptions().exec_run_given) 
             execmgr.append(props);
@@ -220,6 +239,24 @@ App::run() {
     if (opts.hosts_given) {
         HostHandlerFactory::printHosts();
         return;
+    }
+
+    if (opts.regexp_given) {
+        std::string empty;
+        if (!Util::perlMatch(opts.regexp_arg, empty)) {
+            throw RuntimeException(CCLIVE_OPTARG,
+                "--regexp: expected perl-like\n"
+                "error: /pattern/(gi) regular expression");
+        }
+    }
+
+    if (opts.substitute_given) {
+        std::string empty; // Validate regexp only (empty string).
+        if (!Util::perlSubstitute(opts.substitute_arg, empty)) {
+            throw RuntimeException(CCLIVE_OPTARG,
+                "--substitute: expected perl-like\n"
+                "error: s/old/new/(gi) substitution");
+        }
     }
 
     execmgr.verifyExecArgument();
@@ -263,6 +300,9 @@ App::run() {
 #ifdef WITH_RESIZE
     signal(SIGWINCH, handle_sigwinch);
 #endif
+    if (opts.background_given)
+        daemonize();
+
     std::for_each(tokens.begin(), tokens.end(), handleURL);
 
     if (opts.exec_run_given)
@@ -320,6 +360,47 @@ static const char copyr_notice[] =
 #endif
         << "\n  Home            : "     << "<http://cclive.googlecode.com/>"
         << std::endl;
+}
+
+void
+App::daemonize() {
+#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
+#ifdef HAVE_GETCWD
+    char path[PATH_MAX];
+    path[0] = '\0';
+    getcwd(path, sizeof(path));
+#endif
+
+    pid_t pid = fork();
+
+    if (pid < 0) {
+#ifdef HAVE_STRERROR
+        fprintf(stderr, "error: fork: %s\n", strerror(errno));
+#else
+        perror("fork");
+#endif
+        exit (CCLIVE_SYSTEM);
+    }
+    else if (pid != 0) {
+        std::cout 
+            << "Continuing in background, pid "
+            << static_cast<long>(pid)
+            << ".\nOutput will be written to \""
+            << logmgr.getFilename()
+            << "\"."
+            << std::endl;
+        exit (CCLIVE_OK);
+    }
+    setsid();
+#ifdef HAVE_GETCWD
+    chdir(path);
+#endif
+    umask(0);
+#else // ifndef HAVE_FORK ...
+    logmgr.cerr()
+        << "warning: --background ignored: system does not support fork(2)"
+        << std::endl;
+#endif
 }
 
 

@@ -30,22 +30,21 @@ Tube8Handler::Tube8Handler()
 void
 Tube8Handler::parseId() {
     std::string id;
-    partialMatch("addToFavourites\\(0, (\\d+)\\)", &id);
+    partialMatch("(?i)name=\"vidid\" value=\"(\\d+)\"", &id);
     props.setId(id);
 }
 
 void
 Tube8Handler::parseTitle() {
     std::string title;
-    partialMatch("<strong>Title</strong>: (.*?)</td>", &title);
+    partialMatch("(?i)<strong>description:</strong>\\s+(.*?)\\s+</", &title);
     props.setTitle(title);
 }
 
 void
 Tube8Handler::parseLink() {
-  std::string lnk;
-  partialMatch("videoUrl=(http://.*?)&", &lnk);
-  curlmgr.escape(lnk);
-  props.setLink(lnk);
+    std::string lnk;
+    partialMatch("videoUrl=(http://.*?)&", &lnk);
+    props.setLink(lnk);
 }
 

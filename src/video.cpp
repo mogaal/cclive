@@ -25,6 +25,7 @@
 #include <iomanip>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "except.h"
 #include "util.h"
@@ -46,8 +47,9 @@ VideoProperties::setId(const std::string& id) {
 }
 
 void
-VideoProperties::setLink(std::string link) {
-    this->link = curlmgr.unescape(link);
+VideoProperties::setLink(std::string lnk) {
+    this->link = curlmgr.unescape(lnk);
+    Util::fromHtmlEntities(this->link);
 }
 
 void
@@ -189,25 +191,21 @@ VideoProperties::formatOutputFilename() {
 
         filename = b.str();
 
-        typedef unsigned int _uint;
-
-        for (register _uint i=1;
-            i<INT_MAX && !opts.overwrite_given; ++i) {
-
-            initial = Util::fileExists(filename);
-
-            if (initial == 0)
-                break;
-            else if (initial >= length)
-                throw NothingToDoException();
-            else {
-                if (opts.continue_given)
+        if (!opts.overwrite_given) {
+            for (int i=1; i<INT_MAX; ++i) {
+                initial = Util::fileExists(filename);
+                if (initial == 0)
                     break;
+                else if (initial >= length)
+                    throw NothingToDoException();
+                else {
+                    if (opts.continue_given)
+                        break;
+                }
+                std::stringstream tmp;
+                tmp << b.str() << "." << i;
+                filename = tmp.str();
             }
-
-            std::stringstream tmp;
-            tmp << b.str() << "." << i;
-            filename = tmp.str();
         }
     }
     else {
@@ -233,13 +231,36 @@ VideoProperties::customOutputFilenameFormatter(
     const Options opts  = optsmgr.getOptions();
     std::string fmt     = opts.filename_format_arg;
 
+#ifdef _1_
     std::string _id = this->id;
     Util::subStrReplace(_id, "-", "_");
+#endif
 
-    Util::subStrReplace(fmt, "%t", title.empty() ? _id : title);
-    Util::subStrReplace(fmt, "%i", _id);
+    Util::subStrReplace(fmt, "%t", title.empty() ? id : title);
+    Util::subStrReplace(fmt, "%i", id);
     Util::subStrReplace(fmt, "%h", host);
     Util::subStrReplace(fmt, "%s", suffix);
+
+    if (opts.substitute_given) {
+
+        std::istringstream iss(opts.substitute_arg);
+
+        typedef std::vector<std::string> sv;
+        sv regexps;
+
+        std::copy(
+            std::istream_iterator<std::string >(iss),
+            std::istream_iterator<std::string >(),
+            std::back_inserter<sv >(regexps)
+        );
+
+        for (sv::const_iterator iter = regexps.begin();
+            iter != regexps.end();
+            ++iter)
+        {
+            Util::perlSubstitute(*iter, fmt);
+        }
+    }
 
     b << fmt;
 }

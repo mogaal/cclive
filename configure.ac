@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.64)
+AC_PREREQ(2.65)
 
 m4_include([m4/version.m4])
 AC_INIT([cclive], [_CCLIVE_VERSION], [legatvs@gmail.com])
@@ -65,7 +65,7 @@ AM_ICONV
 # Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS([stdlib.h string.h sys/ioctl.h unistd.h sys/wait.h signal.h locale.h langinfo.h])
+AC_CHECK_HEADERS([stdlib.h string.h sys/ioctl.h unistd.h sys/wait.h signal.h locale.h langinfo.h fcntl.h limits.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -84,7 +84,7 @@ AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
 AC_PROG_GCC_TRADITIONAL
 AC_TYPE_SIGNAL
-AC_CHECK_FUNCS([memset setenv strchr strcspn strspn strtol setlocale nl_langinfo])
+AC_CHECK_FUNCS([memset setenv strchr strcspn strspn strtol setlocale nl_langinfo getcwd strerror])
 
 # --enable-tests
 AC_ARG_ENABLE([tests],
