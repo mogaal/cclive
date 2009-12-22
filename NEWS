@@ -1,6 +1,17 @@
 cclive News
 -----------
 
+0.5.7
+-------------
+
+Multiple regular expressions can now be supplied for --substitute.
+
+For example:
+  % cclive -S "s/old/new/i s/[/:-]/_/g" URL
+
+Note the whitespace between the regular expressions.
+
+
 0.5.6
 -------------
 
