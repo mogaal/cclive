@@ -1,6 +1,75 @@
 cclive News
 -----------
 
+0.6.1
+-------------
+
+--format no longer uses hardcoded values. The accepted
+values are now provided by libquvi.
+
+
+0.6.0
+-------------
+
+Significant changes to the project. 0.6.0 has gone through
+tedious testing but expect bugs.
+
+* Added new dependency for libquvi (http://quvi.googlecode.com/)
+  - libquvi is a brand new a spinoff library
+  - based on cclive 0.5 host specific code
+  - takes care of all of the page fetching and parsing
+
+* cclive will now prepend "error: libquvi:" if an error occurs
+in the library, this means that any such bug should be reported
+to the *quvi bug tracker* (see the link above)
+
+* Added support for (cctv) multi-segment videos, see also:
+  http://code.google.com/p/clive/issues/detail?id=45
+
+* Adult websites are now only supported if libquvi was built
+with the support (default:no)
+
+* CCLIVE_CURLINIT return code is now obsolete, libquvi
+initializes libcurl and spews out the init error
+
+* The code responsible for the underlaying "retry-transfer"
+logic was rewritten for better readability
+
+* Removed the libiconv dependency, libquvi takes care of
+the character set conversions now
+
+* Tests no longer run any of the old host specific checks,
+the quvi package takes care of this now, other changes
+to the test suite include:
+
+  * ADULT_OK environment variable is now obsolete,
+  this is now libquvi territory
+
+  * Renamed CCLIVE_TEST_OPTS -> CCLIVE_TEST_OPTIONS
+
+  * Tests are now perl scripts
+
+  * See INSTALL file for the list of test suite supported
+  environment variables
+
+* libquvi introduces some misc. minor improvements to the 
+page fetching and parsing, e.g. spiegel videos now skip
+the video page fetch altogether
+
+* Spyfilms video ids were previously (0.5.9) glued together
+from various video page elements, as of 0.6.0 (and libquvi)
+spyfilms video ids are generated using different scheme
+
+  * This is a special case, all other supported websites
+  use unique ids for their videos
+
+* Option changes
+
+  * Remove --stream option. This option was supported for historical
+  reasons only, until now. It has been considered deprecated since
+  the introduction of --stream-pass in 0.4.6.
+
+
 0.5.7
 -------------
 

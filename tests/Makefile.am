@@ -1,54 +1,25 @@
 
-EXTRA_DIST=
+EXTRA_DIST = ccliveTest.pm.in $(TESTS) $(TESTS_POD)
 
-check_PROGRAMS=\
-returncode\
-youtube\
-break\
-liveleak\
-dailymotion\
-evisor\
-google\
-sevenload\
-golem\
-clipfish\
-funnyhub\
-myubo\
-cctv\
-ehrensenf\
-spiegel\
-vimeo\
-youjizz\
-xvideos\
-tube8\
-multi
+if HAVE_PERL
 
-TESTS=		$(check_PROGRAMS)
-common=		test.cpp test.h
-AM_CXXFLAGS=	-DCCLIVE_PATH="\"$(top_builddir)/src/cclive\""
+TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mccliveTest -I $(top_builddir)/tests
 
-returncode_SOURCES=	returncode.cpp $(common)
-youtube_SOURCES=	youtube.cpp $(common)
-break_SOURCES=		break.cpp $(common)
-liveleak_SOURCES=	liveleak.cpp $(common)
-dailymotion_SOURCES=	dailymotion.cpp $(common)
-evisor_SOURCES=		evisor.cpp $(common)
-google_SOURCES=		google.cpp $(common)
-vimeo_SOURCES=		vimeo.cpp $(common)
-sevenload_SOURCES=	sevenload.cpp $(common)
-golem_SOURCES=		golem.cpp $(common)
-clipfish_SOURCES=	clipfish.cpp $(common)
-funnyhub_SOURCES=	funnyhub.cpp $(common)
-myubo_SOURCES=		myubo.cpp $(common)
-cctv_SOURCES=		cctv.cpp $(common)
-ehrensenf_SOURCES=	ehrensenf.cpp $(common)
-spiegel_SOURCES=	spiegel.cpp $(common)
-youjizz_SOURCES=	youjizz.cpp $(common)
-xvideos_SOURCES=	xvideos.cpp $(common)
-tube8_SOURCES=	    tube8.cpp $(common)
-multi_SOURCES=		multi.cpp $(common)
+TESTS =\
+noformat-eval.pl\
+nosupport-eval.pl\
+multi-segment.pl\
+multi-dl.pl
 
-local-clean:
-	@rm -rf *.core
+TESTS_POD =\
+pod-check.pl
 
-distclean-local: local-clean
+if HAVE_PERL_POD_CHECKER
+TESTS += $(TESTS_POD)
+endif
+
+else # HAVE_PERL
+	@echo SKIP: perl not found.
+endif # HAVE_PERL
+
+
