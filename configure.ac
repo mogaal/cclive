@@ -38,9 +38,17 @@ AC_PATH_PROG(GENGETOPT, gengetopt, no)
 AM_CONDITIONAL([HAVE_GENGETOPT], [test x"$GENGETOPT" != "xno"])
 AC_SUBST(GENGETOPT)
 
-AC_PATH_PROG(PODCHECKER, podchecker, no)
-AM_CONDITIONAL([HAVE_PODCHECKER], [test x"$PODCHECKER" != "xno"])
-AC_SUBST(PODCHECKER)
+AC_PATH_PROG(PERL, perl, no)
+AM_CONDITIONAL([HAVE_PERL], [test x"$PERL" != "xno"])
+AC_SUBST(PERL)
+
+have_pod_checker=no
+AC_MSG_CHECKING([for Pod::Checker])
+if [ $PERL -mPod::Checker >/dev/null 2>&1 ]; then
+    have_pod_checker=yes
+fi
+AC_MSG_RESULT([${have_pod_checker}])
+AM_CONDITIONAL([HAVE_PERL_POD_CHECKER], [test x"$have_pod_checker" = "xyes"])
 
 AC_PATH_PROG(POD2MAN, pod2man, no)
 AM_CONDITIONAL([HAVE_POD2MAN], [test x"$POD2MAN" != "xno"])
@@ -58,9 +66,9 @@ fi
 AC_DEFINE_UNQUOTED([BUILD_DATE], "$build_date", [...])
 
 # Checks for (mandatory) libraries.
+PKG_CHECK_MODULES(libquvi, libquvi >= 0.1.0)
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.8)
-AM_ICONV
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -84,7 +92,7 @@ AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
 AC_PROG_GCC_TRADITIONAL
 AC_TYPE_SIGNAL
-AC_CHECK_FUNCS([memset setenv strchr strcspn strspn strtol setlocale nl_langinfo getcwd strerror])
+AC_CHECK_FUNCS([memset setenv strchr strcspn strspn strtol setlocale nl_langinfo getcwd strerror strstr])
 
 # --enable-tests
 AC_ARG_ENABLE([tests],
@@ -109,5 +117,27 @@ fi
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 tests/Makefile])
+                 tests/Makefile
+                 tests/ccliveTest.pm])
 AC_OUTPUT
+
+AC_MSG_NOTICE([Configured to build cclive:
+
+    cclive version: ${VERSION}
+    host setup:     ${host}
+    install prefix: ${prefix}
+    compiler:       ${CXX}
+    cxxflags:       ${CXXFLAGS}
+
+Options:
+    install manual: ${with_man}
+
+Other:
+    gengetopt:      ${GENGETOPT}
+    perl:           ${PERL}
+    Pod::Checker:   ${have_pod_checker}
+    pod2man:        ${POD2MAN}
+    pod2html:       ${POD2HTML}
+])
+
+

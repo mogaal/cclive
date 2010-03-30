@@ -1,4 +1,74 @@
 
+Version 0.6.2
+(February 23, 2010)
+
+Changes:
+  * tests/multi-segment.pl now checks for locale
+
+Bugfixes:
+  * -f best, accepted again (closes issue #24)
+
+
+Version 0.6.1
+(Feburary 13, 2010)
+
+Changes:
+  * Updated manual to reflect the dailymotion format id changes
+  * Remove the hardcoded --format values
+    # Use libquvi provided values instead
+  * Add tests/noformat-eval.pl
+  * Cleanup notice message (configure)
+  * Add tests/pod-check.pl (replaces "make checkpod")
+
+Bugfixes:
+  * tests/Makefile.am: Missing separator (Makefile:450, rep. FreeBSD)
+
+
+Version 0.6.0
+(February 2, 2010)
+
+ User-visible changes:
+  * Multi-segment support (e.g. some cctv videos)
+  * Remove "Features" from --version output
+  * Rewrite of retrying transfers
+  * --version now prints libquvi version (instead of libcurl)
+
+ Developer-visible changes:
+  * Add dependency for libquvi (see NEWS and INSTALL files)
+  * Remove libiconv dependency (ditto)
+
+ General changes:
+  * Tidy up project description (e.g. README)
+
+
+Version 0.5.9
+(January 26, 2010)
+
+ User-visible changes:
+  * --stream-exec, --stream-pass
+    # Add support for the %f specifier
+    # Thanks to webmaster.foto-schaal.de for the patch
+    # Closes issue #22
+  * Add spyfilms support
+    # Thanks to Hanno Böck for initial patch and data
+
+
+Version 0.5.8
+(January 14, 2010)
+
+ User-visible changes:
+  * Fix "-f unavailable_format" for dailymotion
+    # Use first found link instead of croaking with an error
+  * Fix "-f best" for dailymotion
+    # Use proper sorting method
+    # Thanks to Markus Doppelbauer for reporting the issue
+  * Fix tube8 support
+
+ Developer-visible changes:
+  * configure: dump build configuration
+  * tests/sevenload.cpp: remove dead test link (closes issue #19)
+
+
 Version 0.5.7
 (December 18, 2009)
 

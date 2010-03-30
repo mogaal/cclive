@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -19,15 +19,13 @@
 
 #include "config.h"
 
-#include <tr1/memory>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <cstdlib>
 #include <cstring>
-#include <string>
-#include <vector>
 #include <cerrno>
+#include <string>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -35,10 +33,6 @@
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
-
-#ifdef HAVE_SYS_WAIT_H
-#include <sys/wait.h>
 #endif
 
 #include <time.h>
@@ -52,9 +46,9 @@
 #endif
 
 #include "except.h"
-#include "video.h"
 #include "opts.h"
 #include "macros.h"
+#include "quvi.h"
 #include "util.h"
 #include "exec.h"
 #include "log.h"
@@ -86,22 +80,20 @@ getTermWidth() {
 #endif
 
 ProgressBar::ProgressBar()
-    : props(VideoProperties()), lastUpdate(0),
-      started(0),               lastLogfileUpdate(0),
-      initial(0),
-      total(0),                 count(0),
-      done(false),              width(0),
-      termWidth(0),             streamFlag(false),
-      streamPid(-1)
+    : qv(QuviVideo()), lastUpdate(0),
+      started(0),         lastLogfileUpdate(0),
+      initial(0),         total(0),
+      count(0),           done(false),
+      width(0),           termWidth(0)
 {
 }
 
 void
-ProgressBar::init(const VideoProperties& props) {
-    this->props = props;
+ProgressBar::init(const QuviVideo& qv) {
+    this->qv = qv;
 
-    initial = props.getInitial(); // bytes dl previously
-    total   = props.getLength();  // expected bytes
+    initial = qv.getInitialFileLength(); // bytes dl previously
+    total   = qv.getFileLength();        // expected bytes
 
     if (initial > total)
         total = initial;
@@ -118,7 +110,7 @@ ProgressBar::init(const VideoProperties& props) {
     width = termWidth-1; // do not use the last column
     time(&started);
 }
-
+ 
 typedef unsigned int _uint;
 
 void
@@ -162,7 +154,7 @@ ProgressBar::update(double now) {
     register _uint l = 32;
     if (width > DEFAULT_TERM_WIDTH)
         l += width - DEFAULT_TERM_WIDTH;
-    b << props.getFilename().substr(0,l);
+    b << qv.getFileName().substr(0,l);
 
     if (total > 0) {
         const double _size = !done ? size:now;
@@ -180,17 +172,6 @@ ProgressBar::update(double now) {
           << std::setprecision(1)
           << _TOMB(total)
           << "M";
-
-#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
-        const Options opts = optsmgr.getOptions();
-        if (opts.stream_given
-            && opts.stream_exec_given
-            && !streamFlag)
-        {
-            if (percent >= opts.stream_arg)
-                forkStreamer();
-        }
-#endif
     }
 
     std::stringstream tmp;
@@ -262,22 +243,6 @@ ProgressBar::finish() {
     }
     done = true;
     update(-1);
-
-#ifdef HAVE_SYS_WAIT_H
-    if (streamFlag) {
-        if (waitpid(streamPid, 0, 0) != streamPid) {
-#ifdef HAVE_STRERROR
-            logmgr.cerr()
-                << "waitpid: "
-                << strerror(errno)
-                << std::endl;
-#else
-            perror("waitpid");
-#endif
-        }
-        streamFlag = false;
-    }
-#endif
 }
 
 const std::string
@@ -314,27 +279,6 @@ ProgressBar::getUnit(double& rate) const {
         i = 2;
     }
     return units[i];
-}
-
-void
-ProgressBar::forkStreamer() {
-#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
-    streamFlag = true;
-    if ((streamPid = fork()) < 0) {
-#ifdef HAVE_STRERROR
-        logmgr.cerr()
-            << "fork: "
-            << strerror(errno)
-            << std::endl;
-#else
-            perror("waitpid");
-#endif
-    }
-    else if (streamPid == 0) {
-        execmgr.playStream(props);
-        exit(0);
-    }
-#endif
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -27,18 +27,17 @@ public:
     ExecMgr();
 public:
     void verifyExecArgument();
-    void append(const VideoProperties&); 
+    void append(const QuviVideo&); 
     void playQueue();
-    void playStream(const VideoProperties&);
-    void passStream(const VideoProperties&);
+    void passStream(QuviVideo&);
 private:
     void playPlus();
     void playSemi();
 private:
     enum Mode { Plus, Semi };
 private:
-    typedef std::vector<VideoProperties> propvect;
-    std::tr1::shared_ptr<propvect> queue;
+    typedef std::vector<QuviVideo> vquvi;
+    std::tr1::shared_ptr<vquvi> queue;
     Mode mode;
 };
 

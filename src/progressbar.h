@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -24,15 +24,14 @@ class ProgressBar {
 public:
     ProgressBar();
 public:
-    void init   (const VideoProperties&);
+    void init   (const QuviVideo&);
     void update (double now);
     void finish ();
 private:
     const std::string timeToStr    (const int& secs) const;
     const std::string getUnit      (double& rate) const;
-    void              forkStreamer ();
 private:
-    VideoProperties props;
+    QuviVideo qv;
     time_t lastUpdate;
     time_t started;
     time_t lastLogfileUpdate;
@@ -42,8 +41,6 @@ private:
     bool   done;
     int    width;
     int    termWidth;
-    bool   streamFlag;
-    pid_t  streamPid;
 private:
     enum { DEFAULT_TERM_WIDTH=80 };
 };
