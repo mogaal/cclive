@@ -1,3 +1,9 @@
+cclive (0.6.2-1) unstable; urgency=low
+
+  * New upstream version 
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Mon, 29 Mar 2010 22:24:13 -0430
+
 cclive (0.5.7-1) unstable; urgency=low
 
   * New upstream release
