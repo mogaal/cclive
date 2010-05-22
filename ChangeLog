@@ -1,4 +1,12 @@
 
+Version 0.6.3
+May 6, 2010
+
+Changes:
+  * Update to use libquvi's quvi_next_supported_website function
+  * Add AM_SILENT_RULES([yes])
+
+
 Version 0.6.2
 (February 23, 2010)
 

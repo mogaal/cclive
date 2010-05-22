@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-cclive - lightweight video extraction tool
+cclive - command line video download tool
 
 =head1 SYNOPSIS
 
@@ -10,15 +10,8 @@ cclive [options] [url...]
 
 =head1 DESCRIPTION
 
-cclive is a lightweight commandline video extraction tool for Youtube
-and similar video Websites. It is a rewrite of the clive software in
-C++ with a smaller system footprint and fewer dependencies. It is
-primarily a "video download tool", but can be used with video player
-software like "mplayer" for viewing streamed videos in place of the
-Adobe flash player. 
-
-cclive is designed to be used as a workaround tool for websites that
-require the Adobe flash player plugin for viewing the video content.
+cclive is a command line video download tool for Youtube and similar websites.
+It is a rewrite of the clive software in C++.
 
 =head1 OPTIONS
 
@@ -253,9 +246,9 @@ contributed by Bill Squire.
 
 Download video from URL.
 
-=item cclive -f fmt18 Youtube_URL
+=item cclive -f best Youtube_URL
 
-Download fmt18 (mp4) format of the video.
+Download best available format from Youtube_URL.
 
 =item cclive -F "%t.%s" URL
 
@@ -339,123 +332,41 @@ Or:
 This may save you some typing, as you would normally have to type each
 URL to the command line as an argument.
 
-=item echo 'format-map = "youtube:mp4|dailymotion:h264-hq"' E<gt>E<gt> ~/.ccliverc
+=item echo 'format-map = "youtube:best|dailymotion:hq"' E<gt>E<gt> ~/.ccliverc
 
 Save C<--format-map> to config file for permanent use.
 
 =item cclive Youtube_URL Dailymotion_URL
 
-Causes cclive to download mp4 of the Youtube video and h264-hq of
-the Dailymotion video. Note that the use of -f (or C<--format>)
-overrides this setting.
+Would set --format=best for Youtube_URL and --format=hq for Dailymotion_URL.
+Note that the use of C<--format> overrides --format-map setting.
 
 =back
 
 =head1 FORMATS
 
-Note that cclive (0.6.0+) depends on libquvi for parsing
-video links. You can get a more complete list of the
-websites (hosts) and the supported formats with the
-C<--hosts> option.
+cclive uses libquvi <http://quvi.googlecode.com> to parse the video
+download links. You can get a complete list of the supported formats
+with the C<--hosts> option.
 
-cclive defaults to download "flv", unless C<--format>
-is used, or if the requested format cannot be found.
-
-The quality of the "default flv" can vary. Some hosts may use
-different "default resolution" and "default quality" for their
-videos.
-
-Same goes for the video details listed below. The resolutions
-may vary, depending on the hosts settings, so the list below
-may be inaccurate at times.
-
-=over 4
-
-=item youtube.com
-
-Format: flv|fmt17|fmt18|fmt22|fmt35
-
-cclive defaults to to whatever Youtube defaults to at the
-time. This is usually the fmt34 (see below).
-
-Also, do not be surprised if the quality is not what you
-expected, the good folks at Youtube like to keep things
-interesting (for those who care).
-
- FormatID  Alias    Suffix  Resolution
- fmt22     hd       mp4     1280x720
- fmt35     hq       flv      640x380
- fmt18     mp4      mp4      480x360
- fmt34     flv      flv      320x180 [default] (resolution may vary)
- fmt17     3gp      3gp      176x144
-
-You can use either, the "alias" (e.g. "hd") or the "format id"
-(e.g. "fmt22"), with --format. The aliases are supported for
-historical reasons.
-
-cclive can also download videos that last.fm lists as Youtube
-hosted videos.
-
-=item dailymotion.com
-
-Format: flv|spark-mini|h264|h264-hq|h264-hd
-
-The HD and HQ videos may not always be available.
-
-  FormatID      Suffix  Resolution
-  h264-hd       mp4     1280x720
-  h264-hq       mp4      848x480
-  h264          mp4      512x384
-  flv           flv      320x240 [default]
-  spark-mini    flv        80x60
-
-=item spiegel.de
-
-Format: vp6_(576|928)|h264_1400
-
-  FormatID   Suffix  Resolution
-  h264_1400  mp4     996x560
-  vp6_928    flv     996x560
-  vp6_576    flv     560x315
-  flv        flv     180x100 [default]
-
-=item golem.de
-
-Format: flv|high|ipod
-
-=item video.google.com
-
-Format: flv|mp4
-
-mp4 may not always be available.
-
-=item spyfilms.com
-
-Format: flv|hd
-
-=item All other supported websites
-
-Format: flv
-
-Check also the C<--hosts>. libquvi is likely to get
-updated more frequently than cclive, so the output of
-this option may change.
-
-=back
+If you have any additional info regarding the formats, report them
+to the quvi project (see above link) as this is strictly quvi territory.
 
 =head1 FILES
 
 =over 4
 
-=item B<$CCLIVE_HOME|$HOME/.ccliverc>
+=item B<$HOME/.ccliverc>
 
- agent      = Furball/1.0       # --agent=...
- proxy      = http://foo:1234   # --proxy=...
- limit-rate = 50                # --limit-rate=...
- no-extract                     # --no-extract
+Most of the program options can be specified in the $HOME/.ccliverc
+config file. For example:
 
-Most of the program options can be specified in the ~/.ccliverc
-config file.
+ agent      = JBond/1.0       # --agent
+ proxy      = http://foo:1234 # --proxy
+ limit-rate = 50              # --limit-rate
+ no-extract                   # --no-extract
+
+You can also use $CCLIVE_HOME instead of $HOME.
 
 =back
 
@@ -490,36 +401,49 @@ defined in terms of \w and \W." -- man pcrepattern
 
 =head1 BUGS
 
-Sure to be some. Please report them.
+Report them at <http://cclive.googlecode.com/>. Please see if the issue has
+already been reported (or closed) before you submit another. You can use
+the issue tracker's search feature for this, just be sure to search "All
+issues".
 
-Note that if the error message contains "libquvi:", that means
-the error occurred in libquvi. Please file the libquvi related
-issues at:
+If your bug report contains an error message starting with "error: libquvi:",
+report the bug to the quvi tracker instead (<http://quvi.googlecode.com/>).
 
-  <http://quvi.googlecode.com/>
-
-And everything else at:
-
-  <http://cclive.googlecode.com/>
-
-Please search the tracker for both open and closed issues
-before you file a new one. The issue may have already been
-reported, addressed or closed. Thanks.
+You can use the issue trackers for submitting your patches.
 
 =head1 DEBUGGING
 
-Useful options for debugging cclive.
+The following lists some of the cclive options that may be useful
+while debugging. Other tools, like C<strace(1)>, C<gdb(1)> and C<valgrind(1)>
+may also prove helpful.
 
 =over 4
 
 =item cclive --debug URL
 
-Spew out libcurl verbose messages.
+Enable libcurl verbose mode.
 
 =item cclive -n URL
 
-Simulate only; cclive will parse and verify the video link without
-downloading it.
+Simulate only. Fetch, parse but skip get.
+
+=item $prefix/share/quvi/lua/README
+
+=item $prefix/share/quvi/lua/website/README
+
+cclive relies on libquvi for parsing the video download links.
+If the parsing ever breaks, the above two files cover some
+of the essential details.
+
+The latter directory also contains the website specific Lua
+scripts that libquvi calls to parse the video links.
+
+=item $prefix/share/doc/quvi
+
+The above directory contains quvi related HOWTOs which may
+also prove helpful reading for those interested in cclive.
+The guidelines that the HOWTOs list are also followed in
+this project.
 
 =back
 
@@ -547,30 +471,10 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
 
 <http://cclive.googlecode.com/>
 
-=item FAQ:
-
-<http://code.google.com/p/cclive/wiki/FAQ>
-
-=item Front-end:
-
-<http://abby.googlecode.com/>
-
-=item Development code:
-
-% git clone git://repo.or.cz/cclive.git
-
 =back
-
-=head1 SEE ALSO
-
-C<clive(1)>
 
 =head1 AUTHOR
 
-Toni Gundogdu <legatvs@gmail.com>
-
-Thanks to all those who have contributed to the project
-by sending patches, reporting bugs and writing feedback.
-You know who you are.
+Toni Gundogdu <legatvs@gmail.com>.
 
 =cut

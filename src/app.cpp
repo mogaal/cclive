@@ -224,6 +224,37 @@ verify_format_id (const Options& opts) {
 
     pcrecpp::RE re(pattern.str(), re_opts);
 
+    bool done = false;
+    while (!done) {
+        char *domain, *formats;
+
+        QUVIcode rc = quvi_next_supported_website(
+            quvimgr.handle(),
+            &domain,
+            &formats
+        );
+
+        switch (rc) {
+
+        case QUVI_OK: {
+            const bool found = re.PartialMatch(formats);
+            quvi_free(domain);
+            quvi_free(formats);
+            if (found) return;
+        } break;
+
+        case QUVI_LAST:
+            done = true;
+            break;
+
+        default:
+            logmgr.cerr()
+                << quvi_strerror(quvimgr.handle(), rc)
+                << std::endl;
+            break;
+        }
+    }
+
     char *domain, *formats;
     while (quvi_next_host(&domain, &formats) == QUVI_OK) {
         if (re.PartialMatch(formats))
@@ -239,25 +270,46 @@ verify_format_id (const Options& opts) {
 static void
 print_hosts () {
     std::vector<std::string> hosts;
-    char *domain, *formats;
+    bool done = false;
 
-    while (quvi_next_host(&domain, &formats) == QUVI_OK) {
-        hosts.push_back(
-            std::string(domain)
-            + "\t"
-            + std::string(formats)
-            + "\n"
+    while (!done) {
+        char *domain, *formats;
+
+        QUVIcode rc = quvi_next_supported_website(
+            quvimgr.handle(),
+            &domain,
+            &formats
         );
+
+        switch (rc) {
+
+        case QUVI_OK:
+            hosts.push_back(
+                std::string(domain)
+                + "\t"
+                + std::string(formats)
+                + "\n"
+            );
+            free(domain);
+            free(formats);
+            break;
+
+        case QUVI_LAST:
+            done = true;
+            break;
+
+        default:
+            std::cerr
+                << quvi_strerror(quvimgr.handle(), rc)
+                << std::endl;
+            break;
+        }
     }
 
     std::sort(hosts.begin(), hosts.end());
 
     std::copy(hosts.begin(), hosts.end(),
         std::ostream_iterator<std::string>(std::cout));
-
-    std::cout
-        << "\nNote: Some videos may have limited number "
-        << "of formats available." << std::endl;
 }
 
 void
