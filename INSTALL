@@ -7,8 +7,19 @@
  * libpcre  7.8+     <http://pcre.org/>
  * gcc      4.2+     (cclive uses the tr1 extensions)
 
- Platform specific and other additional information available at:
-   http://code.google.com/p/cclive/wiki/HowtoInstall
+    [cclive]-\
+     |     |  \
+     |     |   \
+ [libquvi]------\
+       |  \|    [libcurl]
+    [lua]  \        \
+          [libpcre]  \
+                     [dragons be here]
+
+
+  Some additional platform specific notes:
+    http://code.google.com/p/cclive/wiki/HowtoInstall
+
 
 
             Installation
