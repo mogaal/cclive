@@ -1,3 +1,11 @@
+cclive (0.6.3-1) unstable; urgency=low
+
+  * New upstream release (Closes: #576866, 582458).
+  * Fix d/watch (Closes: #582372).
+  * Add libquvi-dev in Build-Depends field.
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Sat, 22 May 2010 11:13:52 -0430
+
 cclive (0.6.2-1) unstable; urgency=low
 
   * New upstream version 

@@ -3,7 +3,7 @@ Section: video
 Priority: optional
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
 Build-Depends: debhelper (>= 7.0.50), autotools-dev, libcurl4-gnutls-dev,
-               libpcre3-dev 
+               libpcre3-dev, libquvi-dev 
 Standards-Version: 3.8.4
 Homepage: http://code.google.com/p/cclive/
 
