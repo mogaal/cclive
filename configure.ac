@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.65)
+AC_PREREQ(2.66)
 
 m4_include([m4/version.m4])
 AC_INIT([cclive], [_CCLIVE_VERSION], [legatvs@gmail.com])
@@ -67,7 +67,7 @@ fi
 AC_DEFINE_UNQUOTED([BUILD_DATE], "$build_date", [...])
 
 # Checks for (mandatory) libraries.
-PKG_CHECK_MODULES(libquvi, libquvi >= 0.1.0)
+PKG_CHECK_MODULES(libquvi, libquvi >= 0.2.0)
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.8)
 
@@ -98,7 +98,7 @@ AC_CHECK_FUNCS([memset setenv strchr strcspn strspn strtol setlocale nl_langinfo
 # --enable-tests
 AC_ARG_ENABLE([tests],
     [AS_HELP_STRING([--enable-tests],
-        [enable "make check" tests @<:@default=no@:>@])],
+        [enable tests @<:@default=no@:>@])],
     [],
     [enable_tests=no])
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
@@ -131,6 +131,7 @@ AC_MSG_NOTICE([Configured to build cclive:
     cxxflags:       ${CXXFLAGS}
 
 Options:
+    enable tests:   ${enable_tests}
     install manual: ${with_man}
 
 Other:

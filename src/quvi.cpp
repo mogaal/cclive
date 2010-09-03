@@ -65,7 +65,8 @@ handle_error(QUVIcode rc) {
     switch (rc) {
     case QUVI_NOSUPPORT:
         throw NoSupportException(s.str());
-    case QUVI_PCRE:
+    case QUVI_PCRE: // Replaced largely by QUVI_LUA.
+    case QUVI_LUA:
         throw ParseException(s.str());
     default:
         break;
@@ -165,17 +166,14 @@ QuviVideo::parse(std::string url /*=""*/) {
 
     assert(!url.empty());
 
-    const Options opts =
-        optsmgr.getOptions();
-
-    if (opts.format_given) {
-        quvi_setopt(quvimgr.handle(),
-            QUVIOPT_FORMAT, opts.format_arg);
-    }
+    quvi_setopt(quvimgr.handle(),
+        QUVIOPT_FORMAT, Util::parseFormatMap(url).c_str());
 
     CURL *curl = 0;
     quvimgr.curlHandle(&curl);
     assert(curl != 0);
+
+    const Options opts = optsmgr.getOptions();
 
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
         opts.connect_timeout_arg);
@@ -336,8 +334,7 @@ QuviVideo::toFileName(
         std::string title = pageTitle;
 
         // --regexp
-        if (opts.regexp_given)
-            Util::perlMatch(opts.regexp_arg, title);
+        Util::perlMatch(opts.regexp_arg, title);
 
         // Remove leading and trailing whitespace.
         pcrecpp::RE("^[\\s]+", pcrecpp::UTF8())
