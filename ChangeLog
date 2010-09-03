@@ -1,4 +1,30 @@
 
+Version 0.6.5
+August 12, 2010
+
+Changes:
+  * Add --license option
+  * Add --regexp default "/(\w|\s|\pL)/g" (issue #43)
+  * Add --enable-tests (configure, disabled by default)
+
+
+Version 0.6.4
+July 25, 2010
+
+Changes:
+  * Disable tests/multi-segment.pl (libquvi: cctv support broken)
+  * Remove tests/noformat-eval.pl
+  * Bump autoconf prereq to 2.66
+  * New default --format value (`flv' -> `default').
+  * Warn if --format, --format-map use invalid values
+  * Handle QUVI_LUA
+  * Use CURLOPT_RESUME_FROM_LARGE instead
+  * Bump PKG_CHECK_MODULES(libquvi) to 0.2.0
+
+Bugfixes:
+  * --format-map (#36)
+
+
 Version 0.6.3
 May 6, 2010
 

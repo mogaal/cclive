@@ -84,7 +84,7 @@ extern void fetch_page(QuviVideo&, const bool&); // src/retry.cpp
 extern void fetch_file(QuviVideo&, const bool&); // src/retry.cpp
 
 void
-App::main(const int& argc, char * const *argv) {
+App::main(int argc, char **argv) {
     optsmgr.init(argc, argv);
     logmgr.init();  // apply --quiet
     quvimgr.init(); // creates also curl handle which we'll reuse
@@ -208,66 +208,6 @@ handle_url(const std::string& url) {
 }
 
 static void
-verify_format_id (const Options& opts) {
-
-    if (!opts.format_given || !strcmp(opts.format_arg, "best"))
-        return;
-
-    pcrecpp::RE_Options re_opts;
-    re_opts.set_caseless(true);
-
-    std::stringstream pattern;
-    pattern
-        << "(?:\\||^)"
-        << opts.format_arg
-        << "(?:\\||$)";
-
-    pcrecpp::RE re(pattern.str(), re_opts);
-
-    bool done = false;
-    while (!done) {
-        char *domain, *formats;
-
-        QUVIcode rc = quvi_next_supported_website(
-            quvimgr.handle(),
-            &domain,
-            &formats
-        );
-
-        switch (rc) {
-
-        case QUVI_OK: {
-            const bool found = re.PartialMatch(formats);
-            quvi_free(domain);
-            quvi_free(formats);
-            if (found) return;
-        } break;
-
-        case QUVI_LAST:
-            done = true;
-            break;
-
-        default:
-            logmgr.cerr()
-                << quvi_strerror(quvimgr.handle(), rc)
-                << std::endl;
-            break;
-        }
-    }
-
-    char *domain, *formats;
-    while (quvi_next_host(&domain, &formats) == QUVI_OK) {
-        if (re.PartialMatch(formats))
-            return;
-    }
-
-    std::stringstream b;
-    b << "--format=" << opts.format_arg;
-
-    throw RuntimeException(CCLIVE_OPTARG, b.str());
-}
-
-static void
 print_hosts () {
     std::vector<std::string> hosts;
     bool done = false;
@@ -312,6 +252,33 @@ print_hosts () {
         std::ostream_iterator<std::string>(std::cout));
 }
 
+static void
+print_version () {
+    std::cout
+        << CMDLINE_PARSER_PACKAGE       << " version "
+        << CMDLINE_PARSER_VERSION       << " with libquvi version "
+        << quvi_version(QUVI_VERSION)   << "  ["
+#ifdef BUILD_DATE
+        << BUILD_DATE << "-"
+#endif
+        << CANONICAL_TARGET
+        << "]\n"
+        << "locale="
+        << optsmgr.getLocale()
+        << ", config="
+        << optsmgr.getPath()
+        << std::endl;
+}
+
+static const char notice[] =
+"Copyright (C) 2009,2010 Toni Gundogdu. License: GNU GPL version  3 or  later\n"
+"This is free software; see the  source for  copying conditions.  There is NO\n"
+"warranty;  not even for MERCHANTABILITY or FITNESS FOR A  PARTICULAR PURPOSE.";
+
+static void
+print_license ()
+    { std::cout << notice << std::endl; }
+
 void
 App::run() {
 
@@ -319,7 +286,12 @@ App::run() {
         optsmgr.getOptions();
 
     if (opts.version_given) {
-        printVersion();
+        print_version();
+        return;
+    }
+
+    if (opts.license_given) {
+        print_license();
         return;
     }
 
@@ -346,7 +318,6 @@ App::run() {
         }
     }
 
-    verify_format_id(opts);
     execmgr.verifyExecArgument();
 
 #if !defined(HAVE_FORK) || !defined(HAVE_WORKING_FORK)
@@ -415,29 +386,6 @@ App::parseInput() {
     );
 
     return tokens;
-}
-
-void
-App::printVersion() {
-static const char copyr_notice[] =
-"Copyright (C) 2009,2010 Toni Gundogdu. "
-"License: GNU GPL version  3 or  later\n"
-"This is free software; see the  source for  copying conditions.  There is NO\n"
-"warranty;  not even for MERCHANTABILITY or FITNESS FOR A  PARTICULAR PURPOSE.";
-
-    std::cout
-        << CMDLINE_PARSER_PACKAGE       << " version "
-        << CMDLINE_PARSER_VERSION       << " with libquvi version "
-        << quvi_version(QUVI_VERSION)   << "  ["
-#ifdef BUILD_DATE
-        << BUILD_DATE << "-"
-#endif
-        << CANONICAL_TARGET             << "]\n"
-        << copyr_notice                 << "\n"
-        << "\n  Locale/codeset  : "     << optsmgr.getLocale()
-        << "\n  Config          : "     << optsmgr.getPath()
-        << "\n  Home            : "     << "<http://cclive.googlecode.com/>"
-        << std::endl;
 }
 
 void
