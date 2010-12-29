@@ -1,6 +1,6 @@
 cclive (0.7.0.1-1) unstable; urgency=low
 
-  * New upstream release
+  * New upstream release (Closes: #607779)
   * Remove d/cclive.clean and d/cclive.docs
   * d/rules: 
       - Remove dh_auto_configure entry. It's not needed because the 
