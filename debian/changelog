@@ -12,7 +12,7 @@ cclive (0.7.0.1-1) unstable; urgency=low
   * d/copyright: Updated to DEP5 and remove src/funnyhub.cpp and src/myubo.cpp
     entries. 
   * Update watch file to sf.net (oficial page)
-  * Remove NEWS from d/cclive.docs
+  * Remove NEWS and TODO from d/cclive.docs
   * Add d/patches/fix-deps path to update to downgrade libpcrecpp depend.  
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 03 Sep 2010 00:16:43 -0430
