@@ -3,7 +3,7 @@ Section: video
 Priority: optional
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
 Build-Depends: debhelper (>= 7.0.50), cmake, libcurl4-gnutls-dev, libpcre3-dev,
-         libquvi-dev, libboost-filesystem1.42.0-dev, libboost-iostreams1.42-dev,
+         libquvi-dev, libboost-filesystem1.42-dev, libboost-iostreams1.42-dev,
          libboost-program-options1.42-dev 
 Standards-Version: 3.9.1
 Homepage: http://cclive.sourceforge.net
