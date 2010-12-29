@@ -3,10 +3,10 @@ cclive (0.7.0.1-1) unstable; urgency=low
   * New upstream release
   * Remove d/cclive.clean and d/cclive.docs
   * d/rules: 
-      - Remove dh_auto_configure entry. It's not needed because the package use the
-       cmake.
-      - Add upstream changelog override to NEWS ('ChangLog' upstream file is
-        really a git log).
+      - Remove dh_auto_configure entry. It's not needed because the 
+        package use the cmake.
+      - Add upstream changelog override to NEWS ('ChangLog' upstream 
+        file is really a git log).
   * d/control: 
       - Replace autotools-dev depends to cmake.
       - Update homepage field (Closes: #608071).
