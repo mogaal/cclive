@@ -17,7 +17,8 @@ cclive (0.7.0.1-1) unstable; urgency=low
     entries. 
   * Update watch file to use new oficial page sf.net
   * Remove NEWS and TODO from d/cclive.docs
-  * Add patches/fix-deps patch to downgrade libpcrecpp depend.  
+  * Add patches/fix-deps patch to downgrade libpcrecpp depend and set build
+    type in "release" instead of "debug".  
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 03 Sep 2010 00:16:43 -0430
 
