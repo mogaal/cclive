@@ -1,0 +1,634 @@
+
+Version 0.6.6
+
+Changes:
+  * Bump autoconf prereq to 2.67
+
+
+Version 0.6.5
+August 12, 2010
+
+Changes:
+  * Add --license option
+  * Add --regexp default "/(\w|\s|\pL)/g" (issue #43)
+  * Add --enable-tests (configure, disabled by default)
+
+
+Version 0.6.4
+July 25, 2010
+
+Changes:
+  * Disable tests/multi-segment.pl (libquvi: cctv support broken)
+  * Remove tests/noformat-eval.pl
+  * Bump autoconf prereq to 2.66
+  * New default --format value (`flv' -> `default').
+  * Warn if --format, --format-map use invalid values
+  * Handle QUVI_LUA
+  * Use CURLOPT_RESUME_FROM_LARGE instead
+  * Bump PKG_CHECK_MODULES(libquvi) to 0.2.0
+
+Bugfixes:
+  * --format-map (#36)
+
+
+Version 0.6.3
+May 6, 2010
+
+Changes:
+  * Update to use libquvi's quvi_next_supported_website function
+  * Add AM_SILENT_RULES([yes])
+
+
+Version 0.6.2
+(February 23, 2010)
+
+Changes:
+  * tests/multi-segment.pl now checks for locale
+
+Bugfixes:
+  * -f best, accepted again (closes issue #24)
+
+
+Version 0.6.1
+(Feburary 13, 2010)
+
+Changes:
+  * Updated manual to reflect the dailymotion format id changes
+  * Remove the hardcoded --format values
+    # Use libquvi provided values instead
+  * Add tests/noformat-eval.pl
+  * Cleanup notice message (configure)
+  * Add tests/pod-check.pl (replaces "make checkpod")
+
+Bugfixes:
+  * tests/Makefile.am: Missing separator (Makefile:450, rep. FreeBSD)
+
+
+Version 0.6.0
+(February 2, 2010)
+
+ User-visible changes:
+  * Multi-segment support (e.g. some cctv videos)
+  * Remove "Features" from --version output
+  * Rewrite of retrying transfers
+  * --version now prints libquvi version (instead of libcurl)
+
+ Developer-visible changes:
+  * Add dependency for libquvi (see NEWS and INSTALL files)
+  * Remove libiconv dependency (ditto)
+
+ General changes:
+  * Tidy up project description (e.g. README)
+
+
+Version 0.5.9
+(January 26, 2010)
+
+ User-visible changes:
+  * --stream-exec, --stream-pass
+    # Add support for the %f specifier
+    # Thanks to webmaster.foto-schaal.de for the patch
+    # Closes issue #22
+  * Add spyfilms support
+    # Thanks to Hanno Böck for initial patch and data
+
+
+Version 0.5.8
+(January 14, 2010)
+
+ User-visible changes:
+  * Fix "-f unavailable_format" for dailymotion
+    # Use first found link instead of croaking with an error
+  * Fix "-f best" for dailymotion
+    # Use proper sorting method
+    # Thanks to Markus Doppelbauer for reporting the issue
+  * Fix tube8 support
+
+ Developer-visible changes:
+  * configure: dump build configuration
+  * tests/sevenload.cpp: remove dead test link (closes issue #19)
+
+
+Version 0.5.7
+(December 18, 2009)
+
+ User-visible changes:
+  * Do not replace dashes with underscores in IDs
+  * --substitute: support multiple regexps (re-closes issue #17)
+    # Read manual page for updated details
+    # See also NEWS file
+  * Fix tube8 support
+
+ Developer-visible changes:
+  * tests: support MULTI_TEST env.var. (see INSTALL)
+  * Remove redtube remains from the src tree
+
+
+Version 0.5.6
+(December 2, 2009)
+
+ User-visible changes:
+  * Add --background, --logfile, --logfile-interval
+  * Add --substitute (closes issue #17)
+  * Tweak static error strings (e.g. "system call failed" -> "system")
+  * Croak if file open fails prior to video download (related to issue #17)
+  * Sort --hosts output alphabetically (Thanks to Bram Neijt for the patch)
+  * Decode properly predefined (X)HTML numeric character references
+  * Changes to --regexp
+    # Support Perl-like regexps (see NEWS file, updated manual for more)
+    # Add support for Perl-like /i
+    # Remove --find-all (use /g with --regexp instead)
+  * Fix random sevenload http/401 errors (closes issue #14)
+    # Caused by use of predefined HTML entities in video links
+  * Fix CURLE_RANGE_ERROR handling for file transfers
+    # Caused infinite loop of "Requested range was not delivered by the server"
+    # Stop after --retry specified limit has been reached
+
+ Developer-visible changes:
+  * Bump AC_PREREQ to 2.65
+
+
+Version 0.5.5
+(November 14, 2009)
+
+ User-visible changes:
+  * Add predefined HTML character entity (e.g. &quot;) conversion
+  * Add support for tube8.com
+    # Thanks to anonymous contributor for the patch
+  * Allow dailymotion.*
+  * Fix sevenload title parsing
+    # Use config title instead
+
+ Developer-visible changes:
+  * Clear up project description ("mission statement")
+  * docs/AddingSupport: add checklist and 0.6.0 note
+
+
+Version 0.5.4
+(October 29, 2009)
+
+ User-visible changes:
+  * Fix: youtube -f best (error: parse failed: no match: (?i)"fmt_map": "(\d+))
+    # Failed if fmt_map was an empty string
+    # Closes issue #7
+  * Add support for:
+    # youjizz.com (closes issue #11)
+    # xvideos.com (closes issues #12)
+    # Both contributed by i.am.a.real.coward
+
+
+Version 0.5.3
+(October 15, 2009)
+
+ User-visible changes:
+  * Fix: google title parsing (closes issue #6)
+    # Use <title> instead
+
+ Developer-visible changes:
+  * Remove: AC_PROG_CPP (deprecated)
+  * Fix: AM_ICONV failed to detect iconv (mingw, freebsd, ...)
+    # Use a proper config.rpath file
+  * Remove: use of tmpfile(3) (queryFileLength)
+    # Read into memory instead when querying file length
+
+
+Version 0.5.2
+(September 29, 2009)
+
+ User-visible changes:
+  * Fix: dailymotion id parsing
+  * Youtube:
+    # Accept -f fmt34
+    # fmt34 is now treated as yet another (new?) format
+    # Rewrite youtube section of the FORMATS in the manual
+  * Fix: cctv title parsing (related to issue #4)
+  * Fix: Segmentation fault with -q switch (closes issue #3)
+  * Vimeo: Fix title parsing (related to clive issue 37 "accented chars")
+  * Golem: Parse title from fetch config xml instead
+
+ Developer-visible changes:
+  * Disable tests: redtube (see known-issues)
+  * "make check": ADULT_OK env.var. enables redtube test
+  * Bump autoconf prereq to 2.64
+  * configure.ac:
+    # New m4/version.m4
+    # New AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2])
+    # Add AC_CONFIG_AUX_DIR
+    # Add AC_CONFIG_MACRO_DIR
+    # Add AC_PROG_CPP
+    # Add AC_PROG_MKDIR_P
+    # Add BUILD_DATE
+    # Remove AC_C_CONST
+  * Makefile.am:
+    # Use top_srcdir and top_builddir for gengetopt, etc.
+  * tests/Makefile.am:
+    # Use top_builddir for CCLIVE_PATH
+
+ Known issues:
+   * Redtube: broken (verify -> http/404)
+
+
+Version 0.5.1
+(September 14, 2009)
+
+ User-visible changes:
+  * Fix: google support (title parsing)
+  * Fix: break support (http/403, thanks to Werner Elsler for the fix)
+    # <http://code.google.com/p/clive/issues/detail?id=38>
+
+ Developer-visible changes:
+  * Cleanup: remove unnecessary opts.h includes
+  * Fix: error: 'winsize' was not declared in this scope (add TIOCGWINSZ check)
+  * Handle HTTP/206 properly
+    # Fixes: (invalid) "error: fetch failed: server returned http/206"
+
+
+Version 0.5.0
+(August 28, 2009)
+
+ User-visible changes:
+  * Add options:
+    # --regexp, --find-all
+    # --format-map
+    # --overwrite
+    # --retry
+    # --retry-wait
+  * Add website support (ported from clive):
+    # cctv.com
+    # ehrensenf.de
+    # spiegel.de
+    # redtube.com
+  * Add embedded video link support:
+    # vimeo
+    # redtube
+  * Fix:
+    # Liveleak support: Unsupported protocol (rc=1) [whitespace in links]
+    # --hosts: dailymotion: spak-mini -> spark-mini
+    # ETA for resumed transfers
+    # Average rate for finished transfers
+    # --continue with local_length >= content_length
+  * Remove options:
+    # --title
+    # --cclass
+    # --no-cclass
+  * Progressbar changes:
+    # Zeropad ETA
+    # Use 60s instead of 100s in time to string conversions
+
+ Developer-visible changes:
+  * Update:
+    # NEWS
+    # Manual
+    # INSTALL
+  * src/cmdline.c -> src/cmdline.cpp
+  * $host.cpp: Reimpl. using pcre
+  * New prerequisites:
+    # libiconv
+    # libpcre (cpp)
+  * configure:
+    # Add: make checkpod (replaces tests/pod.pl)
+    # Remove: --with-perl
+    # Remove: --enable-sigwinch (use SIGWINCH definition in signal.h)
+  * tests/: Rewrite in c++
+    # Note the extension changes (.c -> .cpp)
+  * tests/test.cpp:
+    # Add support for CCLIVE_TEST_OPTS
+    # Set CCLIVE_NO_CONFIG to ignore ~/.ccliverc (src/opts.cpp)
+  * Add to tests/:
+    # multi.cpp
+    # returncode.cpp
+  * tests/redtube.cpp: Replace dead test link
+  * Remove: tests/pod.pl
+
+
+Version 0.4.7
+(August 5, 2009)
+
+ User-visible changes:
+  * Add:
+    # myubo.com support
+      * Thanks to Patrick Hoffmann <patrick@sobran.de> for the patch
+  * Fix:
+    # Dailymotion: spak-mini -> spark-mini
+    # Funnyhub: ID parsing
+    # Funnyhub: title parsing (proper cleanup)
+    # --title with multiple video page links
+      * Example: cclive -t URL URL2
+      * Segfault after 1st video when HTML parsing begins for 2nd
+      * Reason: Perl: incomplete cleanup
+
+ Developer-visible changes:
+  * Rewrite --title handling
+    # Allow $host.cpp impl. override HTML <title>
+    # hosthandler.cpp: Remove WITH_PERL block
+    # pl.cpp: impl. PerlMgr
+  * tests/youtube.c: new link
+
+
+Version 0.4.6
+(July 30, 2009)
+
+ User-visible changes:
+  * Add:
+    # golem.de support (port from clive)
+    # --format=(mp4|hd|hq|3gp) for youtube
+    # --stream-pass option
+    # clipfish.de support (port from clive)
+    # funnyhub.com support
+      * Thanks to Patrick Hoffmann <patrick@sobran.de> for the patch
+  * Fix:
+    # [unicode support] --cclass now works as expected with unicode as well
+    # Dailymotion support
+  * Change:
+    # Pair --exec with --exec-run, the latter now triggers the former
+    # --hosts: print supported formats
+    # --version: print current locale setting
+    # --stream-exec: remove depend on --stream
+
+ Developer-visible changes:
+  * Reduce "header hell"
+    # $host.cpp includes are now cleaner
+    # Slightly faster compilation
+  * $host.cpp: Remove isHost overriding (HostHandler impl. obsoletes)
+  * exec.cpp:
+    # Improve system return code handling
+    # Quote %i replacement values
+  * configure.ac: add AC_FUNC_(RE)ALLOC (make cond.)
+  * Change: tests/test.c: use system instead of execv
+    # Some tests (e.g. -f) were skipped quietly
+  * Change: make check: respect NO_INTERNET env.var.
+  * Fix: src/opts.cpp: missing #include <cstdlib>
+    # Detected on Ubuntu (gcc 4.3.3)
+
+
+0.4.5
+(July 6, 2009)
+
+ User-visible changes:
+  * Add: Return codes (see also manual page)
+  * Fix: Google mp4 support
+    1. Re-enable --format=mp4
+  * Fix: Misc. typos in the manual page
+  * Fix: help string for --format
+
+ Developer-visible changes:
+  * Add: pod2html check: make man now generates also html if pod2html is found
+  * Add: mingw32-build.sh, mingw32-package.sh
+    1. Covers the steps on FreeBSD although should port easily
+  * Add: --enable-tests (configure)
+    1. Enables tests run by "make check"
+
+
+0.4.4
+(June 21, 2009)
+
+ User-visible changes:
+  * Add: Vimeo support
+  * Change: --format=mp4 is no longer accepted (see 0.4.3 known-issues)
+
+ Developer-visible changes:
+  * hostfactory.cpp: tidy up switch-case
+
+
+0.4.3
+(June 14, 2009)
+
+ User-visible changes:
+  * Add: --format=best support
+  * Add: --format=fmt35 for Youtube
+  * Add: --no-cclass
+  * Add: Support for youtube-nocookie.com
+  * Fix: --emit-csv: file length: add missing std::ios::fixed
+  * Fix: Dailymotion ID parsing
+  * Fix: Liveleak ID parsing
+  * Fix: mangled error messages: rewrite curl error handling
+  * Change: --emit-csv: remove initial length
+  * Change: make --cclass, --no-cclass depend on --title
+  * Rename: --download -> --format
+  * Rename: --title-cclass -> --cclass
+  * Remove: --format=fmt6 (Youtube no longer appears to support it)
+  * Remove: --format=spark (Dailymotion, use "flv" instead)
+  * Remove: --youtube-user, --youtube-pass (at least until login fix is found)
+
+ Developer-visible changes:
+  * Add: tests/youtube-nocookies.url
+  * Add: examples/config file
+  * Fix: cclive.pod (*** WARNING: (section) in ... deprecated at line ...)
+  * Update: INSTALL
+
+ Known-issues:
+  * mp4 extraction fails (Google)
+
+
+0.4.2
+(May 9, 2009)
+
+ User-visible changes:
+  * Change: --connect-timeout, --connect-timeout-socks default -> 30s
+
+ Developer-visible changes:
+  * src/curl.(cpp|h): make curlErrorBuffer a member variable
+  * src/singleton.h: fix precision error reported on 64bit systems
+    ** Thanks to Martin Wilke for the patch
+
+
+0.4.1
+(May 4, 2009)
+
+ User-visible changes:
+  * Fix: port title parsing fix from clive (issue #8)
+  * Add: --filename-format
+
+ Developer-visible changes:
+  * src/log.cpp: add missing unistd.h
+
+
+0.4.0
+(April 28, 2009)
+
+ User-visible changes:
+  * Separation of stdout and stderr (previously all -> stderr)
+  * Change: --version -> stdout (previously -> stderr)
+  * Rename: --supported-hosts -> --hosts
+  * Cleanup: manual page
+
+ Developer-visible changes:
+  * Rewrite to C++ (expect bugs)
+  * Add: HACKING file
+  * Add: missing cmdline.ggo file (Makefile.am)
+  * Add: missing cclive.pod file (Makefile.am)
+  * Rename: --with-sigwinch -> --enable-sigwinch (configure.ac)
+  * Change: --enable-sigwinch: default -> no (configure.ac)
+  * Rename: CHANGES -> ChangeLog
+
+ Known-issues:
+  * Youtube login does not work (throw an error, patches welcome!)
+
+
+0.3.2
+(April 17, 2009)
+
+ User-visible changes:
+  * Add new options: (closes issue #2)
+    - --connect-timeout
+    - --connect-timeout-socks
+
+ Developer-visible changes:
+  * configure.ac: use AC_GNU_SOURCE instead of defining _GNU_SOURCE manually
+    - main.c, dl.c, llst.c, host.c, login.c, util.c: remove _GNU_SOURCE define
+
+
+0.3.1
+(April 4, 2009)
+
+ User-visible changes:
+  * Replace dashes in video IDs with underscores before using them in fnames
+  * Use returned content-type for video file name suffix
+    - Use "flv" for exceptions (e.g. octet-*, x-flv, etc.)
+  * Add Youtube HD support (--download=mp4_hd)
+    - Thanks bf for the patch
+
+ Developer-visible changes:
+  * configure.ac: Use CANONICAL_SYSTEM instead of CANONICAL_HOST
+    - main.c: use CANONICAL_TARGET instead of CANONICAL_HOST
+  * Add tests/youtube-hd.url
+  * Cleanup manual page (cclive.1, cclive.pod)
+
+
+0.3.0
+(March 27, 2009)
+
+ User-visible changes:
+  * Fix googlevideo support
+    - Symptom: "error: 'docid: ' not found"
+    - Cause: id extraction failed
+  * Change --version output
+  * Update OTHER section in the manual page (cclive.1, cclive.pod)
+
+ Developer-visible changes
+  * Fix various compilation warnings (gcc 4.3+)
+  * Cleanup code (style-wise)
+    - indent -nut -i4 -ldi8
+  * Convert to use GNU Autotools
+  * Remove GNU Makefile
+  * Update INSTALL
+
+
+0.2.6
+(March 24, 2009)
+
+ User-visible changes:
+  * Fix dailymotion support
+    - Changes to website HTML; incorrect copy-to-string
+    - Symptoms: output filename utter gibberish
+
+
+0.2.5
+(March 17, 2009)
+
+ User-visible changes:
+  * Port lastfm-youtube support from clive
+  * Fix googlevideo support
+
+ Developer-visible changes
+  * Add tests/lastfm.url
+  * Add strlcpy.c
+  * Touch cclive.pod and cclive.1
+
+
+0.2.4
+(March 9, 2009)
+
+ User-visible changes:
+  * Add --title and --title-cclass options
+  * Add --stream-exec and --stream options
+  * Change --version to print build-time options (e.g. --with-sigwinch)
+  * Remove -e short option (--exec)
+
+ Developer-visible changes:
+  * Touch INSTALL, cclive.pod, cclive.1 and README
+  * Fix gcc 4.3+ "format not a string literal and no format arguments" warning
+  * Makefile: add WITH_PERL  [default:no]
+  * Add missing GPL header (cclive.h)
+
+
+0.2.3
+(February 20, 2009)
+
+ User-visible changes:
+  * Removed wmv format (breakcom)
+    - persistant HTTP/404 (not found) error
+  * Added --print-fname
+  * Fixed file naming when output file exists already
+    Symptoms: output file is called ".1" or ".2" etc.
+
+
+0.2.2
+(February 15, 2009)
+
+ User-visible changes:
+  * Added --number-videos
+  * Fixed HTTP proxy support (main.c, opts.c)
+    - Fixed: --no-proxy was ignored if http_proxy env. variable was set
+    - Fixed: http_proxy env.v. was misshandled causing cclive to crash at exit
+      - missused cc.gi.proxy_given by setting it to 1 when http_proxy was set,
+        causing gengetopt generated code to try to free an invalid pointer
+    - Changed: libcurl is now responsible for using http_proxy
+      - option --proxy=address still overrides http_proxy definition
+  * Implemented SIGWINCH signal handling
+    - progressbar now resizes along with terminal width but not below 80 chars
+  * Fixed: --limit-rate no longer limits following page transfers after file dl
+
+ Developer-visible changes:
+  * Replaced remaining (excl. gengetopt generated) strcat with safer strlcat
+  * Merged opts.c into main.c
+  * Rewrote cclive struct
+    - config parser (pp) is now freed immediately after parsing
+    - Removed http_proxy_env from the struct
+    - exec_mode is now a local variable
+  * Rewrote up parse_opts function
+  * Added WITH_SIGWINCH to Makefile, e.g. "make WITH_SIGWINCH=no"
+    - if != "yes" cclive is built without the resizing feature described above
+      which depends on SIGWINCH and ioctl(TIOCGWINSZ)
+ 
+
+0.2.1
+(February 9, 2009)
+
+ User-visible changes:
+  * Tweaked progressbar to fit better
+  * --limit-rate now limits file transfers only
+  * Fixed crashing at exit while using --exec
+    - Caused by incorrect use of free in llst_free (llst.c)
+
+
+0.2.0
+(February 7, 2009)
+
+ User-visible changes:
+  * Added --exec option
+  * Fixed sevenload support
+  * Added support for dailymotion
+  * Extracted videos are now saved as $host_$id.$suffix
+  * Fixed file naming: $id-($host).$suffix.$num => $host-($id).$suffix.$num
+
+ Developer-visible changes:
+  * Updated TODO
+  * Added AUTHORS
+  * Added tests/dmotion.url
+  * Updated tests/7load.url
+  * Updated README with "cclive != clive" section
+  * Use of FREE macro (cclive.h) instead of free(3)
+  * Fixed incorrect freeing of embed to video page converted link
+    - Symptoms: % cclive < tests/youtube.url => crash at fetch 2nd link
+  * Cleaned up .c and .h files
+    - Relocated some of the functions to reduce .h spam
+    - Removed obsoleted .c files
+    - Renamed much of the functions with "cc_" prefix
+    - Removed "extern" from .h files
+
+
+0.1.0
+(January 31, 2009)
+
+ * initial release
