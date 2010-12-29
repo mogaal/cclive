@@ -1,5 +1,5 @@
 From: Alejandro Garrido Mota <garridomota@gmail.com>
-Subject: Downgrade libpcrecpp depend because in Debian there is not 8.10 version
+Subject: Downgrade libpcrecpp depend because 8.10 version is not in Debian
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -84,11 +84,11 @@

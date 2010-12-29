@@ -2,18 +2,21 @@ cclive (0.7.0.1-1) unstable; urgency=low
 
   * New upstream release
   * d/rules: 
-      - Remove dh_auto_configure entry. Is not needed, now the package use the
+      - Remove dh_auto_configure entry. It's not needed because the package use the
        cmake.
       - Add upstream changelog override to NEWS ('ChangLog' upstream file is
         really a git log).
   * d/control: 
       - Replace autotools-dev depends to cmake.
       - Update homepage field (Closes: #608071).
-  * d/copyright: Updated to DEP5 and remove src/funnyhub.cpp and src/myubo.cpp
+  * d/copyright: 
+      - Updated format to DEP5
+      - Remove src/funnyhub.cpp and src/myubo.cpp (files were removed from
+        upstream version)
     entries. 
-  * Update watch file to sf.net (oficial page)
+  * Update watch file to use new oficial page sf.net
   * Remove NEWS and TODO from d/cclive.docs
-  * Add d/patches/fix-deps path to update to downgrade libpcrecpp depend.  
+  * Add patches/fix-deps patch to downgrade libpcrecpp depend.  
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 03 Sep 2010 00:16:43 -0430
 
