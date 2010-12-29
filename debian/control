@@ -2,10 +2,10 @@ Source: cclive
 Section: video
 Priority: optional
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
-Build-Depends: debhelper (>= 7.0.50), autotools-dev, libcurl4-gnutls-dev,
-               libpcre3-dev, libquvi-dev 
+Build-Depends: debhelper (>= 7.0.50), cmake, libcurl4-gnutls-dev, libpcre3-dev,
+               libquvi-dev 
 Standards-Version: 3.9.1
-Homepage: http://code.google.com/p/cclive/
+Homepage: http://cclive.sourceforge.net
 
 Package: cclive
 Architecture: any
