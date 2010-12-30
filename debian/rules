@@ -1,8 +1,12 @@
 #!/usr/bin/make -f
-export CMAKE_BUILD_TYPE=release
 
 %:
 	dh  $@
+
+ 
+override_dh_auto_configure:
+	dh_auto_configure -- -DCMAKE_BUILD_TYPE=release
+
 
 override_dh_installchangelogs:
 	dh_installchangelogs NEWS
