@@ -3,5 +3,9 @@
 %:
 	dh  $@
 
+override_dh_auto_configure:
+	CMAKE_BUILD_TYPE=release
+	dh_auto_configure
+
 override_dh_installchangelogs:
 	dh_installchangelogs NEWS

@@ -1,16 +1,7 @@
 From: Alejandro Garrido Mota <garridomota@gmail.com>
-Subject: Downgrade libpcrecpp depend because 8.10 version is not in Debian. Set default build type to release instead debug.
+Subject: Downgrade libpcrecpp depend because 8.10 version is not in Debian. 
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -57,7 +57,7 @@
- # Set build type default.
- 
- if (NOT CMAKE_BUILD_TYPE)
--    set (CMAKE_BUILD_TYPE "debug")
-+    set (CMAKE_BUILD_TYPE "release")
- endif ()
- 
- # Set verbose makefile default.
 @@ -84,11 +84,11 @@
  include_directories (AFTER ${curl_INCLUDE_DIRS})
  link_directories (${curl_LIBRARY_DIRS})
