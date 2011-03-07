@@ -1,5 +1,5 @@
-/* 
-* Copyright (C) 2010 Toni Gundogdu.
+/*
+* Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -28,28 +28,32 @@
 #define sleep(n) Sleep(n*1000)
 #endif
 
+#include "cclive/log.h"
 #include "cclive/wait.h"
 
-namespace cclive {
+namespace cclive
+{
 
 void
-wait (const int retry_wait) {
+wait (const int retry_wait)
+{
 
-    for (int i=1; i<=retry_wait; ++i) {
+  for (int i=1; i<=retry_wait; ++i)
+    {
 
-        if (i % 5 == 0)
-            std::clog << i;
-        else
-            std::clog << ".";
+      if (i % 5 == 0)
+        cclive::log << i;
+      else
+        cclive::log << ".";
 
-        std::clog << std::flush;
+      cclive::log << std::flush;
 
-        sleep(1);
+      sleep(1);
     }
 
-    std::clog << std::endl;
+  cclive::log << std::endl;
 }
 
 } // End namespace.
 
-
+// vim: set ts=2 sw=2 tw=72 expandtab:

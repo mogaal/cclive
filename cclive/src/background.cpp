@@ -1,5 +1,5 @@
-/* 
-* Copyright (C) 2010 Toni Gundogdu.
+/*
+* Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -32,58 +32,63 @@
 #include "cclive/application.h"
 #include "cclive/background.h"
 
-namespace cclive {
+namespace cclive
+{
 
 namespace io = boost::iostreams;
 
 void
-go_background (const std::string& log_file, bool& omit) {
+go_background (const std::string& log_file, bool& omit)
+{
 
 #ifdef HAVE_FORK
+  const pid_t pid = fork();
 
-    // Has to be done here before calling fork.
+  if (pid < 0)
+    {
 
-    cclive::log.push (io::tee (cclive::flushable_file_sink (log_file)));
+      cclive::perror ("fork");
 
-    omit = true;
-
-    const pid_t pid = fork();
-
-    if (pid < 0) {
-
-        cclive::perror ("fork");
-
-        exit (application::system);
+      exit (application::system);
     }
-    else if (pid != 0) {
+  else if (pid != 0)
+    {
 
-        std::clog
-            << "Run in background (pid: "
-            << static_cast<long>(pid)
-            << "). Redirect output to \""
-            << log_file
-            << "\"."
-            << std::endl;
+      // Parent: exit.
 
-        exit (0);
+      std::clog
+          << "Run in background (pid: "
+          << static_cast<long>(pid)
+          << "). Redirect output to \""
+          << log_file
+          << "\"."
+          << std::endl;
+
+      exit (0);
     }
 
-    setsid ();
+  // Child: continue, become the session leader.
 
-#ifdef HAVE_GETCWD
-    char buf[PATH_MAX];
-    chdir (getcwd (buf, sizeof(buf) ) );
-#endif
+  setsid ();
 
-    umask (0);
+  // Clear file mode creation mask.
 
-#else // HAVE_FORK
+  umask (0);
 
-    std::clog << "warning: ignoring --background, no fork(3)." << std::endl;
+  // Close unneeded file descriptors/streams.
 
-#endif
+  freopen ("/dev/null", "w", stdout);
+  freopen ("/dev/null", "w", stderr);
+  freopen ("/dev/null", "r", stdin);
+
+  // Redirect output to log file.
+
+  cclive::log.push (io::tee (cclive::flushable_file_sink (log_file)));
+
+  omit = true;
+#endif // HAVE_FORK
 }
 
 } // End namespace.
 
-
+// vim: set ts=2 sw=2 tw=72 expandtab:

@@ -1,5 +1,5 @@
-/* 
-* Copyright (C) 2010 Toni Gundogdu.
+/*
+* Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,76 +19,77 @@
 
 #include "quvicpp/quvicpp.h"
 
+#include "cclive/log.h"
 #include "cclive/options.h"
 #include "cclive/file.h"
 #include "cclive/exec.h"
 #include "cclive/wait.h"
 #include "cclive/get.h"
 
-namespace cclive {
+namespace cclive
+{
 
 namespace po = boost::program_options;
 
 void
 get (
-    const quvicpp::query& query,
-    quvicpp::video& video,
-    const options& opts)
+  const quvicpp::query& query,
+  quvicpp::video& video,
+  const options& opts)
 {
-    const po::variables_map map = opts.map ();
+  const po::variables_map map = opts.map ();
 
-    const bool no_download = map.count ("no-download");
-    const bool exec        = map.count ("exec");
+  const bool no_download = map.count ("no-download");
+  const bool exec        = map.count ("exec");
 
-    const int max_retries  = map["max-retries"].as<int>();
-    const int retry_wait   = map["retry-wait"].as<int>();
+  const int max_retries  = map["max-retries"].as<int>();
+  const int retry_wait   = map["retry-wait"].as<int>();
 
-    int n = 0;
+  int n = 0;
 
-    quvicpp::link link;
+  quvicpp::link link;
 
-    while ( (link = video.next_link ()).ok ()) {
+  while ( (link = video.next_link ()).ok ())
+    {
+      ++n;
 
-        ++n;
+      int retry = 0;
 
-        int retry = 0;
+      while (retry <= max_retries)
+        {
+          cclive::file file (video, link, n, opts);
 
-        while (retry <= max_retries) {
+          if (retry > 0)
+            {
+              cclive::log
+                  << "Retrying "
+                  << retry
+                  << " of "
+                  << max_retries
+                  << " ... "
+                  << std::flush;
 
-            cclive::file file (video, link, n, opts);
-
-            if (retry > 0) {
-
-                std::clog
-                    << "Retrying "
-                    << retry
-                    << " of "
-                    << max_retries
-                    << " ... "
-                    << std::flush;
-
-                cclive::wait (retry_wait);
+              cclive::wait (retry_wait);
             }
 
-            ++retry;
+          ++retry;
 
-            if (!no_download) {
+          cclive::log << file.to_s (link) << std::endl;
 
-                if (!file.write (query, link, opts))
-                    continue; // Retry.
+          if (!no_download)
+            {
+              if (!file.write (query, link, opts))
+                continue; // Retry.
 
-                if (exec)
-                    cclive::exec (file, link, opts);
+              if (exec)
+                cclive::exec (file, link, opts);
             }
 
-            else
-                std::clog << file.to_s (link) << std::endl;
-
-            break; // Stop retrying.
+          break; // Stop retrying.
         }
     }
 }
 
 } // End namespace.
 
-
+// vim: set ts=2 sw=2 tw=72 expandtab:
