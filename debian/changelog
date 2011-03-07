@@ -1,6 +1,7 @@
 cclive (0.7.2-1) unstable; urgency=low
 
   * New upstream release 
+  * Remove patch, the changes was fixed by upstream author
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Mon, 07 Mar 2011 14:37:59 -0430
 
