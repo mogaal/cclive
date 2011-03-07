@@ -1,7 +1,8 @@
 cclive (0.7.2-1) unstable; urgency=low
 
-  * New upstream release (Closes: #608393) 
+  * New upstream release (Closes: #608393, #588795) 
   * Remove patch: The changes was included by upstream author.
+  * Remove two white lines in d/rules =) 
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Mon, 07 Mar 2011 14:37:59 -0430
 
