@@ -1,5 +1,5 @@
-/* 
-* Copyright (C) 2010 Toni Gundogdu.
+/*
+* Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,37 +18,39 @@
 #ifndef cclive_file_h
 #define cclive_file_h
 
-namespace cclive {
+namespace cclive
+{
 
-class file {
+class file
+{
 public:
-    file ();
-    file (const quvicpp::video&, const quvicpp::link&,
-            const int, const options&);
-    file (const file&);
-    file& operator=(const file&);
+  file ();
+  file (const quvicpp::video&, const quvicpp::link&,
+        const int, const options&);
+  file (const file&);
+  file& operator=(const file&);
 public:
-    bool write (const quvicpp::query&, const quvicpp::link&,
-                const options&) const;
+  bool write (const quvicpp::query&, const quvicpp::link&,
+              const options&) const;
 public:
-    double             initial_length   () const;
-    const std::string& path             () const;
-    std::string        to_s             (const quvicpp::link&) const;
+  double             initial_length   () const;
+  const std::string& path             () const;
+  std::string        to_s             (const quvicpp::link&) const;
 public:
-    static double exists (const std::string&);
+  static double exists (const std::string&);
 private:
-    void _swap              (const file&);
-    void _init              (const quvicpp::video&, const quvicpp::link&,
-                                const int, const options&);
-    bool _should_continue   () const;
+  void _swap              (const file&);
+  void _init              (const quvicpp::video&, const quvicpp::link&,
+                           const int, const options&);
+  bool _should_continue   () const;
 private:
-    double _initial_length;
-    std::string _name;
-    std::string _path;
+  double _initial_length;
+  std::string _name;
+  std::string _path;
 };
 
 } // End namespace.
 
 #endif
 
-
+// vim: set ts=2 sw=2 tw=72 expandtab:

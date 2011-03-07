@@ -1,5 +1,5 @@
-/* 
-* Copyright (C) 2010 Toni Gundogdu.
+/*
+* Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -35,374 +35,435 @@
 #include "cclive/wait.h"
 #include "cclive/background.h"
 
-namespace cclive {
+namespace cclive
+{
 
 static boost::mt19937 _rng;
 
 static void
-rand_decor () {
+rand_decor ()
+{
+  boost::uniform_int<> r(2,5);
 
-    boost::uniform_int<> r(2,5);
+  boost::variate_generator<boost::mt19937&, boost::uniform_int<> > v(_rng,r);
 
-    boost::variate_generator<boost::mt19937&, boost::uniform_int<> > v(_rng,r);
+  const int n = v();
 
-    const int n = v();
-
-    for (int i=0; i<n; ++i) cclive::log << ".";
+  for (int i=0; i<n; ++i) cclive::log << ".";
 }
 
 static void
-handle_fetch (const quvi_word type, void*) {
-    rand_decor();
-    if (type == QUVISTATUSTYPE_DONE)
-        cclive::log << " ";
+handle_fetch (const quvi_word type, void*)
+{
+  rand_decor();
+  if (type == QUVISTATUSTYPE_DONE)
+    cclive::log << " ";
 }
 
 static void
-handle_verify (const quvi_word type) {
-    rand_decor();
-    if (type == QUVISTATUSTYPE_DONE)
-        cclive::log << "done.\n";
+handle_verify (const quvi_word type)
+{
+  rand_decor();
+  if (type == QUVISTATUSTYPE_DONE)
+    cclive::log << "done.\n";
 }
 
 static int
-status_callback (long param, void *ptr) {
+status_callback (long param, void *ptr)
+{
+  const quvi_word status = quvi_loword(param);
+  const quvi_word type   = quvi_hiword(param);
 
-    const quvi_word status = quvi_loword(param);
-    const quvi_word type   = quvi_hiword(param);
-
-    switch (status) {
-    case QUVISTATUS_FETCH : handle_fetch (type,ptr); break;
-    case QUVISTATUS_VERIFY: handle_verify(type); break;
+  switch (status)
+    {
+    case QUVISTATUS_FETCH :
+      handle_fetch (type,ptr);
+      break;
+    case QUVISTATUS_VERIFY:
+      handle_verify(type);
+      break;
     }
 
-    cclive::log << std::flush;
+  cclive::log << std::flush;
 
-    return QUVI_OK;
+  return QUVI_OK;
 }
 
 template<class Iterator>
 static Iterator
-make_unique (Iterator first, Iterator last) {
-    while (first != last) {
-        Iterator next (first);
-        last  = std::remove (++next, last, *first);
-        first = next;
+make_unique (Iterator first, Iterator last)
+{
+  while (first != last)
+    {
+      Iterator next (first);
+      last  = std::remove (++next, last, *first);
+      first = next;
     }
-    return last;
+  return last;
 }
 
 static void
 print_retrying (
-    const int retry,
-    const int max_retries,
-    const int retry_wait)
+  const int retry,
+  const int max_retries,
+  const int retry_wait)
 {
-    if (retry > 0) {
+  if (retry > 0)
+    {
 
-        std::clog
-            << "Retrying "
-            << retry
-            << " of "
-            << max_retries
-            << " ... "
-            << std::flush;
+      cclive::log
+          << "Retrying "
+          << retry
+          << " of "
+          << max_retries
+          << " ... "
+          << std::flush;
 
-        cclive::wait (retry_wait);
+      cclive::wait (retry_wait);
     }
 }
 
 static void
-print_checking (const int i, const int n) {
-
-    if (n > 1)
-        cclive::log << "(" << i << " of " << n << ") ";
-
-    cclive::log << "Checking ... " << std::flush;
+print_checking (const int i, const int n)
+{
+  if (n > 1)  cclive::log << "(" << i << " of " << n << ") ";
+  cclive::log << "Checking ... " << std::flush;
 }
 
 static void
 print_quvi_error (const quvicpp::error& e)
-    { std::clog << "libquvi: error: " << e.what() << std::endl; }
+{
+  cclive::log << "libquvi: error: " << e.what() << std::endl;
+}
 
 static void
-print_error (const std::exception& e)
-    { std::clog << "error: " << e.what() << std::endl; }
+check_quvi_error (const quvicpp::error& e)
+{
+  const long resp_code = e.response_code ();
 
-static void
-check_quvi_error (const quvicpp::error& e) {
+  if (resp_code >= 400 && resp_code <= 500)
+    throw e;
 
-    const long resp_code = e.response_code ();
+  else
+    {
 
-    if (resp_code >= 400 && resp_code <= 500)
-        throw e;
-
-    else {
-
-        switch (e.quvi_code ()) {
+      switch (e.quvi_code ())
+        {
 
         case QUVI_CURL:
-            print_quvi_error (e);
-            break; // Retry.
+          print_quvi_error (e);
+          break; // Retry.
 
         default:
-            throw e;
+          throw e;
         }
 
     }
 
 }
 
+static const char format_usage[] =
+  "Usage:\n"
+  "   --format arg            get format arg\n"
+  "   --format list           list websites and supported formats\n"
+  "   --format list arg       match arg to websites, list formats\n"
+  "Examples:\n"
+  "   --format mp4_360p       get format mp4_360p (youtube)\n"
+  "   --format list youtube   list youtube formats\n"
+  "   --format list dailym    list dailym(otion) formats";
+
 static application::exit_status
-print_format_help () {
-    std::cout <<
-"Usage:\n"
-"   --format arg            get format arg\n"
-"   --format list           list websites and supported formats\n"
-"   --format list arg       match arg to websites, list formats for matches\n"
-"Examples:\n"
-"   --format webm_480p      get format webm_480p (youtube)\n"
-"   --format list youtube   list youtube formats\n"
-"   --format list dailym    list dailym(otion) formats"
-    << std::endl;
-    return application::ok;
+print_format_help ()
+{
+  std::cout << format_usage << std::endl;
+  return application::ok;
 }
 
 typedef std::map<std::string,std::string> map_ss;
 
 static void
 print_host (const map_ss::value_type& t)
-    { std::cout << t.first << ":\n  " << t.second << "\n"; }
+{
+  std::cout
+      << t.first
+      << ":\n  "
+      << t.second
+      << "\n"
+      << std::endl;
+}
 
 static application::exit_status
 handle_format_list (
-    const boost::program_options::variables_map& map,
-    const quvicpp::query& query)
+  const boost::program_options::variables_map& map,
+  const quvicpp::query& query)
 {
-    map_ss m = query.support ();
+  map_ss m = query.support ();
 
-    // -f list <pattern>
+  // -f list <pattern>
 
-    if (map.count ("url")) {
+  if (map.count ("url"))
+    {
+      const std::string arg0 =
+        map["url"].as< std::vector<std::string> >()[0];
 
-        const std::string arg0 =
-            map["url"].as< std::vector<std::string> >()[0];
-
-        foreach (map_ss::value_type& t, m) {
-            if (t.first.find (arg0) != std::string::npos)
-                print_host (t);
-        }
-
+      foreach (map_ss::value_type& t, m)
+      {
+        if (t.first.find (arg0) != std::string::npos)
+          print_host (t);
+      }
     }
 
-    // -f list
+  // -f list
 
-    else {
-        foreach (map_ss::value_type& t, m)
-            print_host (t);
+  else
+    {
+      foreach (map_ss::value_type& t, m)
+      {
+        print_host (t);
+      }
     }
 
-    return application::ok;
+  return application::ok;
 }
 
 extern char LICENSE[]; // cclive/license.cpp
 
 application::exit_status
-application::exec (int argc, char **argv) {
-
-    try   { _opts.exec(argc,argv); }
-
-    catch (const std::exception& e) {
-        print_error (e);
-        return invalid_option;
+application::exec (int argc, char **argv)
+{
+  try
+    {
+      _opts.exec(argc,argv);
     }
 
-    const boost::program_options::variables_map map = _opts.map();
-
-    // Dump and terminate options.
-
-    if (map.count("help")) {
-        std::cout << _opts << std::flush;
-        return ok;
+  catch (const std::exception& e)
+    {
+      std::clog << "error: " << e.what() << std::endl;
+      return invalid_option;
     }
 
-    if (map.count("version")) {
-        std::cout
-            << "cclive version "
-            << VERSION_LONG
-            << "\n"
-            << "libquvi version "
-            << quvi_version (QUVI_VERSION_LONG)
-            << std::endl;
-        return ok;
+  const boost::program_options::variables_map map = _opts.map();
+
+  // Dump and terminate options.
+
+  if (map.count("help"))
+    {
+      std::cout << _opts << std::flush;
+      return ok;
     }
 
-    if (map.count("license")) {
-        std::cout << LICENSE << std::endl;
-        return ok;
+  if (map.count("version"))
+    {
+      std::cout
+          << "cclive version "
+          << VERSION_LONG
+          << "\n"
+          << "libquvi version "
+          << quvi_version (QUVI_VERSION_LONG)
+          << std::endl;
+      return ok;
     }
 
-    // --support
-
-    quvicpp::query query; // Throws quvicpp::error caught in main.cpp
-
-    if (map.count("support")) {
-        std::cout << quvicpp::support_to_s (query.support ()) << std::flush;
-        return ok;
+  if (map.count("license"))
+    {
+      std::cout << LICENSE << std::endl;
+      return ok;
     }
 
-    // --format [<id> | [<help> | <list> [<pattern]]]
+  // --support
 
-    const std::string format = map["format"].as<std::string>();
+  quvicpp::query query; // Throws quvicpp::error caught in main.cpp
 
-    if (format == "help")
-        return print_format_help ();
-
-    else if (format == "list")
-        return handle_format_list (map, query);
-
-    // Parse input.
-
-    std::vector<std::string> input;
-
-    if (map.count("url"))
-        input = map["url"].as< std::vector<std::string> >();
-    else
-        _read_stdin (input);
-
-    // Remove duplicates.
-
-    input.erase (make_unique (input.begin(), input.end()), input.end());
-
-    // Turn on libcurl verbose output.
-
-    if (map.count("verbose-libcurl"))
-        curl_easy_setopt (query.curlHandle(), CURLOPT_VERBOSE, 1L);
-
-    // Set up quvicpp.
-
-    _tweak_curl_opts(query,map);
-
-    quvicpp::options qopts;
-    qopts.statusfunc (status_callback);
-    qopts.format     (format);
-
-    // Seed random generator.
-
-    _rng.seed ( static_cast<unsigned int>(std::time(0)) );
-
-    // Omit flag.
-
-    bool omit = map.count ("quiet");
-
-    // Go to background.
-
-    if (map.count ("background")) {
-
-        // Throws std::runtime_error if fails.
-
-        cclive::go_background (map["log-file"].as<std::string>(), omit);
+  if (map.count("support"))
+    {
+      std::cout << quvicpp::support_to_s (query.support ()) << std::flush;
+      return ok;
     }
 
-    // Omit std output. Note that --background flips this above.
+  // --format [<id> | [<help> | <list> [<pattern]]]
 
-    cclive::log.push (cclive::omit_sink (omit));
+  const std::string format = map["format"].as<std::string>();
 
-    // For each input URL.
+  if (format == "help")
+    return print_format_help ();
 
-    const size_t n = input.size();
-    size_t i = 0;
+  else if (format == "list")
+    return handle_format_list (map, query);
 
-    const int max_retries  = map["max-retries"].as<int>();
-    const int retry_wait   = map["retry-wait"].as<int>();
+  // Parse input.
 
-    foreach(std::string url, input) {
+  std::vector<std::string> input;
 
-        ++i;
+  if (map.count("url"))
+    input = map["url"].as< std::vector<std::string> >();
+  else
+    _read_stdin (input);
 
-        try {
+  // Remove duplicates.
 
-            int retry = 0;
+  input.erase (make_unique (input.begin(), input.end()), input.end());
 
-            while (retry <= max_retries) {
+  // Turn on libcurl verbose output.
 
-                print_retrying (retry, max_retries, retry_wait);
+  if (map.count("verbose-libcurl"))
+    curl_easy_setopt (query.curlHandle(), CURLOPT_VERBOSE, 1L);
 
-                ++retry;
+  // Set up quvicpp.
 
-                print_checking (i, n);
+  _tweak_curl_opts(query,map);
 
-                quvicpp::video v;
+  quvicpp::options qopts;
+  qopts.statusfunc (status_callback);
+  qopts.format     (format);
+#ifdef _0
+  qopts.verify     (map.count ("no-verify"));
+#endif
+  qopts.shortened  (map.count ("no-shortened"));
 
-                try
-                    { v = query.parse (url, qopts); }
+  // Seed random generator.
 
-                catch (const quvicpp::error& e)
-                    { check_quvi_error (e); }
+  _rng.seed ( static_cast<unsigned int>(std::time(0)) );
 
-                cclive::get (query, v, _opts);
+  // Omit flag.
 
-                break; // Stop retrying.
-            }
-        }
+  bool omit = map.count ("quiet");
 
-        catch (const quvicpp::error& e)
-            { print_quvi_error (e); }
+  // Go to background.
 
-        catch (const std::runtime_error& e)
-            { print_error (e); }
+#ifdef HAVE_FORK
+  const bool background_given = map.count ("background");
+
+  if (background_given)
+    {
+
+      // (Boost) Throws std::runtime_error if fails.
+
+      cclive::go_background (map["log-file"].as<std::string>(), omit);
     }
+#endif
 
-    return ok;
+  // Omit std output. Note that --background flips this above.
+
+  cclive::log.push (cclive::omit_sink (omit));
+
+#if defined (HAVE_FORK) && defined (HAVE_GETPID)
+  if (background_given)
+    {
+      cclive::log
+          << "Running in background (pid: "
+          << static_cast<long>(getpid ())
+          << ")."
+          << std::endl;
+    }
+#endif
+
+  // For each input URL.
+
+  const size_t n = input.size();
+  size_t i = 0;
+
+  const int max_retries  = map["max-retries"].as<int>();
+  const int retry_wait   = map["retry-wait"].as<int>();
+
+  foreach(std::string url, input)
+  {
+    ++i;
+
+    try
+      {
+
+        int retry = 0;
+
+        while (retry <= max_retries)
+          {
+
+            print_retrying (retry, max_retries, retry_wait);
+
+            ++retry;
+
+            print_checking (i, n);
+
+            quvicpp::video v;
+
+            try
+              {
+                v = query.parse (url, qopts);
+              }
+
+            catch (const quvicpp::error& e)
+              {
+                check_quvi_error (e);
+              }
+
+            cclive::get (query, v, _opts);
+
+            break; // Stop retrying.
+          }
+      }
+
+    catch (const quvicpp::error& e)
+      {
+        print_quvi_error (e);
+      }
+
+    catch (const std::runtime_error& e)
+      {
+        cclive::log << "error: " << e.what() << std::endl;
+      }
+  }
+
+  return ok;
 }
 
 void
-application::_read_stdin (std::vector<std::string>& dst) {
+application::_read_stdin (std::vector<std::string>& dst)
+{
+  std::string s;
+  char ch = 0;
 
-    std::string s;
-    char ch = 0;
+  while (std::cin.get(ch))
+    s += ch;
 
-    while (std::cin.get(ch))
-        s += ch;
-
-    std::istringstream iss(s);
-    std::copy(
-        std::istream_iterator<std::string >(iss),
-        std::istream_iterator<std::string >(),
-        std::back_inserter<std::vector<std::string> >(dst)
-    );
+  std::istringstream iss(s);
+  std::copy(
+    std::istream_iterator<std::string >(iss),
+    std::istream_iterator<std::string >(),
+    std::back_inserter<std::vector<std::string> >(dst)
+  );
 }
 
 void
 application::_tweak_curl_opts (
-    const quvicpp::query& query,
-    const boost::program_options::variables_map& map)
+  const quvicpp::query& query,
+  const boost::program_options::variables_map& map)
 {
-    CURL *curl = query.curlHandle();
+  CURL *curl = query.curlHandle();
 
-    curl_easy_setopt(curl, CURLOPT_USERAGENT,
-        map["agent"].as<std::string>().c_str());
+  curl_easy_setopt(curl, CURLOPT_USERAGENT,
+                   map["agent"].as<std::string>().c_str());
 
-    if (map.count("verbose-curl"))
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+  if (map.count("verbose-curl"))
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
-    if (map.count("proxy")) {
-        curl_easy_setopt(curl, CURLOPT_PROXY,
-            map["proxy"].as<std::string>().c_str());
+  if (map.count("proxy"))
+    {
+      curl_easy_setopt(curl, CURLOPT_PROXY,
+                       map["proxy"].as<std::string>().c_str());
     }
 
-    if (map.count("no-proxy"))
-        curl_easy_setopt(curl, CURLOPT_PROXY, "");
+  if (map.count("no-proxy"))
+    curl_easy_setopt(curl, CURLOPT_PROXY, "");
 
-    if (map.count("throttle")) {
-        curl_off_t limit = map["throttle"].as<int>()*1024;
-        curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, limit);
+  if (map.count("throttle"))
+    {
+      curl_off_t limit = map["throttle"].as<int>()*1024;
+      curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, limit);
     }
 
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
-        map["connect-timeout"].as<int>());
+  curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
+                   map["connect-timeout"].as<int>());
 }
 
 } // End namespace.
 
-
+// vim: set ts=2 sw=2 tw=72 expandtab:

@@ -1,5 +1,5 @@
-/* 
-* Copyright (C) 2010 Toni Gundogdu.
+/*
+* Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
 #ifndef cclive_exec_h
 #define cclive_exec_h
 
-namespace cclive {
+namespace cclive
+{
 
 void
 exec (const file&, const quvicpp::link&, const options& opts);
@@ -27,4 +28,4 @@ exec (const file&, const quvicpp::link&, const options& opts);
 
 #endif
 
-
+// vim: set ts=2 sw=2 tw=72 expandtab:
