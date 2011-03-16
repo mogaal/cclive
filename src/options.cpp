@@ -39,10 +39,13 @@ namespace fs   = boost::filesystem;
 void
 options::exec (int argc, char **argv)
 {
-
   // Path to ccliverc.
 
-  fs::path config_path (fs::initial_path<fs::path> ());
+#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+  fs::path config_path(fs::current_path());
+#else
+  fs::path config_path(fs::current_path<fs::path>());
+#endif
 
   const char *home = getenv ("HOME");
 
@@ -206,17 +209,14 @@ std::ostream& operator<<(std::ostream& os, const options& o)
 void
 options::_verify ()
 {
-
   std::string empty;
 
   if (_map.count ("regexp"))
     {
-
       std::string s = _map["regexp"].as<std::string>();
 
       if (!cclive::re::match (s, empty))
         {
-
           std::stringstream b;
 
           b << "invalid syntax (`" << s << "'), "
@@ -230,7 +230,6 @@ options::_verify ()
 
   if (_map.count ("subst"))
     {
-
       std::istringstream iss( _map["subst"].as<std::string>());
       std::vector<std::string> v;
 
@@ -242,10 +241,8 @@ options::_verify ()
 
       foreach (std::string s, v)
       {
-
         if (!cclive::re::subst (s,empty))
           {
-
             std::stringstream b;
 
             b << "invalid syntax (`" << s << "'), "
