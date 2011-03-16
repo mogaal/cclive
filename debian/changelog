@@ -1,4 +1,4 @@
-cclive (0.7.2-1) unstable; urgency=low
+cclive (0.7.3.1-1) unstable; urgency=low
 
   * New upstream release (Closes: #608393, #588795) 
   * Remove patch: The changes was included by upstream author.
