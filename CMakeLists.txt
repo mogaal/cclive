@@ -8,7 +8,7 @@ add_definitions (-Wall)
 
 # Version.
 
-set (VERSION "0.7.2")
+set (VERSION "0.7.3.1")
 set (VERSION_LONG "${VERSION}")
 set (BRANCH "master")
 
@@ -72,6 +72,10 @@ if (NOT WITHOUT_DOC)
     set (WITHOUT_DOC false)
 endif ()
 
+# Include dir.
+
+include_directories (BEFORE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 # Prerequisites.
 
 include (FindPkgConfig)
@@ -82,6 +86,10 @@ link_directories (${quvi_LIBRARY_DIRS})
 
 if (quvi_VERSION VERSION_GREATER 0.2.7)
     set (HAVE_QUVIOPT_NOSHORTENED true)
+endif ()
+
+if (quvi_VERSION VERSION_GREATER 0.2.11)
+    set (HAVE_QUVIOPT_CATEGORY true)
 endif ()
 
 pkg_check_modules (curl libcurl>=7.20 REQUIRED QUIET)
@@ -121,6 +129,18 @@ link_directories (${Boost_LIBRARY_DIRS})
 set (boost_VERSION
     "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
 
+# Version 3 is a major revision with many new and improved features. It
+# may, however, break some user code written for Version 2.
+#
+# To ease the transition, Boost releases 1.44 through 1.47 will supply
+# both V2 and V3. Version 2 is the default version for Boost release 1.44
+# and 1.45. Version 3 will be the default starting with release 1.46.
+#   <http://www.boost.org/libs/filesystem/index.html>
+
+if (boost_VERSION VERSION_GREATER 1.43.0)
+    set (HAVE_BOOST_FILESYSTEM_VERSION_3 true)
+endif ()
+
 # Check for headers.
 
 include (CheckIncludeFile)
@@ -142,7 +162,7 @@ check_function_exists (signal       HAVE_SIGNAL)
 
 # Subdirs.
 
-subdirs (lib cclive man1)
+subdirs (src man1)
 
 # Status.
 
@@ -153,6 +173,7 @@ message (STATUS)
 message (STATUS "Found:")
 message (STATUS "   Compiler: ${CMAKE_CXX_COMPILER}")
 message (STATUS "   Linker  : ${CMAKE_LINKER}")
+message (STATUS "   CMake   : ${CMAKE_VERSION}")
 message (STATUS "   Make    : ${CMAKE_MAKE_PROGRAM}")
 message (STATUS "   Host    : ${HOST_SETUP}")
 message (STATUS "   quvi    : ${quvi_VERSION}")

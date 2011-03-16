@@ -1,3 +1,244 @@
+commit 132268be2f3807851e240b7e856a322c948d19d0
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 15 12:04:11 2011 +0200
+
+    Set release details for 0.7.3.1
+
+ NEWS |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit f9ca5ddd49081a9ff30ae054e3b4658219e400c4
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 15 11:32:52 2011 +0200
+
+    Lower version to 0.7.3.1
+
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 9e269292c22814a9dea9aa5c6311ab10887bb651
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 15 11:21:17 2011 +0200
+
+    Move src/cclive/* to src/ (#7)
+    
+    A subdirectory and a target used the 'cclive' for name. This caused
+    a configuration error when the project was built "in-source".
+    
+    * http://sourceforge.net/apps/trac/cclive/ticket/7
+
+ src/CMakeLists.txt         |   26 ++--
+ src/application.cpp        |  469 +++++++++++++++++++++++++++++++++++++++++
+ src/background.cpp         |   94 +++++++++
+ src/cclive/application.cpp |  469 -----------------------------------------
+ src/cclive/background.cpp  |   94 ---------
+ src/cclive/error.cpp       |   51 -----
+ src/cclive/exec.cpp        |   69 ------
+ src/cclive/file.cpp        |  498 --------------------------------------------
+ src/cclive/get.cpp         |   95 ---------
+ src/cclive/license.cpp     |   41 ----
+ src/cclive/log.cpp         |  145 -------------
+ src/cclive/main.cpp        |   49 -----
+ src/cclive/options.cpp     |  263 -----------------------
+ src/cclive/progressbar.cpp |  418 -------------------------------------
+ src/cclive/re.cpp          |  128 -----------
+ src/cclive/wait.cpp        |   59 ------
+ src/error.cpp              |   51 +++++
+ src/exec.cpp               |   69 ++++++
+ src/file.cpp               |  498 ++++++++++++++++++++++++++++++++++++++++++++
+ src/get.cpp                |   95 +++++++++
+ src/license.cpp            |   41 ++++
+ src/log.cpp                |  145 +++++++++++++
+ src/main.cpp               |   49 +++++
+ src/options.cpp            |  263 +++++++++++++++++++++++
+ src/progressbar.cpp        |  418 +++++++++++++++++++++++++++++++++++++
+ src/re.cpp                 |  128 +++++++++++
+ src/wait.cpp               |   59 ++++++
+ 27 files changed, 2392 insertions(+), 2392 deletions(-)
+
+commit ee78ce0935a49618cf6343c31240a80a68cd4ddd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 15 10:52:20 2011 +0200
+
+    CMakeLists.txt: Add CMAKE_VERSION to summary
+
+ CMakeLists.txt |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 4a9857c2e2596a30a7dbe63617095a709d0b1409
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Mar 12 16:18:20 2011 +0200
+
+    Bump version to 0.7.4
+
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit b1d8a68abb7bb046c6b11bb94094fb70906cfa4d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Mar 12 14:10:42 2011 +0200
+
+    Set release details for 0.7.3
+
+ NEWS |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
+
+commit c82db79c1dd44b621d35d17e6d43cd4cae6a9eac
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Mar 12 14:10:34 2011 +0200
+
+    Regenerate manual for 0.7.3
+
+ man1/cclive.1 |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 77e82144cdf7a8a4e6fc296b746d14d273c4df68
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Mar 6 12:57:22 2011 +0200
+
+    Fix compilation with Boost::Filesystem v3 (#6)
+    
+    Version 3 is the new default in boost::filesystem (as of 1.46.0).
+    This breaks the code written for boost::filesystem version 2.
+    
+    * Define BOOST_FILESYSTEM_NO_DEPRECATED
+    * Define BOOST_FILESYSTEM_VERSION as 3 (boost 1.44.0+)
+    * boost::filesystem::initial_path (depr.) -> *::*::current_path
+    * http://sourceforge.net/apps/trac/cclive/ticket/6
+
+ CMakeLists.txt             |   12 ++++++++++++
+ config.h.cmake.in          |   16 +++++++++++++++-
+ src/cclive/file.cpp        |   13 +++++++++++++
+ src/cclive/options.cpp     |    6 +++++-
+ src/cclive/progressbar.cpp |    6 +++++-
+ 5 files changed, 50 insertions(+), 3 deletions(-)
+
+commit b8dc4f92bf289fcd097fc40947ac89b9fedbfe6a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Mar 6 12:13:40 2011 +0200
+
+    options.cpp: Remove extra newlines
+
+ src/cclive/options.cpp |    7 -------
+ 1 files changed, 0 insertions(+), 7 deletions(-)
+
+commit 6d581d57c4f88ed1b2ba25d2669c699df982eabc
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Feb 18 10:21:28 2011 +0200
+
+    Add HAVE_QUVIOPT_CATEGORY check
+    
+    Set QUVIPROTO_HTTP should libquvi default value ever change.
+
+ CMakeLists.txt        |    4 ++++
+ config.h.cmake.in     |    1 +
+ src/quvicpp/query.cpp |    3 +++
+ 3 files changed, 8 insertions(+), 0 deletions(-)
+
+commit 3a867d7cd56c19f3191c3cbf58021c4b533660e1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 17 12:27:58 2011 +0200
+
+    Do not build quvicpp as a (static) library
+    
+    quvicpp was originally intended to be a "convenience library". CMake
+    does not currently support such libraries. quvicpp was therefore built
+    as a static library instead. This, however, creates packaging issues
+    with some of the current distros that pose strict security rules.
+    
+    List quvicpp source files in the "cclive" target instead. Reshuffle dir
+    structure.
+    
+    [1] http://www.vtk.org/Wiki/CMake_FAQ#Does_CMake_support_.22convenience.22_libraries.3F
+    [x] http://www.gnu.org/software/hello/manual/automake/Libtool-Convenience-Libraries.html
+
+ CMakeLists.txt                        |    6 +-
+ cclive/CMakeLists.txt                 |   40 ---
+ cclive/include/cclive/application.h   |   46 ---
+ cclive/include/cclive/background.h    |   31 --
+ cclive/include/cclive/error.h         |   30 --
+ cclive/include/cclive/exec.h          |   31 --
+ cclive/include/cclive/file.h          |   56 ----
+ cclive/include/cclive/get.h           |   33 ---
+ cclive/include/cclive/log.h           |   87 ------
+ cclive/include/cclive/options.h       |   44 ---
+ cclive/include/cclive/progressbar.h   |   74 -----
+ cclive/include/cclive/re.h            |   40 ---
+ cclive/include/cclive/wait.h          |   31 --
+ cclive/src/application.cpp            |  469 -------------------------------
+ cclive/src/background.cpp             |   94 -------
+ cclive/src/error.cpp                  |   51 ----
+ cclive/src/exec.cpp                   |   69 -----
+ cclive/src/file.cpp                   |  485 ---------------------------------
+ cclive/src/get.cpp                    |   95 -------
+ cclive/src/license.cpp                |   41 ---
+ cclive/src/log.cpp                    |  145 ----------
+ cclive/src/main.cpp                   |   49 ----
+ cclive/src/options.cpp                |  266 ------------------
+ cclive/src/progressbar.cpp            |  414 ----------------------------
+ cclive/src/re.cpp                     |  128 ---------
+ cclive/src/wait.cpp                   |   59 ----
+ include/cclive/application.h          |   46 +++
+ include/cclive/background.h           |   31 ++
+ include/cclive/error.h                |   30 ++
+ include/cclive/exec.h                 |   31 ++
+ include/cclive/file.h                 |   56 ++++
+ include/cclive/get.h                  |   33 +++
+ include/cclive/log.h                  |   87 ++++++
+ include/cclive/options.h              |   44 +++
+ include/cclive/progressbar.h          |   74 +++++
+ include/cclive/re.h                   |   40 +++
+ include/cclive/wait.h                 |   31 ++
+ include/quvicpp/quvicpp.h             |  179 ++++++++++++
+ lib/CMakeLists.txt                    |    2 -
+ lib/quvicpp/CMakeLists.txt            |   22 --
+ lib/quvicpp/include/quvicpp/quvicpp.h |  179 ------------
+ lib/quvicpp/src/error.cpp             |   86 ------
+ lib/quvicpp/src/link.cpp              |  112 --------
+ lib/quvicpp/src/misc.cpp              |   53 ----
+ lib/quvicpp/src/options.cpp           |  101 -------
+ lib/quvicpp/src/query.cpp             |  158 -----------
+ lib/quvicpp/src/video.cpp             |  189 -------------
+ src/CMakeLists.txt                    |   45 +++
+ src/cclive/application.cpp            |  469 +++++++++++++++++++++++++++++++
+ src/cclive/background.cpp             |   94 +++++++
+ src/cclive/error.cpp                  |   51 ++++
+ src/cclive/exec.cpp                   |   69 +++++
+ src/cclive/file.cpp                   |  485 +++++++++++++++++++++++++++++++++
+ src/cclive/get.cpp                    |   95 +++++++
+ src/cclive/license.cpp                |   41 +++
+ src/cclive/log.cpp                    |  145 ++++++++++
+ src/cclive/main.cpp                   |   49 ++++
+ src/cclive/options.cpp                |  266 ++++++++++++++++++
+ src/cclive/progressbar.cpp            |  414 ++++++++++++++++++++++++++++
+ src/cclive/re.cpp                     |  128 +++++++++
+ src/cclive/wait.cpp                   |   59 ++++
+ src/quvicpp/error.cpp                 |   86 ++++++
+ src/quvicpp/link.cpp                  |  112 ++++++++
+ src/quvicpp/misc.cpp                  |   53 ++++
+ src/quvicpp/options.cpp               |  101 +++++++
+ src/quvicpp/query.cpp                 |  158 +++++++++++
+ src/quvicpp/video.cpp                 |  189 +++++++++++++
+ 67 files changed, 3796 insertions(+), 3811 deletions(-)
+
+commit d10c2eb50badd1535da9c3d7a49a12d4ac5b099c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 17 11:48:58 2011 +0200
+
+    Progressbar: Add inactive flag
+
+ cclive/src/progressbar.cpp |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit f077b2b4557ec68cd05713c0cf350578d2006a12
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Feb 7 22:47:42 2011 +0200
+
+    Bump version to 0.7.3
+
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
 commit 0eb2222be1a2e70ffb15db594050ad2c2f5b729f
 Author: Toni Gundogdu <legatvs.git@gmail.com>
 Date:   Mon Feb 7 22:16:37 2011 +0200

@@ -186,6 +186,8 @@ progressbar::update (double now)
     }
 #endif // WITH_RESIZE
 
+  const bool inactive = now == 0;
+
   if (!_done)
     {
       if ((elapsed - _last_update) < _update_interval
@@ -222,7 +224,7 @@ progressbar::update (double now)
   rate_s.setf (std::ios::fixed);
   eta_s.setf (std::ios::fixed);
 
-  if (rate > 0)
+  if (!inactive)
     {
       // ETA.
 
@@ -278,7 +280,11 @@ progressbar::update (double now)
 
   fs::path p = fs::system_complete (_file.path ());
 
-  std::string fname = p.filename ();
+#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+  std::string fname = p.filename().string();
+#else
+  std::string fname = p.filename();
+#endif
 
   switch (_mode)
     {
