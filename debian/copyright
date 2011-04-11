@@ -5,7 +5,7 @@ Upstream-Source: http://cclive.sourceforge.net
 Upstream-Name: cclive
 
 Files: *
-Copyright: 2010 Toni Gundogdu <legatvs@gmail.com>
+Copyright: 2010,2011 Toni Gundogdu <legatvs@gmail.com>
 License: GPL-3+
 
 Files: debian/*
