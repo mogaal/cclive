@@ -1,3 +1,11 @@
+cclive (0.7.3.1-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * control: Switch to non-versioned boost build-dependencies.  
+    (Closes: #630437).
+
+ -- Steve M. Robbins <smr@debian.org>  Sat, 23 Jul 2011 00:40:40 -0500
+
 cclive (0.7.3.1-1) unstable; urgency=low
 
   * New upstream release (Closes: #608393, #588795) 
