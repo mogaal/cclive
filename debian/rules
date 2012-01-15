@@ -2,6 +2,3 @@
 
 %:
 	dh $@ --with autoreconf
-
-override_dh_installchangelogs:
-	dh_installchangelogs NEWS
