@@ -1,4 +1,66 @@
 
+0.7.8  Sat Nov 26 2011  Toni Gundogdu
+Changes:
+    - Improvements to --exec
+      - Invoke --exec with "nothing todo"
+      - Additional specifiers %n and %t
+      - Allow multiple occurences
+      - Argument handling
+
+
+0.7.7  Sun Oct 16 2011  Toni Gundogdu
+Bugfixes:
+    - Do not create doc dir unnecessarily with "make install"
+    - Option -O evaluated incorrectly (#13)
+Changes:
+    - Use QUVI_VERSION_SCRIPTS when available
+    - Add YouTube fmtNN ref. URL to manual
+
+
+0.7.6  Mon Sep 12 2011  Toni Gundogdu
+Changes:
+    - Add --tr (depr. --regexp, --subst)
+    - Add --prefer-format
+    - Revise manual
+
+
+0.7.5.1  Thu Aug 18 2011  Toni Gundogdu
+Changes:
+    - Lower quvi prerequisite to 0.2.16.1
+
+
+0.7.5  Sat Aug 13 2011  Toni Gundogdu
+
+Changes:
+    - Make --update-interval a "configurable" option
+    - Implement 'simple' progressbar
+    - Add --progressbar
+Fixes:
+    - --update-interval (with negative) values doesn't work as intended (#11)
+
+
+0.7.4.1  Thu Jun 23 2011  Toni Gundogdu
+
+Fixes: dist
+    - make: rm: cannot remove `cclive': Is a directory (#9)
+
+
+0.7.4  Sat Jun 18 2011  Toni Gundogdu
+
+Changes:
+    - Add --no-resolve (replaces --no-shortened)
+    - Rewrite to use quvi "media interface"
+    - Add support for reading from files
+    - Deprecate "--format list"
+    - Remove --no-shortened
+    - Add --query-format
+
+Changes: dist
+    - configure: Rename --with-man -> --with-manual
+    - Bump quvi prerequisite to 0.2.17
+    - Revert back to GNU Autotools
+
+
 0.7.3.1  Tue Mar 15 2011  Toni Gundogdu
 Bugfixes:
         - CMake Error at src/CMakeLists.txt:43 (#7)
