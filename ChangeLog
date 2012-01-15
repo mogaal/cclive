@@ -1,24 +1,1390 @@
-commit 132268be2f3807851e240b7e856a322c948d19d0
+commit b555a5e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-26
+
+    Update news for 0.7.8
+
+NEWS
+
+commit 8e11804
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-26
+
+    Bump version to 0.7.8
+
+m4/version.m4
+
+commit 69e716f
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-26
+
+    Revise manual
+    
+     * Use =head2 tag instead of =item
+     * Add DEPRECATED section
+
+doc/man1/cclive.1.pod
+
+commit 9d0cde2
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-26
+
+    Revise --query-format, --format descriptions
+
+doc/man1/cclive.1.pod
+
+commit 5095fa8
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-22
+
+    Revise --exec in manual
+    
+     * Make a note of multi occurences being accepted
+     * Add %t
+
+doc/man1/cclive.1.pod
+
+commit ef7727f
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-22
+
+    Add %t support to --exec
+
+src/cc/exec.cpp
+src/cc/file.cpp
+src/cc/file.h
+
+commit c98398a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-22
+
+    Allow multiple occurences of --exec
+
+src/cc/exec.cpp
+src/cc/options.cpp
+src/cc/util.h
+
+commit 5d672a4
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-21
+
+    Revise --update-interval description in manual
+
+doc/man1/cclive.1.pod
+
+commit 6311dfb
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-21
+
+    Revise --exec in manual
+    
+     * Add example
+     * Fix typos
+
+doc/man1/cclive.1.pod
+
+commit 7749585
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-21
+
+    Make --exec work with "nothing todo"
+
+src/cc/exec.cpp
+src/cc/file.cpp
+src/cc/file.h
+src/cc/get.cpp
+src/cc/util.h
+
+commit 3661079
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-21
+
+    Add %n support to --exec
+
+src/cc/exec.cpp
+src/cc/file.cpp
+src/cc/file.h
+
+commit 2fc7514
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-21
+
+    Do not quote %f (filepath) with --exec
+    
+    Example: ccl "URL" --exec "echo %f.mp3"
+     Result: foo .mp3
+    
+    This patch addresses this by removing the 'auto-quotation' of %f.
+    Make --exec accept ' in addition to ".
+    
+     Result: foo.mp3
+
+src/cc/exec.cpp
+
+commit 1beec0c
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-21
+
+    Eliminate extra std::string
+
+src/cc/exec.cpp
+
+commit 04b0362
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-10-16
+
+    Do not parse URL scheme unnecessarily
+    
+    Rewrite is_url so that it does not parse the URL scheme.
+    cclive does not have any use for the parsed string.
+
+src/cc/application.cpp
+
+commit 8fcc5d3
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-10-16
+
+    Bump version to 0.7.7
+
+m4/version.m4
+
+commit a654628
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-10-16
+
+    Update NEWS for 0.7.7
+
+NEWS
+
+commit a1a9e01
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-10-08
+
+    BUGFIX #13: -O option evaluated incorrectly
+    
+    "When an absolute pathname is given as the argument (arg) of the -O
+    or --output-file option the output filename considered by cclive is
+    incorrect."
+    
+    Example:
+     cd /foo ; cclive -O /bar/baz.flv URL (...)
+     error: /foo/bar/baz.flv: No such file or directory
+    
+    Fix:
+     Do not use getcwd(3) at all
+    
+    WWW:
+     <http://sourceforge.net/apps/trac/cclive/ticket/13>
+
+src/cc/file.cpp
+
+commit 76b8932
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-10-08
+
+    Remove getpwd check
+
+configure.ac
+
+commit 5027922
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-26
+
+    Add youtube fmt note
+
+doc/man1/cclive.1.pod
+
+commit 881d2b4
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-23
+
+    Use QUVI_VERSION_SCRIPTS if available
+
+configure.ac
+src/cc/application.cpp
+
+commit 8705201
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-23
+
+    Remove config.aux
+
+autogen.sh
+
+commit 286482e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-14
+
+    Do not create doc directory unnecessarily
+    
+    Move "if WITH_MANUAL" block to the $top_srcdir/Makefile.am. Otherwise
+    the doc directory is created even with the --without-manual.
+
+Makefile.am
+doc/man1/Makefile.am
+
+commit 77ccfa8
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-12
+
+    Add 0.7.6 release notes
+
+NEWS
+
+commit 47286aa
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-12
+
+    Bump version to 0.7.6
+
+m4/version.m4
+
+commit c5cebe6
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-10
+
+    Rewrite --exec: use execvp(3) instead of system(3)
+
+src/cc/exec.cpp
+src/cc/util.h
+
+commit 18b76e1
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-11
+
+    Update boost.m4
+
+m4/boost.m4
+
+commit dee1d8a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-08
+
+    Revise --query-formats description
+    
+     * Revise examples
+
+doc/man1/cclive.1.pod
+
+commit 94c650e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-08
+
+    Revise --format description
+
+doc/man1/cclive.1.pod
+
+commit 7951c8c
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-07
+
+    Document --prefer-format
+
+doc/man1/cclive.1.pod
+
+commit 7f85779
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Mar 15 12:04:11 2011 +0200
+Date:   2011-08-26
+
+    Add --prefer-format
+
+src/cc/application.cpp
+src/cc/application.h
+src/cc/options.cpp
+
+commit 930398b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-07
+
+    Document --tr
+
+doc/man1/cclive.1.pod
+
+commit 53ad8f2
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-06
+
+    Fix: Include iostream
+
+src/cc/options.cpp
+
+commit 7794117
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-04
+
+    Add --tr, depr. --regexp, --subst
+    
+     * Use pcrecpp::RE::GlobalReplace instead
+
+src/cc/application.cpp
+src/cc/exec.cpp
+src/cc/file.cpp
+src/cc/options.cpp
+src/cc/re.cpp
+src/cc/re.h
+
+commit 7432825
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-03
+
+    typedef std::vector<std::string> to vst
+
+src/cc/application.cpp
+src/cc/options.cpp
+
+commit 305d540
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-03
+
+    Rename re::match -> re::capture
+
+src/cc/file.cpp
+src/cc/options.cpp
+src/cc/re.cpp
+src/cc/re.h
+
+commit 02ad52d
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-03
+
+    Add re::grep
+
+src/cc/re.cpp
+src/cc/re.h
+
+commit 2c76e36
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-02
+
+    Cleanup Makefile.am files
+
+doc/Makefile.am
+doc/man1/Makefile.am
+src/Makefile.am
+
+commit 3559d9d
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-02
+
+    Remove scripts/astyle_cpp.sh from dist
+
+Makefile.am
+
+commit 12cd55e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-02
+
+    Integrate gen-ver.sh
+
+Makefile.am
+configure.ac
+gen-ver.sh
+src/cc/application.cpp
+
+commit a39671e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-02
+
+    Tweak ChangeLog generation options
+
+Makefile.am
+
+commit 96d894e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-09-02
+
+    Cleanup configure.ac
+
+configure.ac
+
+commit 5e163eb
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-29
+
+    manual: improve --format, --query-formats descriptions
+
+doc/man1/cclive.1.pod
+
+commit faed921
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-18
+
+    Set release notes for 0.7.5.1
+
+NEWS
+
+commit f88b0b8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-17
+
+    Bump version to 0.7.5.1
+
+m4/version.m4
+
+commit e6fd470
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-17
+
+    Lower quvi prerequisite to 0.2.16.1
+
+INSTALL
+configure.ac
+
+commit 8ce7780
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-17
+
+    Tweak --enable-ccl note
+
+INSTALL
+
+commit 7470a2c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-13
+
+    Add release notes for 0.7.5
+
+NEWS
+
+commit e5b8c58
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-12
+
+    Use QUVIINFO_RESPONSECODE instead
+
+src/quvi/err.cpp
+
+commit 9df40fb
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-12
+
+    Use QUVI_CALLBACK instead of QUVI_CURL
+
+src/cc/application.cpp
+
+commit d5e31dd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-09
+
+    Progressbar: simple: Add dash
+
+src/cc/progressbar.cpp
+
+commit e25ae23
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-08-01
+
+    configure: Add --enable-ccl
+
+INSTALL
+configure.ac
+src/Makefile.am
+
+commit 90e735b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Rename _verify, make _config_file local variable
+
+src/cc/options.cpp
+src/cc/options.h
+
+commit f1b191f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Bump version to 0.7.5
+
+m4/version.m4
+
+commit c65c90c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Pass po::variables_map by ref instead of cc::options
+
+src/cc/application.cpp
+src/cc/exec.cpp
+src/cc/file.cpp
+src/cc/file.h
+src/cc/get.cpp
+src/cc/progressbar.cpp
+src/cc/progressbar.h
+src/cc/util.h
+
+commit 08bc2f5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Forward declare quvi::query
+
+src/cc/application.h
+src/cc/main.cpp
+
+commit 68b04d5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Remove fname param from _normal, _dotline
+
+src/cc/progressbar.cpp
+src/cc/progressbar.h
+
+commit c1a6afd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Make minor style changes
+
+src/cc/file.cpp
+src/cc/get.cpp
+
+commit d27f62e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Fix: Use absolute value (#11)
+
+src/cc/progressbar.cpp
+
+commit a4f3ad6
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Fix _update_interval type
+
+src/cc/progressbar.h
+
+commit 2e37795
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Add po alias
+
+src/cc/application.cpp
+
+commit d656a8b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Manual: Add --progressbar, move --update-interval
+
+doc/man1/cclive.1.pod
+
+commit 75e911a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Make --progressbar, --update-interval configurable
+
+src/cc/options.cpp
+
+commit 609fce4
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    Add --progressbar type, impl. "simple" type
+
+src/cc/options.cpp
+src/cc/progressbar.cpp
+src/cc/progressbar.h
+
+commit b6984ff
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-31
+
+    cc::log: Set ios::fixed as default
+
+src/cc/application.cpp
+
+commit c0a4b86
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-07-09
+
+    file.cpp: Tidy up
+
+src/cc/file.cpp
+
+commit f3732ed
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-28
+
+    cc/options.cpp: Style changes
+
+src/cc/options.cpp
+
+commit c748ed4
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-23
+
+    Set release details for 0.7.4.1
+
+NEWS
+
+commit fae022f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-23
+
+    Lower version to 0.7.4.1
+
+m4/version.m4
+
+commit 150f32e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-19
+
+    Cleanup src/quvi/
+
+src/quvi/ccquvi.h
+src/quvi/err.cpp
+src/quvi/media.cpp
+src/quvi/misc.cpp
+src/quvi/opts.cpp
+src/quvi/query.cpp
+src/quvi/url.cpp
+
+commit 73b0276
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-19
+
+    Bump version to 0.7.5
+
+m4/version.m4
+
+commit e45ab84
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-19
+
+    Restructure src/
+    
+    * Merge several simple headers into util.h
+    * Rename namespaces, files
+
+configure.ac
+src/Makefile.am
+src/cc/application.cpp
+src/cc/application.h
+src/cc/background.cpp
+src/cc/error.cpp
+src/cc/exec.cpp
+src/cc/file.cpp
+src/cc/file.h
+src/cc/get.cpp
+src/cc/internal.h
+src/cc/license.cpp
+src/cc/log.cpp
+src/cc/log.h
+src/cc/main.cpp
+src/cc/options.cpp
+src/cc/options.h
+src/cc/progressbar.cpp
+src/cc/progressbar.h
+src/cc/re.cpp
+src/cc/re.h
+src/cc/util.h
+src/cc/wait.cpp
+src/ccapplication
+src/ccfile
+src/ccinternal
+src/cclive/application.cpp
+src/cclive/application.h
+src/cclive/background.cpp
+src/cclive/background.h
+src/cclive/error.cpp
+src/cclive/error.h
+src/cclive/exec.cpp
+src/cclive/exec.h
+src/cclive/file.cpp
+src/cclive/file.h
+src/cclive/get.cpp
+src/cclive/get.h
+src/cclive/internal.h
+src/cclive/license.cpp
+src/cclive/log.cpp
+src/cclive/log.h
+src/cclive/main.cpp
+src/cclive/options.cpp
+src/cclive/options.h
+src/cclive/progressbar.cpp
+src/cclive/progressbar.h
+src/cclive/re.cpp
+src/cclive/re.h
+src/cclive/wait.cpp
+src/cclive/wait.h
+src/cclog
+src/ccoptions
+src/ccprogressbar
+src/ccquvi
+src/ccre
+src/ccutil
+src/quvi/ccquvi.h
+src/quvi/err.cpp
+src/quvi/media.cpp
+src/quvi/misc.cpp
+src/quvi/opts.cpp
+src/quvi/query.cpp
+src/quvi/url.cpp
+src/quvicpp/err.cpp
+src/quvicpp/media.cpp
+src/quvicpp/misc.cpp
+src/quvicpp/opts.cpp
+src/quvicpp/query.cpp
+src/quvicpp/quvicpp.h
+src/quvicpp/url.cpp
+
+commit 0785790
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-19
+
+    Make minor style changes to src
+
+src/cclive/application.cpp
+src/cclive/application.h
+src/cclive/background.cpp
+src/cclive/background.h
+src/cclive/error.cpp
+src/cclive/error.h
+src/cclive/exec.cpp
+src/cclive/exec.h
+src/cclive/file.cpp
+src/cclive/file.h
+src/cclive/get.cpp
+src/cclive/get.h
+src/cclive/license.cpp
+src/cclive/log.cpp
+src/cclive/log.h
+src/cclive/main.cpp
+src/cclive/options.cpp
+src/cclive/options.h
+src/cclive/progressbar.cpp
+src/cclive/progressbar.h
+src/cclive/re.cpp
+src/cclive/re.h
+src/cclive/wait.cpp
+src/cclive/wait.h
+src/quvicpp/err.cpp
+src/quvicpp/media.cpp
+src/quvicpp/misc.cpp
+src/quvicpp/opts.cpp
+src/quvicpp/query.cpp
+src/quvicpp/quvicpp.h
+src/quvicpp/url.cpp
+
+commit 64df451
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-18
+
+    Set release details for 0.7.4
+
+NEWS
+
+commit e8ca138
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-08
+
+    Rename --with-man -> --with-manual
+
+configure.ac
+doc/man1/Makefile.am
+
+commit deb4cee
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-08
+
+    Revise INSTALL
+
+INSTALL
+
+commit 9df14b7
+Merge: 75a3029 79ffd75
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-07
+
+    Merge branch 'revert_autotools'
+
+commit 79ffd75
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    src/Makefile.am: Reorganize flags
+
+src/Makefile.am
+
+commit 99ea2c2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    src/Makefile.am: Remove BOOST_THREAD_*
+
+src/Makefile.am
+
+commit 8510475
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    Remove AC_PROG_RANLIB altogether
+
+configure.ac
+
+commit c7fd3ce
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    Revise manual
+    
+    * Remove --no-shortened
+    * Add --query-formats
+
+doc/man1/cclive.1.pod
+
+commit 914193d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    README: Add Home, gitweb
+
+README
+
+commit a3e922e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    Tweak help strings
+
+src/cclive/options.cpp
+
+commit c6a03be
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    file.cpp: Improve readability
+
+src/cclive/file.cpp
+
+commit cebd4a5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    license.cpp: Add 2011
+
+src/cclive/license.cpp
+
+commit 380cc1f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    Add depr. msg to -f help,list
+
+src/cclive/application.cpp
+
+commit ffcc1d5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    configure.ac: Comment out AC_PROG_RANLIB
+
+configure.ac
+
+commit e3eca2f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    configure.ac: Add program checks, remove func checks
+
+configure.ac
+
+commit 1729f80
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    Add --query-formats, add QUVISTATUS_RESOLVE handler
+
+src/cclive/application.cpp
+src/cclive/options.cpp
+
+commit 6dbbbd1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    Add query::formats. Change style
+
+src/quvicpp/query.cpp
+src/quvicpp/quvicpp.h
+
+commit cf5c0f2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    application.cpp: Style changes
+
+src/cclive/application.cpp
+
+commit 874cf99
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    Rewrite example/config
+
+examples/config
+
+commit 2643bfc
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    Remove CMakeLists.txt
+
+CMakeLists.txt
+
+commit 0199feb
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-06
+
+    Rewrite INSTALL
+
+INSTALL
+
+commit 40842fc
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Change gitlog date
+
+Makefile.am
+
+commit 21cfef2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Restore hidden options
+
+src/cclive/options.cpp
+
+commit c9e783c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Makefile.am: Add dist:ChangeLog, EXTRA_DIST=astyle_cpp.sh
+
+Makefile.am
+
+commit 20d6fa2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Fix autogen.sh
+
+autogen.sh
+
+commit a6c7b3f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Remove scripts/makedist.sh
+
+scripts/makedist.sh
+
+commit 48062a8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Remove remaining CMake related files
+
+ChangeLog
+config.h.cmake.in
+toolchains/mingw32.cmake
+uninstall.cmake.in
+
+commit bf3fccf
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Update .gitignore
+
+.gitignore
+
+commit 4f3cd9d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Remove cclive.1 from repo
+
+doc/man1/cclive.1
+
+commit b9e07e0
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Add autogen.sh
+
+autogen.sh
+
+commit e076f19
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Update .gitignore
+
+.gitignore
+
+commit f958974
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Add autotools files
+
+Makefile.am
+configure.ac
+doc/Makefile.am
+doc/man1/Makefile.am
+m4/boost.m4
+m4/version.m4
+src/Makefile.am
+
+commit 7bdf6b8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Remove doc/man1/CMakeLists.txt
+
+doc/man1/CMakeLists.txt
+
+commit e61982b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Remove doc/CMakeLists.txt
+
+doc/CMakeLists.txt
+
+commit 24e87bf
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    cclive: Remove quvi feature specific ifdef-blocks
+    
+    Add internal.h which checks boost version and sets
+    BOOST_FILESYSTEM_VERSION. Remove deprecated --no-shortened.
+
+src/cclive/application.cpp
+src/cclive/background.cpp
+src/cclive/error.cpp
+src/cclive/file.cpp
+src/cclive/internal.h
+src/cclive/options.cpp
+src/cclive/progressbar.cpp
+src/cclive/wait.cpp
+
+commit 6c2d750
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    quvicpp: Remove quvi feature specific ifdef-blocks
+    
+    * Rename error.cpp -> error.cpp
+    * Rename options.cpp -> opts.cpp
+
+src/quvicpp/err.cpp
+src/quvicpp/error.cpp
+src/quvicpp/media.cpp
+src/quvicpp/options.cpp
+src/quvicpp/opts.cpp
+src/quvicpp/query.cpp
+src/quvicpp/quvicpp.h
+src/quvicpp/url.cpp
+
+commit 18005f7
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Move include/quvicpp/*.h -> src/quvicpp/
+
+include/quvicpp/quvicpp.h
+src/quvicpp/quvicpp.h
+
+commit 5cb61db
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Remove src/CMakeLists.txt
+
+src/CMakeLists.txt
+
+commit 453919b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Move include/cclive/*.h -> src/cclive/
+
+include/cclive/application.h
+include/cclive/background.h
+include/cclive/error.h
+include/cclive/exec.h
+include/cclive/file.h
+include/cclive/get.h
+include/cclive/log.h
+include/cclive/options.h
+include/cclive/progressbar.h
+include/cclive/re.h
+include/cclive/wait.h
+src/cclive/application.h
+src/cclive/background.h
+src/cclive/error.h
+src/cclive/exec.h
+src/cclive/file.h
+src/cclive/get.h
+src/cclive/log.h
+src/cclive/options.h
+src/cclive/progressbar.h
+src/cclive/re.h
+src/cclive/wait.h
+
+commit 7d67fdc
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Move src/*.cpp -> src/cclive/
+
+src/application.cpp
+src/background.cpp
+src/cclive/application.cpp
+src/cclive/background.cpp
+src/cclive/error.cpp
+src/cclive/exec.cpp
+src/cclive/file.cpp
+src/cclive/get.cpp
+src/cclive/license.cpp
+src/cclive/log.cpp
+src/cclive/main.cpp
+src/cclive/options.cpp
+src/cclive/progressbar.cpp
+src/cclive/re.cpp
+src/cclive/wait.cpp
+src/error.cpp
+src/exec.cpp
+src/file.cpp
+src/get.cpp
+src/license.cpp
+src/log.cpp
+src/main.cpp
+src/options.cpp
+src/progressbar.cpp
+src/re.cpp
+src/wait.cpp
+
+commit 75a3029
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Move man1/ -> doc/man1/
+
+CMakeLists.txt
+doc/CMakeLists.txt
+doc/man1/CMakeLists.txt
+doc/man1/cclive.1
+doc/man1/cclive.1.pod
+man1/CMakeLists.txt
+man1/cclive.1
+man1/cclive.1.pod
+
+commit 086cda5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    CMakeLists.txt: Remove pod2man check
+
+CMakeLists.txt
+
+commit efdd00b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Remove QUVIOPT_WRITEFUNCTION from quvicpp
+
+include/quvicpp/quvicpp.h
+src/quvicpp/options.cpp
+src/quvicpp/query.cpp
+
+commit c67c718
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-06-05
+
+    Update .gitignore
+
+.gitignore
+
+commit 90c2b40
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-23
+
+    Update README
+
+README
+
+commit 338ee7d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-22
+
+    Cleanup manual
+
+man1/cclive.1
+man1/cclive.1.pod
+
+commit a9998a1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-21
+
+    README: Fix git URL
+
+README
+
+commit e4076e1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-04
+
+    Bump version to 0.7.4
+
+CMakeLists.txt
+man1/cclive.1
+
+commit a5b7bbf
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-04
+
+    Manual: Add --no-resolve
+
+man1/cclive.1
+man1/cclive.1.pod
+
+commit 5460dcb
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-04
+
+    Manual: Remove whitespace
+
+man1/cclive.1
+man1/cclive.1.pod
+
+commit 9490793
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-03
+
+    Manual: Replace URLs with generic URL strings
+
+man1/cclive.1
+man1/cclive.1.pod
+
+commit 63a276c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-01
+
+    Warn if depr. --no-shortened is used
+    
+    If quvi 0.2.16+, warn when user uses the deprecated
+    --no-shortened option.
+
+CMakeLists.txt
+src/application.cpp
+src/options.cpp
+
+commit c3bd67e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-01
+
+    Manual: Add reading from file note
+
+man1/cclive.1
+man1/cclive.1.pod
+
+commit 12ec449
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-01
+
+    Add support for reading from files
+
+include/cclive/application.h
+src/application.cpp
+
+commit d883ced
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-05-01
+
+    Bump version to 0.7.3.2
+
+CMakeLists.txt
+
+commit c28590c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-04-30
+
+    Use getcwd without PATH_MAX
+
+src/file.cpp
+
+commit 970e2bf
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-04-17
+
+    Add quvi 0.2.16 QUVIOPT_NORESOLVE check
+    
+    * Add -r,--no-resolve which replaces -s,--no-shortened
+    * Replaces the QUVIOPT_NOSHORTENED
+
+CMakeLists.txt
+config.h.cmake.in
+include/quvicpp/quvicpp.h
+src/application.cpp
+src/options.cpp
+src/quvicpp/options.cpp
+src/quvicpp/query.cpp
+
+commit dd53311
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-03-23
+
+    Add quvi 0.2.15 "media interface" check
+    
+    * Use "media interface" instead of the deprecating "video interface"
+    * quvicpp::video -> quvicpp::media
+    * quvicpp::link -> quvicpp::url
+
+CMakeLists.txt
+config.h.cmake.in
+include/cclive/exec.h
+include/cclive/file.h
+include/cclive/get.h
+include/cclive/progressbar.h
+include/quvicpp/quvicpp.h
+src/CMakeLists.txt
+src/application.cpp
+src/exec.cpp
+src/file.cpp
+src/get.cpp
+src/progressbar.cpp
+src/quvicpp/link.cpp
+src/quvicpp/media.cpp
+src/quvicpp/query.cpp
+src/quvicpp/url.cpp
+src/quvicpp/video.cpp
+
+commit 132268b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   2011-03-15
 
     Set release details for 0.7.3.1
 
- NEWS |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+NEWS
 
-commit f9ca5ddd49081a9ff30ae054e3b4658219e400c4
+commit f9ca5dd
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Mar 15 11:32:52 2011 +0200
+Date:   2011-03-15
 
     Lower version to 0.7.3.1
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit 9e269292c22814a9dea9aa5c6311ab10887bb651
+commit 9e26929
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Mar 15 11:21:17 2011 +0200
+Date:   2011-03-15
 
     Move src/cclive/* to src/ (#7)
     
@@ -27,74 +1393,69 @@ Date:   Tue Mar 15 11:21:17 2011 +0200
     
     * http://sourceforge.net/apps/trac/cclive/ticket/7
 
- src/CMakeLists.txt         |   26 ++--
- src/application.cpp        |  469 +++++++++++++++++++++++++++++++++++++++++
- src/background.cpp         |   94 +++++++++
- src/cclive/application.cpp |  469 -----------------------------------------
- src/cclive/background.cpp  |   94 ---------
- src/cclive/error.cpp       |   51 -----
- src/cclive/exec.cpp        |   69 ------
- src/cclive/file.cpp        |  498 --------------------------------------------
- src/cclive/get.cpp         |   95 ---------
- src/cclive/license.cpp     |   41 ----
- src/cclive/log.cpp         |  145 -------------
- src/cclive/main.cpp        |   49 -----
- src/cclive/options.cpp     |  263 -----------------------
- src/cclive/progressbar.cpp |  418 -------------------------------------
- src/cclive/re.cpp          |  128 -----------
- src/cclive/wait.cpp        |   59 ------
- src/error.cpp              |   51 +++++
- src/exec.cpp               |   69 ++++++
- src/file.cpp               |  498 ++++++++++++++++++++++++++++++++++++++++++++
- src/get.cpp                |   95 +++++++++
- src/license.cpp            |   41 ++++
- src/log.cpp                |  145 +++++++++++++
- src/main.cpp               |   49 +++++
- src/options.cpp            |  263 +++++++++++++++++++++++
- src/progressbar.cpp        |  418 +++++++++++++++++++++++++++++++++++++
- src/re.cpp                 |  128 +++++++++++
- src/wait.cpp               |   59 ++++++
- 27 files changed, 2392 insertions(+), 2392 deletions(-)
+src/CMakeLists.txt
+src/application.cpp
+src/background.cpp
+src/cclive/application.cpp
+src/cclive/background.cpp
+src/cclive/error.cpp
+src/cclive/exec.cpp
+src/cclive/file.cpp
+src/cclive/get.cpp
+src/cclive/license.cpp
+src/cclive/log.cpp
+src/cclive/main.cpp
+src/cclive/options.cpp
+src/cclive/progressbar.cpp
+src/cclive/re.cpp
+src/cclive/wait.cpp
+src/error.cpp
+src/exec.cpp
+src/file.cpp
+src/get.cpp
+src/license.cpp
+src/log.cpp
+src/main.cpp
+src/options.cpp
+src/progressbar.cpp
+src/re.cpp
+src/wait.cpp
 
-commit ee78ce0935a49618cf6343c31240a80a68cd4ddd
+commit ee78ce0
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Mar 15 10:52:20 2011 +0200
+Date:   2011-03-15
 
     CMakeLists.txt: Add CMAKE_VERSION to summary
 
- CMakeLists.txt |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+CMakeLists.txt
 
-commit 4a9857c2e2596a30a7dbe63617095a709d0b1409
+commit 4a9857c
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Mar 12 16:18:20 2011 +0200
+Date:   2011-03-12
 
     Bump version to 0.7.4
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit b1d8a68abb7bb046c6b11bb94094fb70906cfa4d
+commit b1d8a68
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Mar 12 14:10:42 2011 +0200
+Date:   2011-03-12
 
     Set release details for 0.7.3
 
- NEWS |   12 ++++++++++++
- 1 files changed, 12 insertions(+), 0 deletions(-)
+NEWS
 
-commit c82db79c1dd44b621d35d17e6d43cd4cae6a9eac
+commit c82db79
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Mar 12 14:10:34 2011 +0200
+Date:   2011-03-12
 
     Regenerate manual for 0.7.3
 
- man1/cclive.1 |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+man1/cclive.1
 
-commit 77e82144cdf7a8a4e6fc296b746d14d273c4df68
+commit 77e8214
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sun Mar 6 12:57:22 2011 +0200
+Date:   2011-03-06
 
     Fix compilation with Boost::Filesystem v3 (#6)
     
@@ -106,38 +1467,35 @@ Date:   Sun Mar 6 12:57:22 2011 +0200
     * boost::filesystem::initial_path (depr.) -> *::*::current_path
     * http://sourceforge.net/apps/trac/cclive/ticket/6
 
- CMakeLists.txt             |   12 ++++++++++++
- config.h.cmake.in          |   16 +++++++++++++++-
- src/cclive/file.cpp        |   13 +++++++++++++
- src/cclive/options.cpp     |    6 +++++-
- src/cclive/progressbar.cpp |    6 +++++-
- 5 files changed, 50 insertions(+), 3 deletions(-)
+CMakeLists.txt
+config.h.cmake.in
+src/cclive/file.cpp
+src/cclive/options.cpp
+src/cclive/progressbar.cpp
 
-commit b8dc4f92bf289fcd097fc40947ac89b9fedbfe6a
+commit b8dc4f9
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sun Mar 6 12:13:40 2011 +0200
+Date:   2011-03-06
 
     options.cpp: Remove extra newlines
 
- src/cclive/options.cpp |    7 -------
- 1 files changed, 0 insertions(+), 7 deletions(-)
+src/cclive/options.cpp
 
-commit 6d581d57c4f88ed1b2ba25d2669c699df982eabc
+commit 6d581d5
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Feb 18 10:21:28 2011 +0200
+Date:   2011-02-18
 
     Add HAVE_QUVIOPT_CATEGORY check
     
     Set QUVIPROTO_HTTP should libquvi default value ever change.
 
- CMakeLists.txt        |    4 ++++
- config.h.cmake.in     |    1 +
- src/quvicpp/query.cpp |    3 +++
- 3 files changed, 8 insertions(+), 0 deletions(-)
+CMakeLists.txt
+config.h.cmake.in
+src/quvicpp/query.cpp
 
-commit 3a867d7cd56c19f3191c3cbf58021c4b533660e1
+commit 3a867d7
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Thu Feb 17 12:27:58 2011 +0200
+Date:   2011-02-17
 
     Do not build quvicpp as a (static) library
     
@@ -152,162 +1510,153 @@ Date:   Thu Feb 17 12:27:58 2011 +0200
     [1] http://www.vtk.org/Wiki/CMake_FAQ#Does_CMake_support_.22convenience.22_libraries.3F
     [x] http://www.gnu.org/software/hello/manual/automake/Libtool-Convenience-Libraries.html
 
- CMakeLists.txt                        |    6 +-
- cclive/CMakeLists.txt                 |   40 ---
- cclive/include/cclive/application.h   |   46 ---
- cclive/include/cclive/background.h    |   31 --
- cclive/include/cclive/error.h         |   30 --
- cclive/include/cclive/exec.h          |   31 --
- cclive/include/cclive/file.h          |   56 ----
- cclive/include/cclive/get.h           |   33 ---
- cclive/include/cclive/log.h           |   87 ------
- cclive/include/cclive/options.h       |   44 ---
- cclive/include/cclive/progressbar.h   |   74 -----
- cclive/include/cclive/re.h            |   40 ---
- cclive/include/cclive/wait.h          |   31 --
- cclive/src/application.cpp            |  469 -------------------------------
- cclive/src/background.cpp             |   94 -------
- cclive/src/error.cpp                  |   51 ----
- cclive/src/exec.cpp                   |   69 -----
- cclive/src/file.cpp                   |  485 ---------------------------------
- cclive/src/get.cpp                    |   95 -------
- cclive/src/license.cpp                |   41 ---
- cclive/src/log.cpp                    |  145 ----------
- cclive/src/main.cpp                   |   49 ----
- cclive/src/options.cpp                |  266 ------------------
- cclive/src/progressbar.cpp            |  414 ----------------------------
- cclive/src/re.cpp                     |  128 ---------
- cclive/src/wait.cpp                   |   59 ----
- include/cclive/application.h          |   46 +++
- include/cclive/background.h           |   31 ++
- include/cclive/error.h                |   30 ++
- include/cclive/exec.h                 |   31 ++
- include/cclive/file.h                 |   56 ++++
- include/cclive/get.h                  |   33 +++
- include/cclive/log.h                  |   87 ++++++
- include/cclive/options.h              |   44 +++
- include/cclive/progressbar.h          |   74 +++++
- include/cclive/re.h                   |   40 +++
- include/cclive/wait.h                 |   31 ++
- include/quvicpp/quvicpp.h             |  179 ++++++++++++
- lib/CMakeLists.txt                    |    2 -
- lib/quvicpp/CMakeLists.txt            |   22 --
- lib/quvicpp/include/quvicpp/quvicpp.h |  179 ------------
- lib/quvicpp/src/error.cpp             |   86 ------
- lib/quvicpp/src/link.cpp              |  112 --------
- lib/quvicpp/src/misc.cpp              |   53 ----
- lib/quvicpp/src/options.cpp           |  101 -------
- lib/quvicpp/src/query.cpp             |  158 -----------
- lib/quvicpp/src/video.cpp             |  189 -------------
- src/CMakeLists.txt                    |   45 +++
- src/cclive/application.cpp            |  469 +++++++++++++++++++++++++++++++
- src/cclive/background.cpp             |   94 +++++++
- src/cclive/error.cpp                  |   51 ++++
- src/cclive/exec.cpp                   |   69 +++++
- src/cclive/file.cpp                   |  485 +++++++++++++++++++++++++++++++++
- src/cclive/get.cpp                    |   95 +++++++
- src/cclive/license.cpp                |   41 +++
- src/cclive/log.cpp                    |  145 ++++++++++
- src/cclive/main.cpp                   |   49 ++++
- src/cclive/options.cpp                |  266 ++++++++++++++++++
- src/cclive/progressbar.cpp            |  414 ++++++++++++++++++++++++++++
- src/cclive/re.cpp                     |  128 +++++++++
- src/cclive/wait.cpp                   |   59 ++++
- src/quvicpp/error.cpp                 |   86 ++++++
- src/quvicpp/link.cpp                  |  112 ++++++++
- src/quvicpp/misc.cpp                  |   53 ++++
- src/quvicpp/options.cpp               |  101 +++++++
- src/quvicpp/query.cpp                 |  158 +++++++++++
- src/quvicpp/video.cpp                 |  189 +++++++++++++
- 67 files changed, 3796 insertions(+), 3811 deletions(-)
+CMakeLists.txt
+cclive/CMakeLists.txt
+cclive/include/cclive/application.h
+cclive/include/cclive/background.h
+cclive/include/cclive/error.h
+cclive/include/cclive/exec.h
+cclive/include/cclive/file.h
+cclive/include/cclive/get.h
+cclive/include/cclive/log.h
+cclive/include/cclive/options.h
+cclive/include/cclive/progressbar.h
+cclive/include/cclive/re.h
+cclive/include/cclive/wait.h
+cclive/src/application.cpp
+cclive/src/background.cpp
+cclive/src/error.cpp
+cclive/src/exec.cpp
+cclive/src/file.cpp
+cclive/src/get.cpp
+cclive/src/license.cpp
+cclive/src/log.cpp
+cclive/src/main.cpp
+cclive/src/options.cpp
+cclive/src/progressbar.cpp
+cclive/src/re.cpp
+cclive/src/wait.cpp
+include/cclive/application.h
+include/cclive/background.h
+include/cclive/error.h
+include/cclive/exec.h
+include/cclive/file.h
+include/cclive/get.h
+include/cclive/log.h
+include/cclive/options.h
+include/cclive/progressbar.h
+include/cclive/re.h
+include/cclive/wait.h
+include/quvicpp/quvicpp.h
+lib/CMakeLists.txt
+lib/quvicpp/CMakeLists.txt
+lib/quvicpp/include/quvicpp/quvicpp.h
+lib/quvicpp/src/error.cpp
+lib/quvicpp/src/link.cpp
+lib/quvicpp/src/misc.cpp
+lib/quvicpp/src/options.cpp
+lib/quvicpp/src/query.cpp
+lib/quvicpp/src/video.cpp
+src/CMakeLists.txt
+src/cclive/application.cpp
+src/cclive/background.cpp
+src/cclive/error.cpp
+src/cclive/exec.cpp
+src/cclive/file.cpp
+src/cclive/get.cpp
+src/cclive/license.cpp
+src/cclive/log.cpp
+src/cclive/main.cpp
+src/cclive/options.cpp
+src/cclive/progressbar.cpp
+src/cclive/re.cpp
+src/cclive/wait.cpp
+src/quvicpp/error.cpp
+src/quvicpp/link.cpp
+src/quvicpp/misc.cpp
+src/quvicpp/options.cpp
+src/quvicpp/query.cpp
+src/quvicpp/video.cpp
 
-commit d10c2eb50badd1535da9c3d7a49a12d4ac5b099c
+commit d10c2eb
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Thu Feb 17 11:48:58 2011 +0200
+Date:   2011-02-17
 
     Progressbar: Add inactive flag
 
- cclive/src/progressbar.cpp |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
+cclive/src/progressbar.cpp
 
-commit f077b2b4557ec68cd05713c0cf350578d2006a12
+commit f077b2b
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Mon Feb 7 22:47:42 2011 +0200
+Date:   2011-02-07
 
     Bump version to 0.7.3
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit 0eb2222be1a2e70ffb15db594050ad2c2f5b729f
+commit 0eb2222
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Mon Feb 7 22:16:37 2011 +0200
+Date:   2011-02-07
 
     Set release details for 0.7.2
 
- NEWS |    8 ++++++++
- 1 files changed, 8 insertions(+), 0 deletions(-)
+NEWS
 
-commit 947dd4f7e924a1bb1eccff8b358e724704fd8a55
+commit 947dd4f
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Feb 5 02:25:20 2011 +0200
+Date:   2011-02-05
 
     Append additional newline to -f list
     
     * Append newline to printed entries
     * foreach: Put print_host inside curly brackets
 
- cclive/src/application.cpp |   13 +++++++++----
- 1 files changed, 9 insertions(+), 4 deletions(-)
+cclive/src/application.cpp
 
-commit e90b656845580a1cde0b30afe1dbc91bf8ef0118
+commit e90b656
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Thu Feb 3 13:29:21 2011 +0200
+Date:   2011-02-03
 
     Tidy up manual, grammar, etc.
 
- man1/cclive.1     |   82 ++++++++++++++++++++++++++--------------------------
- man1/cclive.1.pod |   76 ++++++++++++++++++++++++------------------------
- 2 files changed, 79 insertions(+), 79 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit c38046996a990ec4b2f27f4bab22643d0f1f8492
+commit c380469
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Thu Feb 3 13:14:20 2011 +0200
+Date:   2011-02-03
 
     Use custom message with SIGUSR1 instead of default
     
     Report cURL generated "operation aborted by callback" as
     "sigusr1 raised" to the user.
 
- cclive/src/file.cpp |   23 +++++++++++------------
- 1 files changed, 11 insertions(+), 12 deletions(-)
+cclive/src/file.cpp
 
-commit 319f228e60804e668164cefee886cf6f67dfa8da
+commit 319f228
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Wed Feb 2 14:49:27 2011 +0200
+Date:   2011-02-02
 
     Replace "normal" progressbar with meter
     
     * Do not render filename in the progressbar
     * Make "normal" progressbar print a "meter"
 
- cclive/include/cclive/progressbar.h |    6 ++-
- cclive/src/get.cpp                  |    9 +---
- cclive/src/progressbar.cpp          |   98 +++++++++++++++-------------------
- 3 files changed, 50 insertions(+), 63 deletions(-)
+cclive/include/cclive/progressbar.h
+cclive/src/get.cpp
+cclive/src/progressbar.cpp
 
-commit ba5210c104dab49e0b0f3e31385aa0d9e164daf7
+commit ba5210c
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Feb 1 23:49:41 2011 +0200
+Date:   2011-02-01
 
     Do not set SIGWINCH again in the handler
 
- cclive/src/progressbar.cpp |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+cclive/src/progressbar.cpp
 
-commit 274e63fc423b87b53fa23f7f6843f56c8ce2515f
+commit 274e63f
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Mon Jan 31 23:19:02 2011 +0200
+Date:   2011-01-31
 
     Fix normal progressbar min-max rendering
     
@@ -315,230 +1664,216 @@ Date:   Mon Jan 31 23:19:02 2011 +0200
     * Use whole line; remove arcane "width-1"
     * Skip rendering if width drops too low
 
- cclive/include/cclive/progressbar.h |    1 -
- cclive/src/progressbar.cpp          |   47 +++++++---------------------------
- 2 files changed, 10 insertions(+), 38 deletions(-)
+cclive/include/cclive/progressbar.h
+cclive/src/progressbar.cpp
 
-commit a84f0ca162f50786cf607d9f69ccf3ffb1614eaa
+commit a84f0ca
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Mon Jan 24 12:52:24 2011 +0200
+Date:   2011-01-24
 
     --format help: Use mp4_360p instead
 
- cclive/src/application.cpp |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+cclive/src/application.cpp
 
-commit b380ab7a8301e039eba2f4969fe88eca9f187761
+commit b380ab7
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sun Jan 16 11:18:22 2011 +0200
+Date:   2011-01-16
 
     CMakeLists.txt: Re-arrange summary items
 
- CMakeLists.txt |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+CMakeLists.txt
 
-commit 7c95800aff26c2cafe9689675d22c7373d619a35
+commit 7c95800
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Jan 14 18:02:11 2011 +0200
+Date:   2011-01-14
 
     Manual: Add SIGUSR1 example
 
- man1/cclive.1     |    8 +++++++-
- man1/cclive.1.pod |    6 ++++++
- 2 files changed, 13 insertions(+), 1 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit aec87d427dca5d93b29cde951f299b908a4566a2
+commit aec87d4
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Jan 14 17:52:27 2011 +0200
+Date:   2011-01-14
 
     Add SIGUSR1 handler
     
     * Interrupt current transfer if SIGUSR1 is raised
     * e.g. kill -USR1 $pid
 
- cclive/src/file.cpp |   39 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 39 insertions(+), 0 deletions(-)
+cclive/src/file.cpp
 
-commit 3a9f73807602a9e311d79cba5db662ce2d01e14f
+commit 3a9f738
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Jan 14 17:34:25 2011 +0200
+Date:   2011-01-14
 
     Add signal function check
 
- CMakeLists.txt    |    1 +
- config.h.cmake.in |    1 +
- 2 files changed, 2 insertions(+), 0 deletions(-)
+CMakeLists.txt
+config.h.cmake.in
 
-commit 952cd21b638ca31714564e6a8bb1ce24c6b1d5f9
+commit 952cd21
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Jan 11 13:54:11 2011 +0200
+Date:   2011-01-11
 
     Add email to copyright lines
 
- cclive/include/cclive/application.h   |    2 +-
- cclive/include/cclive/background.h    |    2 +-
- cclive/include/cclive/error.h         |    2 +-
- cclive/include/cclive/exec.h          |    2 +-
- cclive/include/cclive/file.h          |    2 +-
- cclive/include/cclive/get.h           |    2 +-
- cclive/include/cclive/log.h           |    2 +-
- cclive/include/cclive/options.h       |    2 +-
- cclive/include/cclive/progressbar.h   |    2 +-
- cclive/include/cclive/re.h            |    2 +-
- cclive/include/cclive/wait.h          |    2 +-
- cclive/src/application.cpp            |    2 +-
- cclive/src/background.cpp             |    2 +-
- cclive/src/error.cpp                  |    2 +-
- cclive/src/exec.cpp                   |    2 +-
- cclive/src/file.cpp                   |    2 +-
- cclive/src/get.cpp                    |    2 +-
- cclive/src/license.cpp                |    2 +-
- cclive/src/log.cpp                    |    2 +-
- cclive/src/main.cpp                   |    2 +-
- cclive/src/options.cpp                |    2 +-
- cclive/src/progressbar.cpp            |    2 +-
- cclive/src/re.cpp                     |    2 +-
- cclive/src/wait.cpp                   |    2 +-
- lib/quvicpp/include/quvicpp/quvicpp.h |    2 +-
- lib/quvicpp/src/error.cpp             |    2 +-
- lib/quvicpp/src/link.cpp              |    2 +-
- lib/quvicpp/src/misc.cpp              |    2 +-
- lib/quvicpp/src/options.cpp           |    2 +-
- lib/quvicpp/src/query.cpp             |    2 +-
- lib/quvicpp/src/video.cpp             |    2 +-
- 31 files changed, 31 insertions(+), 31 deletions(-)
+cclive/include/cclive/application.h
+cclive/include/cclive/background.h
+cclive/include/cclive/error.h
+cclive/include/cclive/exec.h
+cclive/include/cclive/file.h
+cclive/include/cclive/get.h
+cclive/include/cclive/log.h
+cclive/include/cclive/options.h
+cclive/include/cclive/progressbar.h
+cclive/include/cclive/re.h
+cclive/include/cclive/wait.h
+cclive/src/application.cpp
+cclive/src/background.cpp
+cclive/src/error.cpp
+cclive/src/exec.cpp
+cclive/src/file.cpp
+cclive/src/get.cpp
+cclive/src/license.cpp
+cclive/src/log.cpp
+cclive/src/main.cpp
+cclive/src/options.cpp
+cclive/src/progressbar.cpp
+cclive/src/re.cpp
+cclive/src/wait.cpp
+lib/quvicpp/include/quvicpp/quvicpp.h
+lib/quvicpp/src/error.cpp
+lib/quvicpp/src/link.cpp
+lib/quvicpp/src/misc.cpp
+lib/quvicpp/src/options.cpp
+lib/quvicpp/src/query.cpp
+lib/quvicpp/src/video.cpp
 
-commit 4a5d6e8e102dbb221f5ea28f04253b8f4510f738
+commit 4a5d6e8
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Mon Jan 10 10:01:22 2011 +0200
+Date:   2011-01-10
 
     Apply style changes with astyle
     
     * Add scripts/astyle_cpp.sh
     * Tweak vim modelines
 
- cclive/include/cclive/application.h   |   22 +-
- cclive/include/cclive/background.h    |    7 +-
- cclive/include/cclive/error.h         |    7 +-
- cclive/include/cclive/exec.h          |    7 +-
- cclive/include/cclive/file.h          |   46 ++--
- cclive/include/cclive/get.h           |    7 +-
- cclive/include/cclive/log.h           |   63 +++--
- cclive/include/cclive/options.h       |   24 +-
- cclive/include/cclive/progressbar.h   |   70 +++---
- cclive/include/cclive/re.h            |   16 +-
- cclive/include/cclive/wait.h          |    7 +-
- cclive/src/application.cpp            |  485 ++++++++++++++++++---------------
- cclive/src/background.cpp             |   62 +++--
- cclive/src/error.cpp                  |   28 +-
- cclive/src/exec.cpp                   |   44 ++--
- cclive/src/file.cpp                   |  434 ++++++++++++++++--------------
- cclive/src/get.cpp                    |   77 +++---
- cclive/src/license.cpp                |   39 ++--
- cclive/src/log.cpp                    |  107 ++++---
- cclive/src/main.cpp                   |   44 ++--
- cclive/src/options.cpp                |  345 ++++++++++++-----------
- cclive/src/progressbar.cpp            |  421 +++++++++++++++-------------
- cclive/src/re.cpp                     |  114 +++++----
- cclive/src/wait.cpp                   |   27 +-
- lib/quvicpp/include/quvicpp/quvicpp.h |  178 +++++++------
- lib/quvicpp/src/error.cpp             |   54 +++--
- lib/quvicpp/src/link.cpp              |   72 +++--
- lib/quvicpp/src/misc.cpp              |   30 ++-
- lib/quvicpp/src/options.cpp           |   87 ++++---
- lib/quvicpp/src/query.cpp             |  126 +++++----
- lib/quvicpp/src/video.cpp             |  170 +++++++-----
- scripts/astyle_cpp.sh                 |    6 +
- 32 files changed, 1777 insertions(+), 1449 deletions(-)
+cclive/include/cclive/application.h
+cclive/include/cclive/background.h
+cclive/include/cclive/error.h
+cclive/include/cclive/exec.h
+cclive/include/cclive/file.h
+cclive/include/cclive/get.h
+cclive/include/cclive/log.h
+cclive/include/cclive/options.h
+cclive/include/cclive/progressbar.h
+cclive/include/cclive/re.h
+cclive/include/cclive/wait.h
+cclive/src/application.cpp
+cclive/src/background.cpp
+cclive/src/error.cpp
+cclive/src/exec.cpp
+cclive/src/file.cpp
+cclive/src/get.cpp
+cclive/src/license.cpp
+cclive/src/log.cpp
+cclive/src/main.cpp
+cclive/src/options.cpp
+cclive/src/progressbar.cpp
+cclive/src/re.cpp
+cclive/src/wait.cpp
+lib/quvicpp/include/quvicpp/quvicpp.h
+lib/quvicpp/src/error.cpp
+lib/quvicpp/src/link.cpp
+lib/quvicpp/src/misc.cpp
+lib/quvicpp/src/options.cpp
+lib/quvicpp/src/query.cpp
+lib/quvicpp/src/video.cpp
+scripts/astyle_cpp.sh
 
-commit caa50e0d92f3edc12c39a82fcf4a867862a633e2
+commit caa50e0
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Jan 7 23:53:55 2011 +0200
+Date:   2011-01-07
 
     Add gitignore file
 
- .gitignore |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+.gitignore
 
-commit fa36a5d620be357cec13c96c1289417e48dfd44f
+commit fa36a5d
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Jan 7 10:44:09 2011 +0200
+Date:   2011-01-07
 
     Bump version to 0.7.2
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit 24f66fe7e2f9be7a9985042c70db26592a24d5dc
+commit 24f66fe
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Jan 7 10:34:05 2011 +0200
+Date:   2011-01-07
 
     Set release details for 0.7.1
 
- NEWS |   13 +++++++++++++
- 1 files changed, 13 insertions(+), 0 deletions(-)
+NEWS
 
-commit c31424523ed97b948e879482a37e41c894fcb4c1
+commit c314245
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Wed Jan 5 22:15:59 2011 +0200
+Date:   2011-01-05
 
     makedist.sh: Add a warning
 
- scripts/makedist.sh |   16 +++++++++++++---
- 1 files changed, 13 insertions(+), 3 deletions(-)
+scripts/makedist.sh
 
-commit cf560b926cbfb94fcfcb3a5a5f3325a7128b3967
+commit cf560b9
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Wed Jan 5 21:58:39 2011 +0200
+Date:   2011-01-05
 
     Manual: Add -b example
 
- man1/cclive.1     |    8 ++++++--
- man1/cclive.1.pod |    6 +++++-
- 2 files changed, 11 insertions(+), 3 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit decf7d41838891420d35281f6bc95038af3f57ce
+commit decf7d4
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Wed Jan 5 00:34:31 2011 +0200
+Date:   2011-01-05
 
     Add vim modelines to source code
 
- cclive/include/cclive/application.h   |    2 +-
- cclive/include/cclive/background.h    |    2 +-
- cclive/include/cclive/error.h         |    2 +-
- cclive/include/cclive/exec.h          |    2 +-
- cclive/include/cclive/file.h          |    2 +-
- cclive/include/cclive/get.h           |    2 +-
- cclive/include/cclive/log.h           |    2 +-
- cclive/include/cclive/options.h       |    2 +-
- cclive/include/cclive/progressbar.h   |    3 +--
- cclive/include/cclive/re.h            |    2 +-
- cclive/include/cclive/wait.h          |    2 +-
- cclive/src/application.cpp            |    2 +-
- cclive/src/background.cpp             |    2 +-
- cclive/src/error.cpp                  |    2 +-
- cclive/src/exec.cpp                   |    2 +-
- cclive/src/file.cpp                   |    2 +-
- cclive/src/get.cpp                    |    2 +-
- cclive/src/license.cpp                |    2 +-
- cclive/src/log.cpp                    |    2 +-
- cclive/src/main.cpp                   |    2 +-
- cclive/src/options.cpp                |    2 +-
- cclive/src/progressbar.cpp            |    2 +-
- cclive/src/re.cpp                     |    2 +-
- cclive/src/wait.cpp                   |    2 +-
- lib/quvicpp/include/quvicpp/quvicpp.h |    2 +-
- lib/quvicpp/src/error.cpp             |    2 +-
- lib/quvicpp/src/link.cpp              |    2 +-
- lib/quvicpp/src/misc.cpp              |    2 +-
- lib/quvicpp/src/options.cpp           |    2 +-
- lib/quvicpp/src/query.cpp             |    2 +-
- lib/quvicpp/src/video.cpp             |    2 +-
- 31 files changed, 31 insertions(+), 32 deletions(-)
+cclive/include/cclive/application.h
+cclive/include/cclive/background.h
+cclive/include/cclive/error.h
+cclive/include/cclive/exec.h
+cclive/include/cclive/file.h
+cclive/include/cclive/get.h
+cclive/include/cclive/log.h
+cclive/include/cclive/options.h
+cclive/include/cclive/progressbar.h
+cclive/include/cclive/re.h
+cclive/include/cclive/wait.h
+cclive/src/application.cpp
+cclive/src/background.cpp
+cclive/src/error.cpp
+cclive/src/exec.cpp
+cclive/src/file.cpp
+cclive/src/get.cpp
+cclive/src/license.cpp
+cclive/src/log.cpp
+cclive/src/main.cpp
+cclive/src/options.cpp
+cclive/src/progressbar.cpp
+cclive/src/re.cpp
+cclive/src/wait.cpp
+lib/quvicpp/include/quvicpp/quvicpp.h
+lib/quvicpp/src/error.cpp
+lib/quvicpp/src/link.cpp
+lib/quvicpp/src/misc.cpp
+lib/quvicpp/src/options.cpp
+lib/quvicpp/src/query.cpp
+lib/quvicpp/src/video.cpp
 
-commit 5de72f32a5973d4d5e809191f4537246cb2666cd
+commit 5de72f3
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Wed Jan 5 00:17:28 2011 +0200
+Date:   2011-01-05
 
     background.cpp: Rewrite go_background
     
@@ -546,104 +1881,94 @@ Date:   Wed Jan 5 00:17:28 2011 +0200
     * Close unneeded file streams
     * Move cclive::log.push and omit=true
 
- cclive/src/background.cpp |   31 ++++++++++++++++---------------
- 1 files changed, 16 insertions(+), 15 deletions(-)
+cclive/src/background.cpp
 
-commit 8be6ff2c44cca2d8f029315ccfa3957f8bf33f1d
+commit 8be6ff2
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Wed Jan 5 00:14:51 2011 +0200
+Date:   2011-01-05
 
     options.cpp: Put background inside HAVE_FORK block
 
- cclive/src/options.cpp |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
+cclive/src/options.cpp
 
-commit a7bba79511c2846449a2d7f69ce6cbd7be6fba19
+commit a7bba79
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Wed Jan 5 00:13:13 2011 +0200
+Date:   2011-01-05
 
     Print pid to log file when running in background
     
     - Add pid to log file print out
     - Put "background" inside HAVE_FORK block
 
- cclive/src/application.cpp |   19 +++++++++++++++++--
- 1 files changed, 17 insertions(+), 2 deletions(-)
+cclive/src/application.cpp
 
-commit 23d9381cf3f44057dc2294b708ce0bce98e4e6bb
+commit 23d9381
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Wed Jan 5 00:12:02 2011 +0200
+Date:   2011-01-05
 
     Add getpid check
 
- CMakeLists.txt    |    1 +
- config.h.cmake.in |    1 +
- 2 files changed, 2 insertions(+), 0 deletions(-)
+CMakeLists.txt
+config.h.cmake.in
 
-commit 55c2309d4eac357d6ef8a1e7df2dd3cbc245050d
+commit 55c2309
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Mon Jan 3 00:44:27 2011 +0200
+Date:   2011-01-03
 
     Fix wrong full path for downloaded file [#5]
     
     * http://sourceforge.net/apps/trac/cclive/ticket/5
 
- cclive/src/file.cpp |   12 +++++-------
- 1 files changed, 5 insertions(+), 7 deletions(-)
+cclive/src/file.cpp
 
-commit 446d9dc0fbecf357093f68865ffd6d315994f74b
+commit 446d9dc
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Wed Dec 29 20:57:13 2010 +0200
+Date:   2010-12-29
 
     Lower pcre/pcrecpp prerequisite to 8.02
 
- CMakeLists.txt |    5 +++--
- INSTALL        |    2 +-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+CMakeLists.txt
+INSTALL
 
-commit b4ad37b8e102b425a75fccd55e902b524dc80ca2
+commit b4ad37b
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Dec 28 11:14:41 2010 +0200
+Date:   2010-12-28
 
     Fix dot progressbar to print 100%
 
- cclive/src/progressbar.cpp |   47 +++++++++++++++++++++++++++++--------------
- 1 files changed, 32 insertions(+), 15 deletions(-)
+cclive/src/progressbar.cpp
 
-commit dd01077cc3b05b8d14844e46caece3b08e774185
+commit dd01077
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Dec 28 09:54:51 2010 +0200
+Date:   2010-12-28
 
     Print exceptions caught in main.cpp to std::clog
     
     Print the exceptions caught in main.cpp to std::clog exlusively.
     The --quiet switch will not have control over these. See also 5c04ea4.
 
- cclive/src/application.cpp |    2 +-
- cclive/src/main.cpp        |    7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+cclive/src/application.cpp
+cclive/src/main.cpp
 
-commit 935b2922c542ba456c17c81b282f160e39a19194
+commit 935b292
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Dec 28 00:53:29 2010 +0200
+Date:   2010-12-28
 
     Always print options parser errors to std::clog
 
- cclive/src/application.cpp |    7 ++-----
- 1 files changed, 2 insertions(+), 5 deletions(-)
+cclive/src/application.cpp
 
-commit 61b1981081af794dc15e394650361ad7933f8a59
+commit 61b1981
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Dec 28 00:45:34 2010 +0200
+Date:   2010-12-28
 
     Use capital letters in first words of help strings
 
- cclive/src/options.cpp |   75 ++++++++++++++++++++++++++++--------------------
- 1 files changed, 44 insertions(+), 31 deletions(-)
+cclive/src/options.cpp
 
-commit 8e861e05472fb5f8191a0d6ce6b8617dbfaa4285
+commit 8e861e0
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Tue Dec 28 00:36:19 2010 +0200
+Date:   2010-12-28
 
     Add --no-shortened
     
@@ -651,80 +1976,74 @@ Date:   Tue Dec 28 00:36:19 2010 +0200
     conditional, e.g. check that quvi 0.2.8 or later is found. Make
     package checks also less verbose and move the "Found" section.
 
- CMakeLists.txt                        |   33 ++++++++++++++++++++-------------
- cclive/src/application.cpp            |    9 +++++----
- cclive/src/options.cpp                |    5 +++++
- config.h.cmake.in                     |    2 ++
- lib/quvicpp/include/quvicpp/quvicpp.h |    4 +++-
- lib/quvicpp/src/options.cpp           |   23 ++++++++++-------------
- lib/quvicpp/src/query.cpp             |   13 ++++++++++---
- man1/cclive.1                         |    6 +++++-
- man1/cclive.1.pod                     |    5 +++++
- 9 files changed, 65 insertions(+), 35 deletions(-)
+CMakeLists.txt
+cclive/src/application.cpp
+cclive/src/options.cpp
+config.h.cmake.in
+lib/quvicpp/include/quvicpp/quvicpp.h
+lib/quvicpp/src/options.cpp
+lib/quvicpp/src/query.cpp
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 5c04ea475aea2f029b2b4589b6d9f421e5e1d789
+commit 5c04ea4
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Mon Dec 27 23:32:38 2010 +0200
+Date:   2010-12-27
 
     Make --quiet exclusive
 
- cclive/src/application.cpp |    6 +++---
- cclive/src/file.cpp        |    4 ++--
- cclive/src/get.cpp         |    5 +++--
- cclive/src/main.cpp        |    5 +++--
- cclive/src/wait.cpp        |    9 +++++----
- man1/cclive.1              |    4 ++--
- man1/cclive.1.pod          |    2 +-
- 7 files changed, 19 insertions(+), 16 deletions(-)
+cclive/src/application.cpp
+cclive/src/file.cpp
+cclive/src/get.cpp
+cclive/src/main.cpp
+cclive/src/wait.cpp
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 8e611a30501bbd45a6518bd1dc126ebed933588a
+commit 8e611a3
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Mon Dec 27 23:30:07 2010 +0200
+Date:   2010-12-27
 
     Bump version to 0.7.1
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit 564348f75ff43e2f68792e8f51e9c6eeaf0a87e4
+commit 564348f
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sun Dec 19 00:12:30 2010 +0200
+Date:   2010-12-19
 
     Remove CPack and "dist" target
 
- CMakeLists.txt |   40 ----------------------------------------
- 1 files changed, 0 insertions(+), 40 deletions(-)
+CMakeLists.txt
 
-commit 806f00eeded6f10db6bfec128db4465a92e43a61
+commit 806f00e
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sun Dec 19 00:10:20 2010 +0200
+Date:   2010-12-19
 
     Add makedist.sh
 
- scripts/makedist.sh |   19 +++++++++++++++++++
- 1 files changed, 19 insertions(+), 0 deletions(-)
+scripts/makedist.sh
 
-commit 54a372974842a0733eb2a1bcff01eaaadd1c0adc
+commit 54a3729
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 18 23:57:55 2010 +0200
+Date:   2010-12-18
 
     Add stub ChangeLog
 
- 0 files changed, 0 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit c8c2770fef77667f7aa81a6ae382fdf09114a87f
+commit c8c2770
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 18 21:28:50 2010 +0200
+Date:   2010-12-18
 
     CMakeLists.txt: Set BRANCH to "master"
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit c200b938716c1c1d2602a0a08e4dc6924d7b349a
+commit c200b93
 Merge: c2622e2 2cefa2b
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 18 21:13:32 2010 +0200
+Date:   2010-12-18
 
     Merge branch '0.7.0'
     
@@ -735,1190 +2054,1074 @@ Date:   Sat Dec 18 21:13:32 2010 +0200
     	configure
     	configure.ac
 
-commit 2cefa2b7152fbd33eebef7ddaa9b083cdb3f9475
+commit 2cefa2b
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 18 17:06:56 2010 +0200
+Date:   2010-12-18
 
     file.cpp: include unistd.h
 
- cclive/src/file.cpp |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+cclive/src/file.cpp
 
-commit 28e9ea6859770edc5b9f3f6eedaebae64680e41f
+commit 28e9ea6
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 18 16:18:44 2010 +0200
+Date:   2010-12-18
 
     Set release details for 0.7.0.1
 
- NEWS |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+NEWS
 
-commit 1402c93b6b6be91657340bcd67e94ccbbec30f5b
+commit 1402c93
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Dec 17 12:52:40 2010 +0200
+Date:   2010-12-17
 
     Add --output-dir to manual
 
- man1/cclive.1     |   10 +++++++---
- man1/cclive.1.pod |    9 +++++++--
- 2 files changed, 14 insertions(+), 5 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 211e7c2f2ac7a91b15f7b1dcdc558416fe926e6d
+commit 211e7c2
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Dec 17 12:47:54 2010 +0200
+Date:   2010-12-17
 
     Add --output-dir [#1]
     
     - http://sourceforge.net/apps/trac/cclive/ticket/1
 
- cclive/src/file.cpp    |   39 +++++++++++++++++++++++++++++++++------
- cclive/src/options.cpp |    3 +++
- 2 files changed, 36 insertions(+), 6 deletions(-)
+cclive/src/file.cpp
+cclive/src/options.cpp
 
-commit 62e47c56863e8256b0edbae5976bed07bdd52a27
+commit 62e47c5
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 11 15:29:00 2010 +0200
+Date:   2010-12-11
 
     Tweak project description
 
- README            |    2 +-
- man1/cclive.1     |    4 ++--
- man1/cclive.1.pod |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+README
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 8b586005e733b256b819a9e7a7e1207290185850
+commit 8b58600
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Dec 10 13:12:22 2010 +0200
+Date:   2010-12-10
 
     Set new home WWW
     
     New home URL, remove esoteric topics from the manual.
 
- README            |    4 +-
- man1/cclive.1     |   88 ++++----------------------------------------
- man1/cclive.1.pod |  104 ++++-------------------------------------------------
- 3 files changed, 17 insertions(+), 179 deletions(-)
+README
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 4001eb171c2bcc01bc75e03c5c4d66032cbc9bb6
+commit 4001eb1
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Fri Dec 10 13:04:21 2010 +0200
+Date:   2010-12-10
 
     Change format ID used in one of the examples
 
- man1/cclive.1     |   10 +++++-----
- man1/cclive.1.pod |    4 ++--
- 2 files changed, 7 insertions(+), 7 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 6169c18b81b58b69a14a6824c85977923f616030
+commit 6169c18
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 4 19:30:08 2010 +0200
+Date:   2010-12-04
 
     Bump version to 0.7.0.1
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit a512fa4095cdcb0b4729417851acf465844cd332
+commit a512fa4
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 4 18:12:45 2010 +0200
+Date:   2010-12-04
 
     Fix CMAKE_VERBOSE_MAKEFILE
 
- CMakeLists.txt |   12 ++++++++----
- NEWS           |    4 +++-
- 2 files changed, 11 insertions(+), 5 deletions(-)
+CMakeLists.txt
+NEWS
 
-commit 266ef632986f16a554798a307695001deba90174
+commit 266ef63
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 4 18:00:47 2010 +0200
+Date:   2010-12-04
 
     Set 0.7.0rc2 release date
 
- NEWS |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+NEWS
 
-commit dd84c3b9da4fbffa68ddb777a15b5c61e003f130
+commit dd84c3b
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 4 17:58:52 2010 +0200
+Date:   2010-12-04
 
     Add custom target "dist"
 
- CMakeLists.txt |    9 +++++++++
- 1 files changed, 9 insertions(+), 0 deletions(-)
+CMakeLists.txt
 
-commit 6d99964eda3e28446084c1a1201bd19df54ee6a8
+commit 6d99964
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 4 16:21:57 2010 +0200
+Date:   2010-12-04
 
     Rename ChangeLog to ChangeLog.pre-gitlog
 
- ChangeLog            |  634 --------------------------------------------------
- ChangeLog.pre-gitlog |  634 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 634 insertions(+), 634 deletions(-)
+ChangeLog
+ChangeLog.pre-gitlog
 
-commit b97d42cd58e866d25f9bcc13e45a6f1e331e9a15
+commit b97d42c
 Author: Toni Gundogdu <legatvs.git@gmail.com>
-Date:   Sat Dec 4 16:21:01 2010 +0200
+Date:   2010-12-04
 
     NEWS: Move 0.7.0 changes from ChangeLog
 
- ChangeLog |   50 --------------------------------------------------
- NEWS      |   49 +++++++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 45 insertions(+), 54 deletions(-)
+ChangeLog
+NEWS
 
-commit 43a072b960e628819cffcd7672d0834fcf6e7808
+commit 43a072b
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Nov 30 10:57:03 2010 +0200
+Date:   2010-11-30
 
     lower boost prerequisite to 1.42.0
 
- CMakeLists.txt |    2 +-
- ChangeLog      |    1 +
- INSTALL        |    2 +-
- 3 files changed, 3 insertions(+), 2 deletions(-)
+CMakeLists.txt
+ChangeLog
+INSTALL
 
-commit aff1c12ae3d5c658ca431a37a9d351fcb5265a6a
+commit aff1c12
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sun Nov 28 22:31:46 2010 +0200
+Date:   2010-11-28
 
     ChangeLog: add 590af25, 47d066c
 
- ChangeLog |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit fa8ba4feed1b7dc33fa2727fe88ebd9df440d3da
+commit fa8ba4f
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sun Nov 28 22:26:54 2010 +0200
+Date:   2010-11-28
 
     add -f help,list
 
- ChangeLog                           |    5 ++
- cclive/include/cclive/application.h |    4 +-
- cclive/src/application.cpp          |   70 +++++++++++++++++++++++++++++++++--
- man1/cclive.1                       |    4 +-
- man1/cclive.1.pod                   |    2 +-
- 5 files changed, 76 insertions(+), 9 deletions(-)
+ChangeLog
+cclive/include/cclive/application.h
+cclive/src/application.cpp
+man1/cclive.1
+man1/cclive.1.pod
 
-commit d1f3756dd6a7d9841c5db07dde11ef10d0b77761
+commit d1f3756
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Nov 27 10:56:00 2010 +0200
+Date:   2010-11-27
 
     CMakeLists.txt: status: put in groups
 
- CMakeLists.txt |   32 ++++++++++++++++++++++----------
- 1 files changed, 22 insertions(+), 10 deletions(-)
+CMakeLists.txt
 
-commit 8d17afcba09ee4a953ec51c01edae77be204c4fd
+commit 8d17afc
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Nov 26 00:52:32 2010 +0200
+Date:   2010-11-26
 
     CMakeLists.txt: status: make less verbose
 
- CMakeLists.txt |   16 +++-------------
- 1 files changed, 3 insertions(+), 13 deletions(-)
+CMakeLists.txt
 
-commit 47d066c42560e38f7280d7ab369009d94bb42b28
+commit 47d066c
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Nov 26 00:50:35 2010 +0200
+Date:   2010-11-26
 
     gzip manual page before installing it
 
- CMakeLists.txt      |    2 ++
- man1/CMakeLists.txt |   30 +++++++++++++++++++++++++++---
- 2 files changed, 29 insertions(+), 3 deletions(-)
+CMakeLists.txt
+man1/CMakeLists.txt
 
-commit 0d2154cfc819a8a4cc871dc06779a878f22043b0
+commit 0d2154c
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Nov 26 00:15:39 2010 +0200
+Date:   2010-11-26
 
     cpack_generator: tbz2 -> tgz
 
- CMakeLists.txt |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+CMakeLists.txt
 
-commit 590af25567f507bc56c4362b81fc6452c0c0ee63
+commit 590af25
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Nov 26 00:10:02 2010 +0200
+Date:   2010-11-26
 
     fix cclive.1 destination dir
 
- man1/CMakeLists.txt |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+man1/CMakeLists.txt
 
-commit c07c411a8f0bbb272584b3806b200c8e335e8dc2
+commit c07c411
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Nov 20 18:22:08 2010 +0200
+Date:   2010-11-20
 
     bump version
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit 2698b62f25061e656d4114b553e4834daf06df24
+commit 2698b62
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Nov 20 18:10:10 2010 +0200
+Date:   2010-11-20
 
     set release date
 
- ChangeLog |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit e4d14c4b16f5682058df5d94a47bec39f29a0019
+commit e4d14c4
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Nov 18 11:45:25 2010 +0200
+Date:   2010-11-18
 
     manual: tweak --proxy, --no-proxy descriptions
 
- man1/cclive.1     |   10 +++++-----
- man1/cclive.1.pod |    8 ++++----
- 2 files changed, 9 insertions(+), 9 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit c78a795dc9a0a8db2856c032c3a8652af28673b8
+commit c78a795
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Nov 10 22:11:59 2010 +0200
+Date:   2010-11-10
 
     cpack: ignore files: tweak .git pattern
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit f32a54b8edaecd461c5bb114e92d978f05762239
+commit f32a54b
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Nov 5 11:11:16 2010 +0200
+Date:   2010-11-05
 
     bump version
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit df7946a769c04c86cfad05f451c9dfec844ac6c5
+commit df7946a
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Nov 4 20:17:36 2010 +0200
+Date:   2010-11-04
 
     rewrite to_unit
 
- cclive/src/progressbar.cpp |   22 ++++++++++------------
- 1 files changed, 10 insertions(+), 12 deletions(-)
+cclive/src/progressbar.cpp
 
-commit 24384b3b58b3f0852dbc3c8bf103d97a96dc0ab8
+commit 24384b3
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Nov 3 23:28:41 2010 +0200
+Date:   2010-11-03
 
     set release date
 
- ChangeLog |    3 +--
- 1 files changed, 1 insertions(+), 2 deletions(-)
+ChangeLog
 
-commit e4e509f73b987221414706b5fc303b909caee617
+commit e4e509f
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Oct 30 01:31:29 2010 +0300
+Date:   2010-10-30
 
     shorten descr
 
- README            |   11 +++--------
- man1/cclive.1     |    7 +++----
- man1/cclive.1.pod |    7 +++----
- 3 files changed, 9 insertions(+), 16 deletions(-)
+README
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 0d3e32a112d3f48f9754797bd8f62386fb69f014
+commit 0d3e32a
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Oct 29 19:55:11 2010 +0300
+Date:   2010-10-29
 
     descr: add flash in the mix
 
- README            |    7 ++++---
- man1/cclive.1     |    9 ++++++---
- man1/cclive.1.pod |    7 +++++--
- 3 files changed, 15 insertions(+), 8 deletions(-)
+README
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 0f29512427d2dc279a8289e45f3ef86508bc0aaf
+commit 0f29512
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Oct 29 13:16:28 2010 +0300
+Date:   2010-10-29
 
     README: merge premise, rewrite
 
- README |   20 +++++++++-----------
- 1 files changed, 9 insertions(+), 11 deletions(-)
+README
 
-commit 03fa777e1236a423289ad5e89847d596df3c73d3
+commit 03fa777
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Oct 29 12:57:45 2010 +0300
+Date:   2010-10-29
 
     README: fix grammar
 
- README |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+README
 
-commit d6e9ca1db30384d82e029dc2c05d07a0cc39a15f
+commit d6e9ca1
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Oct 29 12:45:59 2010 +0300
+Date:   2010-10-29
 
     README: add premise
 
- README |   14 ++++++++++----
- 1 files changed, 10 insertions(+), 4 deletions(-)
+README
 
-commit 531d876daeed182a0d7ac8562346375d6abf1b91
+commit 531d876
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Oct 25 14:18:24 2010 +0300
+Date:   2010-10-25
 
     NEWS, update 0.7 details
 
- NEWS |   10 ++++------
- 1 files changed, 4 insertions(+), 6 deletions(-)
+NEWS
 
-commit a3312e4de3d95e4d1d6ffda57a733b729502b48c
+commit a3312e4
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Oct 25 13:06:54 2010 +0300
+Date:   2010-10-25
 
     remove -r
 
- cclive/src/options.cpp |    4 ++--
- man1/cclive.1          |    6 +++---
- man1/cclive.1.pod      |    2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+cclive/src/options.cpp
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 063ca0c72de356e2604cda4b02cbfafc3a23e97f
+commit 063ca0c
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Oct 23 12:20:35 2010 +0300
+Date:   2010-10-23
 
     update ChangeLog
 
- ChangeLog |    7 +++----
- 1 files changed, 3 insertions(+), 4 deletions(-)
+ChangeLog
 
-commit b86e7361263170cda49187e4a4132975a29fff45
+commit b86e736
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Oct 23 12:06:49 2010 +0300
+Date:   2010-10-23
 
     add --regexp check
 
- cclive/src/options.cpp |   27 ++++++++++++++++++++++-----
- 1 files changed, 22 insertions(+), 5 deletions(-)
+cclive/src/options.cpp
 
-commit 34ed3117bf73bb46090a4f7fbaa9bc381f5f6ba5
+commit 34ed311
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Oct 23 11:53:31 2010 +0300
+Date:   2010-10-23
 
     progressbar, improve line clearing
 
- cclive/src/progressbar.cpp |   28 ++++++++++++++++++----------
- 1 files changed, 18 insertions(+), 10 deletions(-)
+cclive/src/progressbar.cpp
 
-commit fc471daea9124724604fcef73e04ecd4a353e976
+commit fc471da
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Oct 23 11:22:53 2010 +0300
+Date:   2010-10-23
 
     change example URLs
 
- man1/cclive.1     |   28 ++++++++++++++--------------
- man1/cclive.1.pod |   10 +++++-----
- 2 files changed, 19 insertions(+), 19 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 55b55862a0b7d0590597890a1ef4d8facfa7ca26
+commit 55b5586
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Oct 22 11:18:46 2010 +0300
+Date:   2010-10-22
 
     use cleaner size initialization
 
- cclive/src/progressbar.cpp |    7 +++++--
- 1 files changed, 5 insertions(+), 2 deletions(-)
+cclive/src/progressbar.cpp
 
-commit 7de9c1f8b351a58b00836dd2317b152463e6f4a4
+commit 7de9c1f
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Oct 21 17:43:59 2010 +0300
+Date:   2010-10-21
 
     add fix progressbar to ChangeLog
 
- ChangeLog |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit 9837f56c38d7426b64000e1f026d2b4dc5746b2f
+commit 9837f56
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Oct 21 17:22:20 2010 +0300
+Date:   2010-10-21
 
     fix progressbar resizing anomalies
 
- cclive/include/cclive/progressbar.h |    5 ++-
- cclive/src/progressbar.cpp          |   39 +++++++++++++++++++++-------------
- 2 files changed, 27 insertions(+), 17 deletions(-)
+cclive/include/cclive/progressbar.h
+cclive/src/progressbar.cpp
 
-commit dddc127d50a3c626b909696a1ae94c2ca6d06a5a
+commit dddc127
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Oct 19 00:01:20 2010 +0300
+Date:   2010-10-19
 
     make newline obligatory if an error occurs.
 
- cclive/src/file.cpp |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+cclive/src/file.cpp
 
-commit ae8f7609f6ba2d420f7877542ebe62572d98412d
+commit ae8f760
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Oct 19 00:00:32 2010 +0300
+Date:   2010-10-19
 
     move std::stringstream
 
- cclive/src/progressbar.cpp |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+cclive/src/progressbar.cpp
 
-commit 5cb89b36ba4c89621267149036fcceedae19c8ac
+commit 5cb89b3
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Oct 19 00:00:09 2010 +0300
+Date:   2010-10-19
 
     tweak additional support notes in manual
 
- man1/cclive.1     |    6 +++---
- man1/cclive.1.pod |    5 ++---
- 2 files changed, 5 insertions(+), 6 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit e99bda2f0057d373633652e39b8e4fe9ff850c76
+commit e99bda2
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sun Oct 17 23:16:58 2010 +0300
+Date:   2010-10-17
 
     add man cleanup to ChangeLog.
 
- ChangeLog |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit df9d3130428964e60022da3cbe70bf448f7eeb29
+commit df9d313
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sun Oct 17 22:47:26 2010 +0300
+Date:   2010-10-17
 
     bump version.
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit 7854a49632c495decf744b6c4b73723f77e61d66
+commit 7854a49
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sun Oct 17 22:46:38 2010 +0300
+Date:   2010-10-17
 
     tweak help strings.
 
- cclive/src/options.cpp |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+cclive/src/options.cpp
 
-commit 6703d327dafff327f831b946f7e6eead27f04008
+commit 6703d32
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sun Oct 17 22:45:44 2010 +0300
+Date:   2010-10-17
 
     clean up manual page.
 
- man1/cclive.1     |  234 +++++++++++++++++++++++++++++++---------------------
- man1/cclive.1.pod |  157 ++++++++++++++++++++++--------------
- 2 files changed, 235 insertions(+), 156 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 512d2edd61bd8188c80b0a7849df0f6c8a0801a0
+commit 512d2ed
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Oct 15 21:06:55 2010 +0300
+Date:   2010-10-15
 
     set release date.
 
- ChangeLog |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit c2622e21729d0fd31c09a30c2c619cf6a959744b
+commit c2622e2
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Oct 7 23:56:01 2010 +0300
+Date:   2010-10-07
 
     bump autoconf prereq to 2.68.
 
- ChangeLog    |    2 +-
- aclocal.m4   |    4 +-
- configure    |  275 +++++++++++++++++++++++++++++----------------------------
- configure.ac |    2 +-
- 4 files changed, 144 insertions(+), 139 deletions(-)
+ChangeLog
+aclocal.m4
+configure
+configure.ac
 
-commit 4f93847a15ce104d8e2ca638d5826f03064e24be
+commit 4f93847
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Oct 7 21:00:22 2010 +0300
+Date:   2010-10-07
 
     use better grammar.
 
- cclive/src/file.cpp |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+cclive/src/file.cpp
 
-commit 2a2eaee8a6d22feb62036935330b1819449f06b0
+commit 2a2eaee
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Oct 7 20:19:31 2010 +0300
+Date:   2010-10-07
 
     change descr in readme, rely on wiki for patch etc
 
- README |   24 +++---------------------
- 1 files changed, 3 insertions(+), 21 deletions(-)
+README
 
-commit 071c060f01e4406924f35e553a51e69e4210c86c
+commit 071c060
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Oct 7 11:28:00 2010 +0300
+Date:   2010-10-07
 
     change "nothing todo" to more understandable error.
 
- cclive/src/file.cpp |    8 ++++++--
- 1 files changed, 6 insertions(+), 2 deletions(-)
+cclive/src/file.cpp
 
-commit 9e416c62e8843129a7b2ab0a5d409ed0b619166f
+commit 9e416c6
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Oct 4 20:27:58 2010 +0300
+Date:   2010-10-04
 
     improve multi-url example in manual.
 
- man1/cclive.1     |   20 ++++++++++++++++----
- man1/cclive.1.pod |   16 +++++++++++++---
- 2 files changed, 29 insertions(+), 7 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 043f05e262706a754118ce68a85c667a1375964d
+commit 043f05e
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Oct 4 00:26:13 2010 +0300
+Date:   2010-10-04
 
     add print help,version,... to cout to ChangeLog.
 
- ChangeLog |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit 629e72a1d5a4ba97912ef673559ed3c8a15ca859
+commit 629e72a
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Oct 4 00:24:50 2010 +0300
+Date:   2010-10-04
 
     bump version.
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit cb7263df5d71051715cb93243a9e2e009c688a00
+commit cb7263d
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sun Oct 3 23:58:23 2010 +0300
+Date:   2010-10-03
 
     print help,version,license,support to cout.
 
- cclive/src/application.cpp |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
+cclive/src/application.cpp
 
-commit fadd8907e3863a18daf94ca3bb6ff6feff8bfce5
+commit fadd890
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Sep 30 19:47:32 2010 +0300
+Date:   2010-09-30
 
     set release date.
 
- ChangeLog |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit 752ed9e73bab2065640dd32207b0eb4b08bd80d3
+commit 752ed9e
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Sep 24 01:32:12 2010 +0300
+Date:   2010-09-24
 
     add fix documentation for --retry=0.
 
- ChangeLog |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit b31a3459d23a2ea39d6d47b2af42b4f14f772e46
+commit b31a345
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Sep 24 01:31:59 2010 +0300
+Date:   2010-09-24
 
     fix documentation for --retry=0.
 
- cclive.1   |    6 +++---
- cclive.pod |    2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+cclive.1
+cclive.pod
 
-commit 03fa7bf2c1e68bf02065cd5ecd9d2c305afa8476
+commit 03fa7bf
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Sep 24 01:07:19 2010 +0300
+Date:   2010-09-24
 
     add --max-retries=0 to manual.
 
- man1/cclive.1     |    5 +++--
- man1/cclive.1.pod |    3 ++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 0766ec3f6319dd7e1b81c754e8329e24b44acaa0
+commit 0766ec3
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 22 23:19:28 2010 +0300
+Date:   2010-09-22
 
     add tracker changes to ChangeLog.
 
- ChangeLog |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit 68041c4f4298534ec5c0343b60c9dc459836b3ed
+commit 68041c4
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 22 23:19:12 2010 +0300
+Date:   2010-09-22
 
     update patch tracker info in README.
 
- README |   15 +++------------
- 1 files changed, 3 insertions(+), 12 deletions(-)
+README
 
-commit 2c3716b2f214005c4f5428915c13b6fbe14ce4b5
+commit 2c3716b
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 22 23:18:45 2010 +0300
+Date:   2010-09-22
 
     update bug tracker info in manual.
 
- man1/cclive.1     |   11 ++++++-----
- man1/cclive.1.pod |    7 ++++---
- 2 files changed, 10 insertions(+), 8 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 5de2550641f6389b4441433436cbfcaedddc69cb
+commit 5de2550
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Sep 21 01:41:09 2010 +0300
+Date:   2010-09-21
 
     add use git describe to changelog.
 
- ChangeLog |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit 555e832d942f64338cd3f018513610296a543139
+commit 555e832
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Sep 21 01:40:49 2010 +0300
+Date:   2010-09-21
 
     use "git describe" for version instead.
 
- CMakeLists.txt |   17 ++++++++++++-----
- 1 files changed, 12 insertions(+), 5 deletions(-)
+CMakeLists.txt
 
-commit 427151804a1153c20a5e9102bd8e7360ee24e14b
+commit 4271518
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 13 12:02:06 2010 +0300
+Date:   2010-09-13
 
     cleanup LICENSE in license.cpp.
 
- cclive/src/license.cpp |   34 +++++++++++++++++-----------------
- 1 files changed, 17 insertions(+), 17 deletions(-)
+cclive/src/license.cpp
 
-commit 900fb57f5661b49bf14f13bf0073b7f27616e715
+commit 900fb57
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Sep 7 14:45:21 2010 +0300
+Date:   2010-09-07
 
     change --quiet description in manual.
 
- man1/cclive.1     |    5 +++--
- man1/cclive.1.pod |    3 ++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 3158d161fd120b9619e0fdd78cfef069afa19350
+commit 3158d16
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Sep 7 14:45:07 2010 +0300
+Date:   2010-09-07
 
     change --quiet helpstring.
 
- cclive/src/options.cpp |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+cclive/src/options.cpp
 
-commit fc69a90dcaf7a8c9fe5ca0e87f66694c69baaeed
+commit fc69a90
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Sep 7 14:03:31 2010 +0300
+Date:   2010-09-07
 
     add dots to print_checking message.
 
- cclive/src/application.cpp |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+cclive/src/application.cpp
 
-commit 17b57aeb44f4185a7e2320c9e2134867e650eee7
+commit 17b57ae
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Sep 7 14:01:12 2010 +0300
+Date:   2010-09-07
 
     add std::flush to print_checking.
 
- cclive/src/application.cpp |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+cclive/src/application.cpp
 
-commit 1c508ba01bbfddd416cde5b6690cd0a248b5dc58
+commit 1c508ba
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Sep 7 13:59:23 2010 +0300
+Date:   2010-09-07
 
     check for quvi_code, put into wrapper functions.
 
- cclive/src/application.cpp |   92 +++++++++++++++++++++++++++----------------
- 1 files changed, 58 insertions(+), 34 deletions(-)
+cclive/src/application.cpp
 
-commit 9052b5531f8c131e7039ac3d016017e33353b9c2
+commit 9052b55
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Sep 7 13:52:40 2010 +0300
+Date:   2010-09-07
 
     add quvi_code to quvicpp::error.
 
- lib/quvicpp/include/quvicpp/quvicpp.h |    5 ++++-
- lib/quvicpp/src/error.cpp             |   10 +++++++---
- 2 files changed, 11 insertions(+), 4 deletions(-)
+lib/quvicpp/include/quvicpp/quvicpp.h
+lib/quvicpp/src/error.cpp
 
-commit cbce5cb50b0d25a4c40fc9147a86a7cb551ce9ba
+commit cbce5cb
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 6 13:36:59 2010 +0300
+Date:   2010-09-06
 
     fix retry loops, stop retrying if succeeded.
 
- cclive/src/application.cpp |    2 ++
- cclive/src/get.cpp         |    2 ++
- 2 files changed, 4 insertions(+), 0 deletions(-)
+cclive/src/application.cpp
+cclive/src/get.cpp
 
-commit 40b1363d58c20c622006ef90044ad735ab4c7138
+commit 40b1363
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 6 13:33:10 2010 +0300
+Date:   2010-09-06
 
     add Retry comment.
 
- cclive/src/get.cpp |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+cclive/src/get.cpp
 
-commit 01ad38c2888573d148e69f619723bb437ec24ff6
+commit 01ad38c
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 6 13:31:54 2010 +0300
+Date:   2010-09-06
 
     tweak cclive::wait output.
 
- cclive/src/wait.cpp |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+cclive/src/wait.cpp
 
-commit 5a76cc623103cbb50e904b8c2d02b600ca301d60
+commit 5a76cc6
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 6 13:27:29 2010 +0300
+Date:   2010-09-06
 
     add --max-retries, --retry-wait to ChangeLog.
 
- ChangeLog |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit 93ba2f56fa6c4d27564bce7adc1dcf454c4dfea8
+commit 93ba2f5
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 6 13:27:15 2010 +0300
+Date:   2010-09-06
 
     add --max-retries, --retry-wait to manual.
 
- man1/cclive.1     |    8 +++++++-
- man1/cclive.1.pod |    8 ++++++++
- 2 files changed, 15 insertions(+), 1 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit 21f4b5b2825768c2c2d01465a771f27ba21bc5ca
+commit 21f4b5b
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 6 13:26:13 2010 +0300
+Date:   2010-09-06
 
     add --max-retries, --retry-wait.
 
- cclive/include/cclive/file.h |    2 +-
- cclive/src/application.cpp   |   73 ++++++++++++++++++++++++++++++++++++-----
- cclive/src/file.cpp          |   13 ++++++-
- cclive/src/get.cpp           |   42 ++++++++++++++++++++----
- cclive/src/options.cpp       |    4 ++
- 5 files changed, 115 insertions(+), 19 deletions(-)
+cclive/include/cclive/file.h
+cclive/src/application.cpp
+cclive/src/file.cpp
+cclive/src/get.cpp
+cclive/src/options.cpp
 
-commit 71ffcfb9a2f2fc80ed98a36b36fbb9fda5013af8
+commit 71ffcfb
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 6 13:24:29 2010 +0300
+Date:   2010-09-06
 
     add wait.cpp to CMakeLists.txt file.
 
- cclive/CMakeLists.txt |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+cclive/CMakeLists.txt
 
-commit 94a07e4cccdb0bed6e01df81c9ad737f52171313
+commit 94a07e4
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 6 13:23:15 2010 +0300
+Date:   2010-09-06
 
     add cclive::wait.
 
- cclive/include/cclive/wait.h |   30 +++++++++++++++++++++++
- cclive/src/wait.cpp          |   55 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 85 insertions(+), 0 deletions(-)
+cclive/include/cclive/wait.h
+cclive/src/wait.cpp
 
-commit f32c17ee7d892df98d34c4b68a5df1a60d6263bf
+commit f32c17e
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Sep 6 13:21:03 2010 +0300
+Date:   2010-09-06
 
     add response code to quvicpp.
 
- lib/quvicpp/include/quvicpp/quvicpp.h |    2 ++
- lib/quvicpp/src/error.cpp             |   19 ++++++++++++++-----
- 2 files changed, 16 insertions(+), 5 deletions(-)
+lib/quvicpp/include/quvicpp/quvicpp.h
+lib/quvicpp/src/error.cpp
 
-commit c020ddd48afdfb4ff02c242e1aa020be419e8c3a
+commit c020ddd
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Sep 4 19:27:07 2010 +0300
+Date:   2010-09-04
 
     add print libquvi version to ChangeLog.
 
- ChangeLog |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit 3e507282b1a6a7c1ff0594248d55d27d5896bc34
+commit 3e50728
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Sat Sep 4 19:26:38 2010 +0300
+Date:   2010-09-04
 
     add libquvi to --version output.
 
- cclive/src/application.cpp |    8 +++++++-
- 1 files changed, 7 insertions(+), 1 deletions(-)
+cclive/src/application.cpp
 
-commit 3348f583c4dd2c3e6117d28e900be648cc83c9a0
+commit 3348f58
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 1 22:14:38 2010 +0300
+Date:   2010-09-01
 
     bump version.
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit 24e31dc78484544eb87d4b2e9360f1d5060375b4
+commit 24e31dc
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 1 21:26:17 2010 +0300
+Date:   2010-09-01
 
     set release date.
 
- ChangeLog |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ChangeLog
 
-commit 718cd045c0885aeb9362a40009cc2cc6b854db32
+commit 718cd04
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 1 21:18:20 2010 +0300
+Date:   2010-09-01
 
     print errors caught in main module to clog.
 
- cclive/src/main.cpp |    7 ++++---
- 1 files changed, 4 insertions(+), 3 deletions(-)
+cclive/src/main.cpp
 
-commit 937b068055f40a97c7cd0cfb3046d314fca87622
+commit 937b068
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 1 21:07:50 2010 +0300
+Date:   2010-09-01
 
     merge in old description.
 
- README |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
+README
 
-commit 48e56bc94f4dd8f9f2a0a05e768dbf5085dd0b21
+commit 48e56bc
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 1 21:06:56 2010 +0300
+Date:   2010-09-01
 
     fix wiki urls.
 
- ChangeLog |    3 +--
- NEWS      |    4 +---
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ChangeLog
+NEWS
 
-commit e6ee86897e8a337c05e2260216738cdaa02452be
+commit e6ee868
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 1 13:23:10 2010 +0300
+Date:   2010-09-01
 
     add submitting patches to README.
 
- README |   19 +++++++++++++++++++
- 1 files changed, 19 insertions(+), 0 deletions(-)
+README
 
-commit 4c1bcb30f2fa347471ec9fcd1e86d1b0273fbcfa
+commit 4c1bcb3
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Wed Sep 1 01:19:51 2010 +0300
+Date:   2010-09-01
 
     remove whitespace.
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit 4fb96a715a660bda09bffb6c39ab5a3703b35224
+commit 4fb96a7
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Aug 31 22:49:09 2010 +0300
+Date:   2010-08-31
 
     add w32 condition to default config file path.
 
- cclive/src/options.cpp |    6 +++++-
- 1 files changed, 5 insertions(+), 1 deletions(-)
+cclive/src/options.cpp
 
-commit 1e257c55ada7aee31e61e5f744c7841e851edb0c
+commit 1e257c5
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Tue Aug 31 14:00:17 2010 +0300
+Date:   2010-08-31
 
     cleanup manual, add missing notes, fix version.
 
- man1/cclive.1     |   55 +++++++++++++++++++++++----------------------
- man1/cclive.1.pod |   63 +++++++++++++++++++++++++++--------------------------
- 2 files changed, 60 insertions(+), 58 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
 
-commit b58e3eaf15c0de7cdfde9d482905d0876a927c7a
+commit b58e3ea
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 17:23:37 2010 +0300
+Date:   2010-08-30
 
     add 0.7.0b1 entry to ChangeLog file.
 
- ChangeLog |   13 +++++++++++++
- 1 files changed, 13 insertions(+), 0 deletions(-)
+ChangeLog
 
-commit 4b5f92c9219b4ce045a433f32cfd0e472bc0ff5d
+commit 4b5f92c
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 17:23:15 2010 +0300
+Date:   2010-08-30
 
     add summary to NEWS file.
 
- NEWS |   14 ++++++++++++--
- 1 files changed, 12 insertions(+), 2 deletions(-)
+NEWS
 
-commit 1c9ffda20039068b66a8695a4fa004bac6ff1877
+commit 1c9ffda
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 17:20:31 2010 +0300
+Date:   2010-08-30
 
     add missing system to boost prereq list.
 
- CMakeLists.txt |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+CMakeLists.txt
 
-commit 99919a8406f24f0db9565391c0be99f18a5ac353
+commit 99919a8
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 17:20:10 2010 +0300
+Date:   2010-08-30
 
     add mingw32 toolchain file.
 
- toolchains/mingw32.cmake |   19 +++++++++++++++++++
- 1 files changed, 19 insertions(+), 0 deletions(-)
+toolchains/mingw32.cmake
 
-commit 1aac2a9ca20d37bb279b1cfb642db5eb0e39dc78
+commit 1aac2a9
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 13:57:55 2010 +0300
+Date:   2010-08-30
 
     add b1 to version string.
 
- CMakeLists.txt |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+CMakeLists.txt
 
-commit 42a0cb734427f426fbc966b6708d1d8f2ffeb000
+commit 42a0cb7
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 13:02:36 2010 +0300
+Date:   2010-08-30
 
     rename manual page files.
 
- man1/cclive.1     |  413 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- man1/cclive.1.pod |  355 +++++++++++++++++++++++++++++++++++++++++++++
- man1/gpull.1      |  413 -----------------------------------------------------
- man1/gpull.1.pod  |  355 ---------------------------------------------
- 4 files changed, 768 insertions(+), 768 deletions(-)
+man1/cclive.1
+man1/cclive.1.pod
+man1/gpull.1
+man1/gpull.1.pod
 
-commit d58612860ccfd378b24c63c7e94c2f6c9bcfe073
+commit d586128
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:59:12 2010 +0300
+Date:   2010-08-30
 
     bring in the new code and tree structure.
 
- CMakeLists.txt                        |  213 +++++++++++++++++
- cclive/CMakeLists.txt                 |   39 +++
- cclive/include/cclive/application.h   |   44 ++++
- cclive/include/cclive/background.h    |   30 +++
- cclive/include/cclive/error.h         |   29 +++
- cclive/include/cclive/exec.h          |   30 +++
- cclive/include/cclive/file.h          |   54 +++++
- cclive/include/cclive/get.h           |   32 +++
- cclive/include/cclive/log.h           |   84 +++++++
- cclive/include/cclive/options.h       |   42 ++++
- cclive/include/cclive/progressbar.h   |   69 ++++++
- cclive/include/cclive/re.h            |   36 +++
- cclive/src/application.cpp            |  259 +++++++++++++++++++++
- cclive/src/background.cpp             |   89 +++++++
- cclive/src/error.cpp                  |   49 ++++
- cclive/src/exec.cpp                   |   61 +++++
- cclive/src/file.cpp                   |  367 +++++++++++++++++++++++++++++
- cclive/src/get.cpp                    |   64 +++++
- cclive/src/license.cpp                |   40 ++++
- cclive/src/log.cpp                    |  130 +++++++++++
- cclive/src/main.cpp                   |   38 +++
- cclive/src/options.cpp                |  205 ++++++++++++++++
- cclive/src/progressbar.cpp            |  386 ++++++++++++++++++++++++++++++
- cclive/src/re.cpp                     |  116 +++++++++
- config.h.cmake.in                     |   21 ++
- lib/CMakeLists.txt                    |    2 +
- lib/quvicpp/CMakeLists.txt            |   22 ++
- lib/quvicpp/include/quvicpp/quvicpp.h |  166 +++++++++++++
- lib/quvicpp/src/error.cpp             |   59 +++++
- lib/quvicpp/src/link.cpp              |   92 ++++++++
- lib/quvicpp/src/misc.cpp              |   45 ++++
- lib/quvicpp/src/options.cpp           |   83 +++++++
- lib/quvicpp/src/query.cpp             |  135 +++++++++++
- lib/quvicpp/src/video.cpp             |  155 ++++++++++++
- man1/CMakeLists.txt                   |    8 +
- man1/gpull.1                          |  413 +++++++++++++++++++++++++++++++++
- man1/gpull.1.pod                      |  355 ++++++++++++++++++++++++++++
- uninstall.cmake.in                    |   21 ++
- 38 files changed, 4083 insertions(+), 0 deletions(-)
+CMakeLists.txt
+cclive/CMakeLists.txt
+cclive/include/cclive/application.h
+cclive/include/cclive/background.h
+cclive/include/cclive/error.h
+cclive/include/cclive/exec.h
+cclive/include/cclive/file.h
+cclive/include/cclive/get.h
+cclive/include/cclive/log.h
+cclive/include/cclive/options.h
+cclive/include/cclive/progressbar.h
+cclive/include/cclive/re.h
+cclive/src/application.cpp
+cclive/src/background.cpp
+cclive/src/error.cpp
+cclive/src/exec.cpp
+cclive/src/file.cpp
+cclive/src/get.cpp
+cclive/src/license.cpp
+cclive/src/log.cpp
+cclive/src/main.cpp
+cclive/src/options.cpp
+cclive/src/progressbar.cpp
+cclive/src/re.cpp
+config.h.cmake.in
+lib/CMakeLists.txt
+lib/quvicpp/CMakeLists.txt
+lib/quvicpp/include/quvicpp/quvicpp.h
+lib/quvicpp/src/error.cpp
+lib/quvicpp/src/link.cpp
+lib/quvicpp/src/misc.cpp
+lib/quvicpp/src/options.cpp
+lib/quvicpp/src/query.cpp
+lib/quvicpp/src/video.cpp
+man1/CMakeLists.txt
+man1/gpull.1
+man1/gpull.1.pod
+uninstall.cmake.in
 
-commit fcdeb877afaad320969c2de911cb7a5f0b5596a2
+commit fcdeb87
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:56:32 2010 +0300
+Date:   2010-08-30
 
     remove AUTHORS file, add info to README.
 
- AUTHORS |    1 -
- README  |    5 +++++
- 2 files changed, 5 insertions(+), 1 deletions(-)
+AUTHORS
+README
 
-commit 9d54af9b0db84c830ba70238a25e98c6399a264b
+commit 9d54af9
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:55:40 2010 +0300
+Date:   2010-08-30
 
     remove w32/ subdir.
 
- w32/ChangeLog.w32.TXT |   24 ----------
- w32/README            |   26 -----------
- w32/README.w32.TXT    |   27 -----------
- w32/make-w32.sh       |  117 -------------------------------------------------
- 4 files changed, 0 insertions(+), 194 deletions(-)
+w32/ChangeLog.w32.TXT
+w32/README
+w32/README.w32.TXT
+w32/make-w32.sh
 
-commit bced548435e09c5e3a1c87d31cc2b0d3c01f8061
+commit bced548
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:55:08 2010 +0300
+Date:   2010-08-30
 
     remove tests/ subdir.
 
- tests/ccliveTest.pm.in  |  134 -----------------------------------------------
- tests/multi-dl.pl       |   13 -----
- tests/multi-segment.pl  |   12 ----
- tests/nosupport-eval.pl |    3 -
- tests/pod-check.pl      |    1 -
- 5 files changed, 0 insertions(+), 163 deletions(-)
+tests/ccliveTest.pm.in
+tests/multi-dl.pl
+tests/multi-segment.pl
+tests/nosupport-eval.pl
+tests/pod-check.pl
 
-commit 5be8daee68991ab28b6837421800a5034a9e0a7f
+commit 5be8dae
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:54:30 2010 +0300
+Date:   2010-08-30
 
     remove src/ subdir.
 
- src/app.cpp         |  436 ---------------
- src/app.h           |   34 --
- src/cmdline.cpp     | 1468 ---------------------------------------------------
- src/cmdline.h       |  304 -----------
- src/curl.cpp        |  275 ----------
- src/curl.h          |   48 --
- src/error.h         |   43 --
- src/except.cpp      |  147 -----
- src/except.h        |   82 ---
- src/exec.cpp        |  173 ------
- src/exec.h          |   48 --
- src/log.cpp         |  278 ----------
- src/log.h           |   80 ---
- src/macros.h        |   40 --
- src/main.cpp        |   41 --
- src/opts.cpp        |  122 -----
- src/opts.h          |   46 --
- src/progressbar.cpp |  284 ----------
- src/progressbar.h   |   50 --
- src/quvi.cpp        |  402 --------------
- src/quvi.h          |  114 ----
- src/retry.cpp       |  127 -----
- src/singleton.h     |   52 --
- src/util.cpp        |  318 -----------
- src/util.h          |   44 --
- 25 files changed, 0 insertions(+), 5056 deletions(-)
+src/app.cpp
+src/app.h
+src/cmdline.cpp
+src/cmdline.h
+src/curl.cpp
+src/curl.h
+src/error.h
+src/except.cpp
+src/except.h
+src/exec.cpp
+src/exec.h
+src/log.cpp
+src/log.h
+src/macros.h
+src/main.cpp
+src/opts.cpp
+src/opts.h
+src/progressbar.cpp
+src/progressbar.h
+src/quvi.cpp
+src/quvi.h
+src/retry.cpp
+src/singleton.h
+src/util.cpp
+src/util.h
 
-commit fc7e5e0261f29a74d3edc912d0b9f3cea7019688
+commit fc7e5e0
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:53:41 2010 +0300
+Date:   2010-08-30
 
     rewrite examples/config file.
 
- examples/config |   16 +++++++++-------
- 1 files changed, 9 insertions(+), 7 deletions(-)
+examples/config
 
-commit 678c83c09b0ff5cd63f9f6aa58bb00e86f8c7184
+commit 678c83c
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:51:16 2010 +0300
+Date:   2010-08-30
 
     remove manual page and pod file.
 
- cclive.1   |  526 ------------------------------------------------------------
- cclive.pod |  480 ------------------------------------------------------
- 2 files changed, 0 insertions(+), 1006 deletions(-)
+cclive.1
+cclive.pod
 
-commit 9c2f9dda96ea713af44e5af6b0295d4614761c99
+commit 9c2f9dd
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:50:48 2010 +0300
+Date:   2010-08-30
 
     remove gengetopt config file.
 
- cmdline.ggo |  143 -----------------------------------------------------------
- 1 files changed, 0 insertions(+), 143 deletions(-)
+cmdline.ggo
 
-commit cd42033b4832e678a4bf5eac3a430a0048619aaa
+commit cd42033
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:50:07 2010 +0300
+Date:   2010-08-30
 
     remove gnu autotools support.
 
- Makefile.am             |   42 -
- Makefile.in             |  828 -----
- aclocal.m4              | 1136 -------
- config.aux/config.guess | 1501 ---------
- config.aux/config.rpath |  666 ----
- config.aux/config.sub   | 1705 ----------
- config.aux/depcomp      |  630 ----
- config.aux/install-sh   |  520 ---
- config.aux/missing      |  376 ---
- config.h.in             |  203 --
- configure               | 8401 -----------------------------------------------
- configure.ac            |  145 -
- m4/version.m4           |    1 -
- src/Makefile.am         |   45 -
- src/Makefile.in         |  565 ----
- tests/Makefile.am       |   24 -
- tests/Makefile.in       |  463 ---
- 17 files changed, 0 insertions(+), 17251 deletions(-)
+Makefile.am
+Makefile.in
+aclocal.m4
+config.aux/config.guess
+config.aux/config.rpath
+config.aux/config.sub
+config.aux/depcomp
+config.aux/install-sh
+config.aux/missing
+config.h.in
+configure
+configure.ac
+m4/version.m4
+src/Makefile.am
+src/Makefile.in
+tests/Makefile.am
+tests/Makefile.in
 
-commit 7f6b311cbe1e9447e7d2eb43a8b918639ecf302e
+commit 7f6b311
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:46:47 2010 +0300
+Date:   2010-08-30
 
     remove TODO.
 
- TODO |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+TODO
 
-commit 9dc16e28a75b491debf4c6ca612010320b45dacb
+commit 9dc16e2
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:46:17 2010 +0300
+Date:   2010-08-30
 
     rewrite README.
 
- README |   15 +++++++++------
- 1 files changed, 9 insertions(+), 6 deletions(-)
+README
 
-commit fe8d62a9c0398c9c8cbd9d91c6b6a57cd4670ee9
+commit fe8d62a
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Mon Aug 30 12:46:11 2010 +0300
+Date:   2010-08-30
 
     rewrite INSTALL.
 
- INSTALL |   74 +++++++++++++++++++++++++++++++++++++-------------------------
- 1 files changed, 44 insertions(+), 30 deletions(-)
+INSTALL
 
-commit 10ebbd939196e7f0aeade3d48d99d8b4bf00f857
+commit 10ebbd9
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Aug 13 18:17:10 2010 +0300
+Date:   2010-08-13
 
     bump autoconf prereq.
 
- ChangeLog    |    6 ++++++
- aclocal.m4   |    4 ++--
- configure    |   39 +++++++++++++++++++++++----------------
- configure.ac |    2 +-
- 4 files changed, 32 insertions(+), 19 deletions(-)
+ChangeLog
+aclocal.m4
+configure
+configure.ac
 
-commit 72d25212b4c4f8ad7d206e26dfd6a069dac56248
+commit 72d2521
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Fri Aug 13 18:10:40 2010 +0300
+Date:   2010-08-13
 
     update w32 changes.
 
- w32/ChangeLog.w32.TXT |   11 ++++++++++-
- 1 files changed, 10 insertions(+), 1 deletions(-)
+w32/ChangeLog.w32.TXT
 
-commit e4fa8e3f3d599c6e9671a21c0530d31b0bc4a97b
+commit e4fa8e3
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Aug 12 15:56:06 2010 +0300
+Date:   2010-08-12
 
     bump version.
 
- configure     |   20 ++++++++++----------
- m4/version.m4 |    2 +-
- 2 files changed, 11 insertions(+), 11 deletions(-)
+configure
+m4/version.m4
 
-commit f96ba2e11c109587ab56e45dda7fa964c8991cf7
+commit f96ba2e
 Author: legatvs <legatvs.git@gmail.com>
-Date:   Thu Aug 12 15:54:58 2010 +0300
+Date:   2010-08-12
 
     set release date.
 
- ChangeLog |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ChangeLog
