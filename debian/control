@@ -11,6 +11,7 @@ Homepage: http://cclive.sourceforge.net
 Package: cclive
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Pre-Depends: dpkg (>= 1.15.6)
 Description: lightweight command line video extraction tool 
  cclive is a lightweight command line video extraction tool for Youtube and
  other similar video websites. It is a rewrite of the clive software in C++
