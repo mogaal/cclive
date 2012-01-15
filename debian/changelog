@@ -1,3 +1,22 @@
+cclive (0.7.8-0.1) experimental; urgency=low
+
+  * Non-maintainer upload.
+  * New upstream release.
+    + Works with libquvi 0.4. (Closes: #651638)
+  * Bump build-dep on libquvi-dep to >= 0.2.16.1.
+  * Add build-dep on libboost-date-time-dev.
+  * Drop build-dep on cmake, use dh-autoreconf.
+  * Do not set rpath when linking Boost libraries.
+    + new patch: fix-rpath.diff
+  * debian/watch: Also look for .tar.bz2 and .tar.xz.
+  * Install NEWS as documentation and not as upstream changelog.
+  * Remove debian/cclive.examples (removed upstream).
+  * Use xz compression for source and binary packages.
+  * debian/control: Add Vcs-* fields.
+  * Bumped Standards-Version to 3.9.2 (no changes).
+
+ -- Ansgar Burchardt <ansgar@debian.org>  Sun, 15 Jan 2012 20:13:58 +0100
+
 cclive (0.7.3.1-1.1) unstable; urgency=low
 
   * Non-maintainer upload.
