@@ -2,7 +2,7 @@ Source: cclive
 Section: video
 Priority: optional
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
-Build-Depends: debhelper (>= 7.0.50), cmake, libcurl4-gnutls-dev, libpcre3-dev,
+Build-Depends: debhelper (>= 7.0.50), dh-autoreconf, libcurl4-gnutls-dev, libpcre3-dev,
          libquvi-dev, libboost-filesystem-dev, libboost-iostreams-dev,
          libboost-program-options-dev 
 Standards-Version: 3.9.1
