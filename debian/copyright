@@ -1,7 +1,6 @@
-Format-Specification:
-    http://wiki.debian.org/Proposals/CopyrightFormat?action=recall&rev=196
-Upstream-Maintainer: Toni Gundogdu <legatvs@gmail.com>
-Upstream-Source: http://cclive.sourceforge.net
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Contact: Toni Gundogdu <legatvs@gmail.com>
+Source: http://cclive.sourceforge.net
 Upstream-Name: cclive
 
 Files: *
@@ -13,9 +12,10 @@ Copyright: 2009,2011 Alejandro Garrido Mota <garridomota@gmail.com>
 License: GPL-3+
 
 License: GPL-3+
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    On Debian systems, the complete text of the GNU General
-    Public License version 3 can be found in `/usr/share/common-licenses/GPL-3'.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ On Debian systems, the complete text of the GNU General Public License
+ version 3 can be found in `/usr/share/common-licenses/GPL-3'.
