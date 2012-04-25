@@ -1,3 +1,66 @@
+commit ec42b14
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-03
+
+    Update NEWS for 0.7.9
+
+NEWS
+
+commit af62c98
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-03
+
+    Bump version to 0.7.9
+
+m4/version.m4
+
+commit edc7b12
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-03
+
+    Update boost.m4 to the latest version
+
+m4/boost.m4
+
+commit 9101e1a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-03
+
+    Add gen-news.sh (repo only)
+
+gen-news.sh
+
+commit 8172356
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-02
+
+    FIX: Print only HTTP category domains with --support (#17)
+    
+    cclive handles HTTP stream URLs only. Print only those
+    domains that reportedly return HTTP stream URLs to cclive.
+    
+     * https://sourceforge.net/apps/trac/cclive/ticket/17
+
+src/quvi/query.cpp
+
+commit b089d63
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-02
+
+    FIX: --support: Strip lua escapes from domain patterns (#16)
+    
+    To further confusion, strip the lua escape characters ('%')
+    from the domain patterns.  Replace any "%w+" with "com".
+    
+    Other changes:
+     Do not print the _deprecated_ format strings anymore,
+     as they only hold either "default" or "default|best"
+     (libquvi-scripts 0.4.0+, quvi 0.2.16.1+).
+    
+     * https://sourceforge.net/apps/trac/cclive/ticket/16
+
+src/quvi/misc.cpp
+
 commit b555a5e
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2011-11-26
