@@ -1,3 +1,9 @@
+cclive (0.7.9-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Ansgar Burchardt <ansgar@debian.org>  Wed, 25 Apr 2012 23:16:22 +0200
+
 cclive (0.7.8-1) unstable; urgency=low
 
   * Upload to unstable.
