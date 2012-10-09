@@ -3,7 +3,7 @@ Section: video
 Priority: optional
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
 Uploaders: Ansgar Burchardt <ansgar@debian.org>
-Build-Depends: debhelper (>= 7.0.50), dh-autoreconf, libcurl4-gnutls-dev, libpcre3-dev,
+Build-Depends: debhelper (>= 7.0.50), dpkg-dev (>= 1.16.1~), dh-autoreconf, libcurl4-gnutls-dev, libpcre3-dev,
          libquvi-dev (>= 0.2.16.1), libboost-filesystem-dev, libboost-iostreams-dev,
          libboost-program-options-dev, libboost-date-time-dev
 Standards-Version: 3.9.3

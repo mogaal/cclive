@@ -5,20 +5,20 @@ Origin: vendor
 Do not set rpath for Boost libraries.  While at it, also disable silent rules
 to make finding problems easier.
 
---- cclive-0.7.8.orig/configure.ac
-+++ cclive-0.7.8/configure.ac
-@@ -21,7 +21,7 @@ AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "
+--- a/configure.ac
++++ b/configure.ac
+@@ -18,7 +18,7 @@
  AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
  
- AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 dist-xz])
+ AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 -AM_SILENT_RULES([yes])
 +AM_SILENT_RULES([no])
+ #AM_PROG_AR
  
- LT_INIT()
- LT_PREREQ([2.2])
---- cclive-0.7.8.orig/m4/boost.m4
-+++ cclive-0.7.8/m4/boost.m4
-@@ -403,7 +403,7 @@ dnl generated only once above (before we
+ LT_INIT([disable-static])
+--- a/m4/boost.m4
++++ b/m4/boost.m4
+@@ -403,7 +403,7 @@
        LDFLAGS=$boost_save_LDFLAGS
        LIBS=$boost_save_LIBS
        if test x"$Boost_lib" = xyes; then
