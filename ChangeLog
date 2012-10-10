@@ -1,3 +1,335 @@
+commit d74a486
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-28
+
+    Update NEWS for v0.7.10
+
+NEWS
+
+commit b93d7a7
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-28
+
+    gen-news.sh: Produce stats
+
+gen-news.sh
+
+commit 99bd1b2
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-27
+
+    main: Use exit_status, have caught exceptions set exit status
+
+src/cc/main.cpp
+
+commit af6c35e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-25
+
+    Remove scripts/ from the repo
+
+scripts/astyle_cpp.sh
+
+commit 063ee3e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    DOC: Manual: Minor changes
+
+doc/man1/cclive.1.pod
+
+commit fe31766
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    DOC: Manual: Revise description for option sections
+    
+    Revise the description:
+      * Options - command line
+      * Options - configuration
+    
+    Add:
+      * Input section
+
+doc/man1/cclive.1.pod
+
+commit da6c39a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    configure.ac: Add AC_PROG_LN_S
+
+configure.ac
+
+commit 4acb634
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    AC_MSG_NOTICE: Revise output
+
+configure.ac
+
+commit def80d8
+Merge: 4bec9c3 c34c302
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    Merge branch 'tg/0.7/enable_ccl_by_default' into next
+
+commit c34c302
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    README: configure: Revise option descriptions
+
+README
+
+commit e394f71
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    install-exec-hook: Remove ccl if it exists
+    
+    Remove ccl symlink if it exists already, and then add a new symlink.
+
+src/Makefile.am
+
+commit 9ecaaf8
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    configure.ac: Install ccl symlink by default
+
+configure.ac
+
+commit 4bec9c3
+Merge: 1044d88 0f39e93
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    Merge branch 'tg/0.7/modernize_autotools_integration' into next
+
+commit 0f39e93
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    configure.ac: Modernize libtool options
+
+configure.ac
+
+commit e8689b0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    Add missing AUTHORS file
+
+AUTHORS
+
+commit 76fd2d0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    configure.ac: Modernize AM_INIT options
+
+configure.ac
+
+commit 59fce53
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    configure.ac: Replace deprecated macros
+    
+      * AC_CANONICAL_SYSTEM -> AC_CANONICAL_TARGET
+      * AC_GNU_SOURCE -> AC_USE_SYSTEM_EXTENSIONS
+
+configure.ac
+
+commit dff9e6e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    Remove INSTALL file from the repo
+
+.gitignore
+INSTALL
+
+commit a90c854
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    Append contents of INSTALL file to README file
+    
+    Leave the INSTALL file for GNU Autotools to produce.
+
+README
+
+commit 1044d88
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-24
+
+    boost.m4: Update to the most recent
+    
+    src: http://github.com/tsuna/boost.m4/raw/master/build-aux/boost.m4
+    ref: https://github.com/tsuna/boost.m4
+
+m4/boost.m4
+
+commit 8b95bd1
+Merge: eba5bdd 5e9b65c
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    Merge branch 'tg/0.7/revise_autogen.sh' into next
+
+commit eba5bdd
+Merge: a3690b0 6690303
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    Merge branch 'tg/0.7/fix_exit_status' into next
+
+commit 5e9b65c
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    autogen.sh: Add copyright notice
+
+autogen.sh
+
+commit a3690b0
+Merge: e317832 8bc2479
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    Merge branch 'tg/0.7/new_gen-ver.sh' into next
+
+commit 6690303
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    DOC: Rewrite EXIT STATUS section
+
+doc/man1/cclive.1.pod
+
+commit 80dad48
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    autogen.sh: Revise the displayed warning
+
+autogen.sh
+
+commit 8bc2479
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    autogen.sh: gen_manual: Use gen-ver.sh value
+
+autogen.sh
+
+commit 980792e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    Replace "invalid_option" with "error"
+
+src/cc/application.cpp
+
+commit be9d1b0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    autogen.sh: Run podchecker on manual POD
+
+autogen.sh
+
+commit 4f0d4a8
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    configure.ac: Run gen-ver.sh to get version value
+    
+    Use the gen-ver.sh returned value with AC_INIT. Replace project URLs
+    with new ones.
+
+configure.ac
+
+commit 36158a1
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    go_background: Return application:error instead
+
+src/cc/background.cpp
+
+commit 99e88a6
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    autogen.sh: +x mode
+
+autogen.sh
+
+commit 3f36f24
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    gen-ver.sh: Remove -m option
+
+gen-ver.sh
+
+commit 4d3c506
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    FIX: Return non-zero exit status if failure (#18)
+    
+    Return a non-zero value if an error occurred.
+    
+    ref: http://sourceforge.net/apps/trac/cclive/ticket/18
+
+src/cc/application.cpp
+
+commit d1e6bae
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    Remove version.m4
+
+m4/version.m4
+
+commit 20cbf6d
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    exit_status: Redefine as ok and error
+    
+    Report success and failure in broad manner, using application::ok
+    (EXIT_SUCCESS) for success and application::error (EXIT_FAILURE)
+    for failure.
+
+src/cc/application.h
+
+commit df0a4ce
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-23
+
+    gen-ver.sh: Rewrite completely
+    
+      * Use dirname(1) output
+      * Add support for -c and -m options
+      * Do not extract version from m4/version.m4
+
+gen-ver.sh
+
+commit e317832
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-04-03
+
+    Lower AC_PREREQ to 2.67
+
+configure.ac
+
 commit ec42b14
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2012-03-03
