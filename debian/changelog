@@ -1,3 +1,9 @@
+cclive (0.7.11-1) UNRELEASED; urgency=low
+
+  * New upstream release. 
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 16 Dec 2012 09:40:32 -0430
+
 cclive (0.7.10-1) experimental; urgency=low
 
   * New upstream release. 
