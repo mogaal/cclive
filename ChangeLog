@@ -1,3 +1,65 @@
+commit 3c3b208
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-12-12
+
+    Update NEWS for v0.7.11
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+NEWS
+
+commit dcc4a72
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-12-12
+
+    FIX: gen-news.sh: Find the closest tagname
+    
+    Replaces the buggy tagname extraction with a proper one.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+gen-news.sh
+
+commit 39b76b5
+Merge: e3e3117 03d69e0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-12-10
+
+    Merge branch 'as/next/0.7_regex_fixes' into next
+
+commit 03d69e0
+Author: Adam Sampson <ats@offog.org>
+Date:   2012-11-24
+
+    Check .error() for user-provided regexps
+    
+    Without this, a regexp that PCRE can't compile will be accepted.
+    
+    (The one that made me spot this was actually a built-in default regexp that
+    used \pL, since I was testing with a version of PCRE without \p support; the
+    result was that title strings were silently cleared.)
+
+src/cc/re.cpp
+
+commit 5325ecc
+Author: Adam Sampson <ats@offog.org>
+Date:   2012-11-24
+
+    Copy strings passed to StringPiece
+    
+    PCRE's StringPiece doesn't copy the string it's given, so you shouldn't mutate
+    it afterwards.
+
+src/cc/re.cpp
+
+commit e3e3117
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-08-28
+
+    Remove examples/ subdir from repo
+
+examples/config
+
 commit d74a486
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2012-08-28
