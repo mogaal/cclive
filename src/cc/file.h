@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,49 +18,53 @@
 #ifndef cclive_file_h
 #define cclive_file_h
 
-namespace boost
-{
-namespace program_options
-{
-class variables_map;
-}
-}
-
 namespace cc
 {
 
 class file
 {
 public:
-  file();
-  file(const quvi::media&,
-       const quvi::url&,
-       const int,
-       const boost::program_options::variables_map&);
-  file(const file&);
-  file& operator=(const file&);
+  file(const quvi::media&);
+
+  inline file(): _initial_length(0), _nothing_todo(false) { }
+
+  inline file(const file& f): _initial_length(0), _nothing_todo(false)
+    {
+      _swap(f);
+    }
+
+  inline file& operator=(const file& f)
+    {
+      if (this != &f) _swap(f);
+      return *this;
+    }
 public:
-  bool write(const quvi::query&,
-             const quvi::url&,
-             const boost::program_options::variables_map&) const;
+  bool write(const quvi::media&, void*) const;
 public:
-  std::string to_s(const quvi::url&) const;
-  const std::string& title() const;
-  const std::string& path() const;
-  const std::string& name() const;
-  const bool nothing_todo() const;
-  double initial_length() const;
+  std::string to_s(const quvi::media&) const;
+  inline const std::string& title() const { return _title; }
+  inline const std::string& path() const  { return _path; }
+  inline const std::string& name() const  { return _name; }
+  inline const bool nothing_todo() const  { return _nothing_todo; }
+  inline double initial_length() const    { return _initial_length; }
+  inline bool should_continue() const     { return _initial_length >0; }
+  inline int set_errmsg(const std::string& e) { _errmsg = e; return 0; }
 public:
   static double exists(const std::string&);
 private:
-  void _init(const quvi::media&,
-             const quvi::url&,
-             const int,
-             const boost::program_options::variables_map&);
-  bool _should_continue() const;
-  void _swap(const file&);
+  void _init(const quvi::media&);
+
+  inline void _swap(const file& f)
+    {
+      _title          = f._title;
+      _name           = f._name;
+      _path           = f._path;
+      _initial_length = f._initial_length;
+      _nothing_todo   = f._nothing_todo;
+    }
 private:
   double _initial_length;
+  std::string _errmsg;
   bool _nothing_todo;
   std::string _title;
   std::string _name;

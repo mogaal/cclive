@@ -96,6 +96,7 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
+A2X = @A2X@
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@

@@ -52,6 +52,12 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
+/* Define to 1 if you have the `memset' function. */
+#undef HAVE_MEMSET
+
+/* Define to 1 if you have the `setlocale' function. */
+#undef HAVE_SETLOCALE
+
 /* Define to 1 if you have the `signal' function. */
 #undef HAVE_SIGNAL
 
@@ -177,6 +183,12 @@
 
 /* Define to 1 if you need to in order for `stat' and other things to work. */
 #undef _POSIX_SOURCE
+
+/* Define to `__inline__' or `__inline' if that's what the C compiler
+   calls it, or to nothing if 'inline' is not supported under any name.  */
+#ifndef __cplusplus
+#undef inline
+#endif
 
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t

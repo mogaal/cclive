@@ -114,6 +114,7 @@ GZIP_ENV = --best
 DIST_ARCHIVES = $(distdir).tar.xz
 distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
+A2X = @A2X@
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
@@ -765,7 +766,7 @@ uninstall-am:
 	ps ps-am tags tags-recursive uninstall uninstall-am
 
 
-.PHONY: ChangeLog VERSION
+.PHONY: ChangeLog VERSION doc
 
 VERSION:
 	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
@@ -777,6 +778,9 @@ ChangeLog:
 		git log --stat --name-only --date=short --abbrev-commit \
 			--after="Thu Aug 12 15:54:58 2010" > $@; \
 	fi
+
+doc:
+	@make -C $(top_builddir)/doc/man1/ doc
 
 dist-hook: ChangeLog VERSION
 

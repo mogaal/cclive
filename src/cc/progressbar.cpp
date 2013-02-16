@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@
 #include <boost/program_options/variables_map.hpp>
 #include <boost/filesystem.hpp>
 
+#include <ccoptions>
 #include <ccquvi>
 #include <ccfile>
 #include <cclog>
@@ -75,11 +76,9 @@ static size_t get_term_width()
 
 namespace po = boost::program_options;
 
-progressbar::progressbar(const file& f,
-                         const quvi::url& u,
-                         const po::variables_map& map)
+progressbar::progressbar(const file& f, const quvi::media& m)
   : _update_interval(1),
-    _expected_bytes(u.content_length()),
+    _expected_bytes(m.content_length()),
     _initial_bytes(f.initial_length()),
     _time_started(0),
     _last_update(0),
@@ -110,9 +109,10 @@ progressbar::progressbar(const file& f,
 
   _width = _term_width;
 
+  const po::variables_map map = cc::opts.map();
   time(&_time_started);
 
-  if (map.count("background"))
+  if (opts.flags.background)
     _mode = dotline;
   else
     {
@@ -159,7 +159,7 @@ static std::string to_unit(double& rate)
 
 namespace fs = boost::filesystem;
 
-void progressbar::update(double now)
+int progressbar::update(double now)
 {
   time_t tnow;
 
@@ -196,7 +196,7 @@ void progressbar::update(double now)
       if ((elapsed - _last_update) < _update_interval
           && !force_update)
         {
-          return;
+          return 0;
         }
     }
   else
@@ -305,6 +305,8 @@ void progressbar::update(double now)
 
   _last_update = elapsed;
   _count       = now;
+
+  return 0;
 }
 
 void progressbar::_normal(const std::stringstream& size_s,

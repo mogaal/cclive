@@ -1,3 +1,635 @@
+commit 8a0f7fe
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-10
+
+    Update news for v0.7.12
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+NEWS
+
+commit 6f2e711
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-03
+
+    FIX: Do not ignore I/O errors during file transfer
+    
+    Confirm that each data chunk was properly written to the file, and
+    stop the transfer if an error (e.g. device runs out of space) occurs.
+    
+    Other:
+    * Encapsulate the file stream opening/closing (`write_data' class)
+    
+    See also:
+    * http://bugs.debian.org/699484
+    
+    Reported-by: Jakub Wilk <jwilk@debian.org>
+    Relayed-by: Ansgar Burchardt <ansgar@debian.org>
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+src/cc/file.h
+
+commit 066b4c2
+Merge: adb2531 cf71189
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    Merge branch 'tg/next/0.7/__pod_to_asciidoc' into next
+
+commit cf71189
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    Remove doc/man1/cclive.1 from .gitignore
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+.gitignore
+
+commit f47073b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    boostrap.sh: Remove gen_manual
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+bootstrap.sh
+
+commit 4fe8056
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    Installation from the repo: Add asciidoc prereq
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+README
+
+commit c100a94
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    man: Switch from pod to asciidoc
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/Makefile.am
+doc/man1/cclive.1.pod
+doc/man1/cclive.1.txt
+
+commit b9e212b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    Makefile.am: Add "doc" target
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+Makefile.am
+
+commit 878a46f
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    configure.ac: Add a2x check
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit adb2531
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    Rename autogen.sh -> bootstrap.sh
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+README
+autogen.sh
+bootstrap.sh
+
+commit c296f59
+Merge: dc08e4c 949d476
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    Merge branch 'tg/next/0.7__depr_format_related_opts' into next
+
+commit 949d476
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-10
+
+    Deprecate --format, add --stream
+    
+    libquvi 0.9:
+    * will refer to the media streams by their IDs
+        (not as "media formats")
+    
+    As a result of this:
+    * Deprecate `--format'
+    * Add `--stream'
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/options.cpp
+
+commit 7188199
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-10
+
+    Deprecate --query-formats, add --print-streams
+    
+    libquvi 0.9:
+    * will refer to the media streams by their IDs
+        (not as "media formats")
+    
+    As a result of this:
+    * Deprecate `--query-formats'
+    * Add `--print-streams'
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/options.cpp
+src/cc/options.h
+
+commit dc08e4c
+Merge: 7ae4605 4b11837
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-02-02
+
+    Merge branch 'tg/next/0.7__add_quvi_compat_layer' into next
+
+commit 4b11837
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Use quvi compatibility layer
+    
+    Other notable changes:
+    
+    * multi-segmented media is no longer supported
+        (unused and deprecated, libquvi 0.9 will no longer support
+         this, either)
+    
+    * --filename-format: %h sequence has been removed
+        (removed also in libquvi 0.9)
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/background.cpp
+src/cc/file.cpp
+src/cc/file.h
+src/cc/get.cpp
+src/cc/progressbar.cpp
+src/cc/progressbar.h
+src/cc/util.h
+src/cc/wait.cpp
+
+commit cda6cc4
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Add quvi compatibility layer
+    
+    The purpose of this layer is to provide a common interface for
+    cclive to work together with both 0.4 and 0.9 release of libquvi.
+    cclive may be compiled with either one, not both.
+    
+    0.9 support remains to be implemented.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/Makefile.am
+src/ccquvi
+src/compat/error.h
+src/compat/error_pt4.cpp
+src/compat/media.h
+src/compat/media_pt4.cpp
+src/compat/options.h
+src/compat/query.h
+src/compat/query_pt4.cpp
+src/compat/util.cpp
+src/compat/util.h
+
+commit 231156b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Remove src/quvi/
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/quvi/ccquvi.h
+src/quvi/err.cpp
+src/quvi/media.cpp
+src/quvi/misc.cpp
+src/quvi/opts.cpp
+src/quvi/query.cpp
+src/quvi/url.cpp
+
+commit 7ae4605
+Merge: c436150 b14b764
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-13
+
+    Merge branch 'tg/next/0.7__cleanup' into next
+
+commit b14b764
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-12
+
+    options: Add warn_depr
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+
+commit a0f2897
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Include ccinternal
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/exec.cpp
+src/cc/license.cpp
+src/cc/log.cpp
+src/cc/main.cpp
+src/cc/re.cpp
+
+commit ec969f1
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-10
+
+    Add short-option -v
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.pod
+src/cc/options.cpp
+
+commit 717a79d
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    --help: exit with application::ok
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 899d45a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-12-09
+
+    cc/license.cpp: Revise
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/license.cpp
+
+commit ea1ae0e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    configure.ac: Add AC_C_INLINE
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit e0d86ed
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    configure.ac: AC_CHECK_FUNCS: Add memset, setlocale
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit eed0806
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Inline cc::options::operator<< function
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+src/cc/options.h
+
+commit 4a6c089
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Inline cc::log
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/log.cpp
+src/cc/log.h
+
+commit 5beb251
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Inline cc::file
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+src/cc/file.h
+
+commit 8a279a6
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Add short-option -h
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.pod
+src/cc/options.cpp
+
+commit d751efb
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Add cc::curl_* functions
+    
+    Add a set of cc::curl_{new,free,setup} functions.
+    
+    Do not reuse the libcURL handle from libquvi, create a new one instead.
+    Remove quvi::query::curlHandle function, altogether.
+    
+    Remove CURLOPT_{DNS_CACHE,CONNECT}TIMEOUT from cc::file::_set, they are
+    now set in cc::curl_setup.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/Makefile.am
+src/cc/application.cpp
+src/cc/application.h
+src/cc/curl.cpp
+src/cc/file.cpp
+src/cc/util.h
+src/quvi/ccquvi.h
+src/quvi/query.cpp
+
+commit 8491607
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    get: Pass libcURL handle instead of quvi::query ref
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/file.cpp
+src/cc/file.h
+src/cc/get.cpp
+src/cc/util.h
+
+commit bd240e9
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    file: Add _set and _restore
+    
+    Have these two functions wrap the libcURL options.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+
+commit 7786de9
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    get: Move retry increment line
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/get.cpp
+
+commit 0d65568
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    progressbar::update: return int
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/progressbar.cpp
+src/cc/progressbar.h
+
+commit 01b4e33
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-12-08
+
+    Add cc_debug
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/log.cpp
+src/cc/log.h
+
+commit 277bf7a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Set locale to LC_ALL
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/main.cpp
+
+commit e41612d
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Return application:ok
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit c436150
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Upgrade boost.m4 to the latest
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+m4/boost.m4
+
+commit 1ff4021
+Merge: 3c3b208 777d82a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    Merge branch 'tg/next/0.7_config_flags' into next
+
+commit 777d82a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    doc: Revise manual
+    
+    Move the now configurable 'continue' and 'no-resolve' options under
+    the OPTIONS - CONFIGURATION section.  Revise the configuration file
+    example.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.pod
+
+commit 4afab3e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    options: Make 'no-resolve' configurable
+    
+    Allow specifying the value for the 'no-resolve' in
+    the configuration file.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+
+commit 92bd61f
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    options: Make 'continue' configurable
+    
+    Allow specifying the value for the 'continue' in
+    the configuration file.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+
+commit a1ae52c
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    main.cpp: include stdexcept
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/main.cpp
+
+commit a50702f
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    progressbar: Revise to use the global cc::opts
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/progressbar.cpp
+src/cc/progressbar.h
+
+commit 02b94a1
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    get: Revise to use the global cc::opts
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/get.cpp
+
+commit 415f47a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    file: Revise to use the global cc::opts
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+src/cc/file.h
+
+commit 9971de0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    exec: Revise to use the global cc::opts
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/exec.cpp
+
+commit 29e460c
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    util.h: Revise removing variables_map
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/util.h
+
+commit 97c2497
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    application: Revise to use the global cc::opts
+    
+    Use the flag values instead. Make _tweak_curl_opts and _set_format_string
+    functions static functions.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/application.h
+
+commit 84c49fd
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-01-09
+
+    options: Read cmdline flags into bool variables
+    
+    Read flags (or switches) into boolean variables instead of using
+    boost::program_options::variables_map for storage, making it possible to
+    read the same variables from the configuration file with the expected
+    results.
+    
+    For example:
+      $ grep < ~/.ccliverc cont
+      continue = {1,true,0,false}  # boost::program_options would parse all
+                                   # four as "continue=1"
+    
+    By forcing the use of "zero_tokens" and reading the value into a boolean
+    variable, we get the expected results:
+      continue = {0,false}  # continue=0
+      continue = {1,true}   # continue=1
+    
+    Other:
+      Add cc::opts (an instance of cc::options) as a global variable which
+      may be accessed from other modules, making it possible to get away
+      without having to write a more complete cc::flags class to be passed
+      by reference along with boost::program_options::variables_map.
+    
+      Inline the cc::options::map function.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+src/cc/options.h
+
 commit 3c3b208
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2012-12-12

@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,31 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef cclive_application_h
-#define cclive_application_h
+#ifndef compat_options_h
+#define compat_options_h
 
-#include <cstdlib>
+namespace quvi {
 
-namespace cc
+class options
 {
-
-class application
-{
+  inline void _copy(const options& a)
+  {
+    statusfunc = a.statusfunc;
+    resolve    = a.resolve;
+    stream     = a.stream;
+  }
 public:
-  typedef enum {ok=EXIT_SUCCESS, error=EXIT_FAILURE} exit_status;
+  inline options(const options& a):statusfunc(NULL), resolve(true) { _copy(a); }
+  inline options():statusfunc(NULL), resolve(true)                 { }
+  inline options& operator=(const options& a)
+  {
+    if (this != &a)
+      _copy(a);
+    return *this;
+  }
+  inline virtual ~options() { statusfunc=NULL; }
 public:
-  inline application():_curl(NULL) { }
-  inline virtual ~application()    { _close(); }
-public:
-  exit_status exec(int,char **);
-private:
-  void _close();
-private:
-  void *_curl;
+  quvi_callback_status statusfunc;
+  std::string stream;
+  bool resolve;
 };
 
-} // namespace cc
+} // namespace quvi
 
-#endif // cclive_application_h
+#endif // compat_options_h
 
 // vim: set ts=2 sw=2 tw=72 expandtab:
