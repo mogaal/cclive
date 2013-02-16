@@ -30,6 +30,10 @@ AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_LN_S
 
+AC_PATH_PROG([A2X], [a2x], [no])
+AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
+AC_SUBST([A2X])
+
 # Checks for libraries.
 
 PKG_CHECK_MODULES([libquvi], [libquvi >= 0.4.0],
@@ -57,9 +61,10 @@ AC_CHECK_HEADERS([sys/ioctl.h unistd.h sys/types.h sys/stat.h signal.h])
 AC_HEADER_STDBOOL
 AC_TYPE_SIZE_T
 AC_TYPE_PID_T
+AC_C_INLINE
 
 # Checks for library functions.
-AC_CHECK_FUNCS([strerror strstr getpid signal])
+AC_CHECK_FUNCS([strerror strstr getpid signal memset setlocale])
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_STRERROR_R
 AC_FUNC_FORK

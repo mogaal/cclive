@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2011-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,6 @@
 #ifndef cclive_util_h
 #define cclive_util_h
 
-namespace boost
-{
-namespace program_options
-{
-class variables_map;
-}
-}
-
-namespace quvi
-{
-class query;
-class media;
-class url;
-} // namespace quvi
-
 namespace cc
 {
 
@@ -43,13 +28,17 @@ public:
 
 class file;
 
-void exec(const file&, const boost::program_options::variables_map& map);
-void get(const quvi::query&,
-         quvi::media&,
-         const boost::program_options::variables_map& map);
 void go_background(const std::string&, bool&);
 std::string perror(const std::string& p="");
+void get(quvi::media&, void*);
+void exec(const file&);
 void wait(const int);
+
+/* curl */
+
+void curl_setup(void*);
+void curl_free(void*);
+void *curl_new();
 
 } // namespace cc
 
