@@ -4,11 +4,11 @@ Source: http://cclive.sourceforge.net
 Upstream-Name: cclive
 
 Files: *
-Copyright: 2010-2012 Toni Gundogdu <legatvs@gmail.com>
+Copyright: 2010-2013 Toni Gundogdu <legatvs@gmail.com>
 License: GPL-3+
 
 Files: debian/*
-Copyright: 2009,2011 Alejandro Garrido Mota <garridomota@gmail.com>
+Copyright: 2009-2013 Alejandro Garrido Mota <garridomota@gmail.com>
 License: GPL-3+
 
 License: GPL-3+

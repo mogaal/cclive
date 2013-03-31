@@ -1,6 +1,8 @@
 cclive (0.7.12-1) UNRELEASED; urgency=low
 
-  * New upstream release (Closes: #699484). 
+  * New upstream release.
+    - Do not ignore IO errors. (Closes: #699484)
+  * d/copyright: update copyright years.
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Sat, 16 Feb 2013 14:55:46 -0430
 
