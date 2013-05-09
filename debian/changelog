@@ -1,4 +1,4 @@
-cclive (0.7.12-1) unstable; urgency=low
+cclive (0.7.12-1) experimental; urgency=low
 
   * New upstream release.
     - Do not ignore IO errors. (Closes: #699484)
