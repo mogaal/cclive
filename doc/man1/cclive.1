@@ -1,13 +1,13 @@
 '\" t
 .\"     Title: cclive
 .\"    Author: [see the "Authors" section]
-.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 02/10/2013
-.\"    Manual: \ \&
-.\"    Source: \ \&
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 05/25/2013
+.\"    Manual: cclive Manual
+.\"    Source: cclive 0.7.13
 .\"  Language: English
 .\"
-.TH "CCLIVE" "1" "02/10/2013" "\ \&" "\ \&"
+.TH "CCLIVE" "1" "05/25/2013" "cclive 0\&.7\&.13" "cclive Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -173,7 +173,7 @@ Download the specified media stream\&. By default the program will get the
 \fIdefault\fR
 stream\&. The ID may also be
 \fIbest\fR, in which case
-\fIlibquvi\-scripts(7)\fR
+\fBlibquvi-scripts\fR(7)
 will determine the best available quality stream\&.
 .RE
 .SS "Informative"
@@ -191,9 +191,9 @@ Print the license and exit\&.
 \-S, \-\-print\-streams
 .RS 4
 Query the available media streams\&. The printed values (media stream IDs) may be used with \-\-stream and \-\-prefer\-format options\&. The available streams are determined by
-\fIlibquvi(3)\fR
+\fBlibquvi\fR(3)
 and
-\fIlibquvi\-scripts(7)\fR\&.
+\fBlibquvi-scripts\fR(7)\&.
 .RE
 .PP
 \-\-progressbar <arg>
@@ -265,6 +265,11 @@ config:
 .if n \{\
 .RE
 .\}
+.PP
+\-D, \-\-print\-config
+.RS 4
+Print the value of all defined configuration options to stdout\&.
+.RE
 .PP
 \-v, \-\-version
 .RS 4
@@ -361,7 +366,7 @@ config:
 .RE
 .\}
 .PP
-\-\-verbose\-libcurl
+\-B, \-\-verbose\-libcurl
 .RS 4
 Enable libcURL verbose output\&.
 .RE
@@ -414,9 +419,9 @@ Disable use of HTTP proxy\&. Overrides \-\-proxy and http_proxy environment sett
 Specify the number of downloading retries before giving up\&. Set to 0 to disable\&. The default is 5\&.
 
 Note that the program will skip retrying altogether if the server returned HTTP 400 (and over), or if
-\fIlibquvi(3)\fR
+\fBlibquvi\fR(3)
 returned an unrecoverable error (e\&.g\&. missing
-\fIlibquvi\-scripts(7)\fR)\&.
+\fBlibquvi-scripts\fR(7))\&.
 .RE
 .sp
 .if n \{\
@@ -450,11 +455,11 @@ config:
 .RS 4
 Use the specified proxy address (e\&.g\&.
 http://foo:1234) for HTTP connections\&. By default, libcURL (which cclive and
-\fIlibquvi(3)\fR
+\fBlibquvi\fR(3)
 use) will use the value of http_proxy\&. Using this option will override the http_proxy environment value\&.
 
-Refer to the
-\fIcurl(1)\fR
+See
+\fBcurl\fR(1)
 for more information about the supported environment variables\&.
 .RE
 .sp
@@ -733,9 +738,9 @@ $ pkill \-USR1 cclive
 .IP \(bu 2.3
 .\}
 Print the path to the downloaded media file using
-\fIecho(1)\fR
+\fBecho\fR(1)
 and open the media file in
-\fItotem(1)\fR:
+\fBtotem\fR(1):
 .sp
 .if n \{\
 .RS 4
@@ -838,10 +843,10 @@ exec = /usr/bin/totem %f
 .\}
 .SH "STREAMS"
 .sp
-The availability and the identification of the media streams is determined by \fIlibquvi(3)\fR and \fIlibquvi\-scripts(7)\fR\&.
+The availability and the identification of the media streams is determined by \fBlibquvi\fR(3) and \fBlibquvi-scripts\fR(7)\&.
 .SS "YouTube"
 .sp
-\fIlibquvi\-scripts(7)\fR returns the media stream IDs containing the \fIitag\fR value so that they can be referred to as such using the \-\-stream or \-\-prefer\-format options\&. The \-\-print\-streams may be used to get a list of the available media streams\&.
+\fBlibquvi-scripts\fR(7) returns the media stream IDs containing the \fIitag\fR value so that they can be referred to as such using the \-\-stream or \-\-prefer\-format options\&. The \-\-print\-streams may be used to get a list of the available media streams\&.
 .PP
 libquvi\-scripts 0\&.4
 .RS 4
@@ -882,4 +887,4 @@ Report bugs to the cclive\-devel mailing list <cclive\-devel@lists\&.sourceforge
 cclive is Free Software licensed under the GNU GPLv3+
 .SH "SEE ALSO"
 .sp
-\fIlibquvi\-scripts(7)\fR, \fIlibquvi(3)\fR
+\fBlibquvi-scripts\fR(7), \fBlibquvi\fR(3)
