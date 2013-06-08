@@ -1,3 +1,202 @@
+commit bc054ff
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-25
+
+    Update NEWS for v0.7.13
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+NEWS
+
+commit 2b47862
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-06
+
+    Add --print-config
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/options.cpp
+src/cc/options.h
+
+commit 17b28b8
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    FIX: Skip transfer with USR1, do not retry transfer
+    
+    Sending the USR1 signal to the program should cause the program to
+    skip the transfer, not retry it.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+
+commit ae09d95
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-23
+
+    Add config.aux/ar-lib to .gitignore
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+.gitignore
+
+commit 5a678fb
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-23
+
+    Workaround: AM_PROG_AR
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit 05f2bd5
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-23
+
+    README: Revise adding aptitude examples
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+README
+
+commit 0b56b37
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-22
+
+    FIX: Regression in retrying introduced by 4b118378
+    
+    The commit 4b118378 introduced a case of an "if-statement with an empty
+    body", causing the program to attempt retrying with both succeeded and
+    failed transfers (when --no-download was not used).  In doing so, the
+    program would also completely skip invoking the --exec command with the
+    succeeded transfers (when retried).
+    
+    Affected versions:
+      v0.7.12
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/get.cpp
+
+commit 3a29b7b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-21
+
+    Update m4/boost.m4 to the latest
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+m4/boost.m4
+
+commit 64532f3
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-19
+
+    gen-news.sh: Do not print release author
+    
+    Trivial information. Release date matters.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+gen-news.sh
+
+commit e57096a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-04-16
+
+    gen-news.sh: Do not print commits with >1 one parent
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+gen-news.sh
+
+commit 814a4b4
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-26
+
+    man1: cclive.1.txt: Revise for asciidoc.conf
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit a3d9cd0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-26
+
+    man1: Makefile.am: Use ASCIIDOC_OPTS with a2x
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/Makefile.am
+
+commit b45e570
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    FIX: ‘cc::write_data::f’ will be initialized after ...
+    
+    Fixes the error:
+      src/cc/file.cpp:146: error: ‘cc::write_data::f’ will be initialized after
+      src/cc/file.cpp:145: error:   ‘std::ofstream* cc::write_data::o’
+      src/cc/file.cpp:116: error:   when initialized here
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+
+commit 0ed7d49
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-06
+
+    Add short-option for --verbose-libcurl
+
+doc/man1/cclive.1.txt
+src/cc/options.cpp
+
+commit ca05b58
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-06
+
+    default values to switches that should show with --print-config
+    
+    Add the default values to the switches that should show up
+    in the --print-config output.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+
+commit 37bfa12
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-06
+
+    cclive.1: Add --print-config
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 0863c96
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-26
+
+    doc: Add asciidoc.conf
+    
+    This file adds the linkman macro. See the comment field for the
+    instructions. This is a modified version from the pacman (of Arch Linux)
+    source tree uses to produce the manpages: this macro does not insert
+    <date>.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/Makefile.am
+doc/asciidoc.conf
+
 commit 8a0f7fe
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-02-10
