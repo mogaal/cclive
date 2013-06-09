@@ -2,6 +2,7 @@ cclive (0.7.13-1) unstable; urgency=low
 
   * New upstream release.
   * Update fix-rpath.diff patch.
+  * Update Maintainer field in d/control.
 
  -- Alejandro Garrido Mota <alejandro@debian.org>  Sat, 08 Jun 2013 14:24:34 -0430
 
