@@ -1,3 +1,22 @@
+v0.7.15  [2013-08-05]
+
+Toni Gundogdu:
+  - Add --timestamp: Try to preserve modification time [357e4ac]
+      (many thanks to Alexey Dokuchaev for the patch!)
+  - configure.ac: Require a2x when building from git [da1f467]
+
+ 5 files changed, 34 insertions(+), 2 deletions(-)
+
+
+v0.7.14  [2013-06-30]
+
+Toni Gundogdu:
+  - --filename-format: Print a notice of deprecated %h sequence [f12faf9]
+  - FIX: Warning message for "--query-formats deprecated" [4dba21e]
+
+ 4 files changed, 64 insertions(+), 48 deletions(-)
+
+
 v0.7.13  [2013-05-25]
 
 Toni Gundogdu:

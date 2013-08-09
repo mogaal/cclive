@@ -41,7 +41,7 @@ namespace fs = boost::filesystem;
 
 typedef std::vector<std::string> vst;
 
-void options::exec(int argc, char **argv)
+void options::parse(int argc, char **argv)
 {
   memset(&flags, 0, sizeof(struct flags_s));
 
@@ -139,6 +139,9 @@ void options::exec(int argc, char **argv)
   ("continue,c",
    po::value(&flags.cont)->zero_tokens()->default_value(false),
    "Resume partially downloaded media")
+  ("timestamp,N",
+   po::value(&flags.timestamp)->zero_tokens()->default_value(false),
+   "Try to preserve modification time")
   ("prefer-format,p",
    po::value<std::vector<std::string> >()->composing(),
    "Preferred format [domain:format[,...]]")
@@ -230,8 +233,8 @@ void options::exec(int argc, char **argv)
 
 static void warn_depr(const std::string& w, const std::string& n)
 {
-  std::clog << "WARNING '--" << w << "' is deprecated and will be removed "
-            << "in later versions\nWARNING Use '--" << n << "' instead"
+  std::clog << "[WARNING] '--" << w << "' is deprecated and will be removed "
+            << "in later versions\n[WARNING] Use '--" << n << "' instead"
             << std::endl;
 }
 
@@ -243,7 +246,7 @@ void options::_validate()
     warn_depr("format", "stream");
 
   if (_map.count("query-formats"))
-    warn_depr("query-formats", "print-formats");
+    warn_depr("query-formats", "print-streams");
 
   if (_map.count("tr"))
     {

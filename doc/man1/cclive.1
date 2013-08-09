@@ -2,12 +2,12 @@
 .\"     Title: cclive
 .\"    Author: [see the "Authors" section]
 .\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
-.\"      Date: 05/25/2013
+.\"      Date: 08/05/2013
 .\"    Manual: cclive Manual
-.\"    Source: cclive 0.7.13
+.\"    Source: cclive 0.7.15
 .\"  Language: English
 .\"
-.TH "CCLIVE" "1" "05/25/2013" "cclive 0\&.7\&.13" "cclive Manual"
+.TH "CCLIVE" "1" "08/05/2013" "cclive 0\&.7\&.15" "cclive Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -77,6 +77,37 @@ Resume partially downloaded media\&.
 .nf
 config:
   continue = {true|false}
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\-N, \-\-timestamp
+.RS 4
+Try to preserve the file modification time (as returned by the server, if any)\&. Using this option will cause the program to change the modification time of the file to that of returned by the server\&.
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+libcurl will parse this value from the returned "Last\-Modified" HTTP header\&. This header may not always be present in which case the program will quietly ignore this option\&.
+.sp .5v
+.RE
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+config:
+  timestamp = {true|false}
 .fi
 .if n \{\
 .RE
