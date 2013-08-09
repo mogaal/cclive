@@ -1,3 +1,178 @@
+commit 28cb2c5
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-05
+
+    Update NEWS for v0.7.15
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+NEWS
+
+commit d3d1e65
+Merge: da1f467 4799c21
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-26
+
+    Merge branch 'tg/0.7__add__timestamp' into maint-0.7
+
+commit 4799c21
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-26
+
+    DOC: cclive(1): Document --timestamp
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 357e4ac
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-26
+
+    Add --timestamp: Try to preserve modification time
+    
+    Try to preserve the file modification time (as returned by the server,
+    if any). Using this option will cause the program to change the
+    modification time of the file to that of returned by the server.
+    
+    NOTE: libcurl will parse this value from the returned "Last-Modified"
+          HTTP header. This header may not always be present in which case
+          the program will quietly ignore this option.
+    
+    This is otherwise identical to Alexey's patch (thanks!) except that it
+    uses:
+    * Boost.Filesystem (last_write_time) to change the modification time
+    * the 'flags' of cclive's options
+    
+    See also (for the original patch):
+    * http://www.mail-archive.com/cclive-devel@lists.sourceforge.net/msg00001.html
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+src/cc/options.cpp
+src/cc/options.h
+
+commit da1f467
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-09
+
+    configure.ac: Require a2x when building from git
+    
+    Copied over from libquvi {6cdebfd, 6612228}.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit bf2a705
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-30
+
+    Update NEWS for v0.7.14
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+NEWS
+
+commit f12faf9
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    --filename-format: Print a notice of deprecated %h sequence
+    
+    Print a friendly reminder of the impending removal of the %h sequence,
+    when used.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 0a2d004
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    Deprecated message: Use "[WARNING]" instead
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+
+commit 261f177
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    main: catch exception thrown by cc::options::parse (BACKPORTpt7)
+    
+    Do not catch the std::exception from `cc::options::parse' in
+    `cc::application::exec', but in the `main' function, instead.
+    
+    The rationale behind this is to provide a more eloquent solution
+    {catching the exception in cc::application::exec is completely
+    unnecessary}.
+    
+    * Rename cc::options::exec -> cc::options::parse
+    * Backported from next (6c863749)
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/main.cpp
+src/cc/options.cpp
+src/cc/options.h
+
+commit 68387d0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    Move --support implementation to print_support
+    
+    The rationale behind this is to delay the creation of quvi::query until
+    it is needed.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 86a09f1
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    Move --version implementation to print_version
+    
+    The rationale behind this is to delay the creation of quvi::query until
+    it is needed.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit a920fc9
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    handle_format_list: Create quvi::query object
+    
+    The rationale behind this is to delay the creation of quvi::query until
+    it is needed.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 4dba21e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-25
+
+    FIX: Warning message for "--query-formats deprecated"
+    
+    See also:
+      http://sourceforge.net/mailarchive/message.php?msg_id=30894664
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+
 commit bc054ff
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-05-25

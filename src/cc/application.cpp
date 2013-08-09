@@ -142,8 +142,8 @@ static void print_quvi_error(const quvi::error& e)
 }
 
 static const char depr_msg[] =
-  "WARNING '--format {help,list}' are deprecated and will be removed "
-  "in the later\nWARNING versions. Use '--print-streams' instead.";
+  "[WARNING] '--format {help,list}' are deprecated and will be removed "
+  "in the later\n[WARNING] versions. Use '--print-streams' instead.";
 
 static const char format_usage[] =
   "Usage:\n"
@@ -177,9 +177,10 @@ namespace po = boost::program_options;
 typedef std::vector<std::string> vst;
 
 static application::exit_status
-handle_format_list(const po::variables_map& map, const quvi::query& query)
+handle_format_list(const po::variables_map& map)
 {
-  map_ss m = query.support();
+  quvi::query q; // Throws quvi::error caught in main.cpp
+  map_ss m = q.support();
 
   // -f list <pattern>
 
@@ -303,19 +304,47 @@ static void set_stream(const std::string& url, quvi::options& qopts,
   qopts.stream = s;
 }
 
+static const application::exit_status print_version()
+{
+  std::cout
+      << "cclive "
+#ifdef VN
+      << VN
+#else
+      << PACKAGE_VERSION
+#endif
+      << " for " << CANONICAL_TARGET
+      << "\n  libquvi "
+      << quvi_version(QUVI_VERSION_LONG)
+#ifdef HAVE_LIBQUVI_0_4_0
+      << "\n  libquvi-scripts "
+      << quvi_version(QUVI_VERSION_SCRIPTS)
+#endif
+      << std::endl;
+  return application::ok;
+}
+
+static application::exit_status print_support()
+{
+  quvi::query q; // Throws quvi::error caught in main.cpp
+  std::cout << quvi::support_to_s(q.support()) << std::flush;
+  return application::ok;
+}
+
+static void warn_depr_val(const std::string& o, const std::string& t,
+                          const std::string& v)
+{
+  std::clog
+      << "[WARNING] --" << o << ": " << t << " `" << v
+      << "' is deprecated and will\n[WARNING] be removed in the later "
+      << "versions" << std::endl;
+}
+
 extern char LICENSE[]; // cc/license.cpp
 
 application::exit_status application::exec(int argc, char **argv)
 {
-  try
-    {
-      opts.exec(argc,argv);
-    }
-  catch(const std::exception& e)
-    {
-      std::clog << "error: " << e.what() << std::endl;
-      return application::error;
-    }
+  opts.parse(argc, argv);
 
   const po::variables_map map = cc::opts.map();
 
@@ -332,38 +361,12 @@ application::exit_status application::exec(int argc, char **argv)
       return application::ok;
     }
   else if (opts.flags.version)
-    {
-      std::cout
-          << "cclive "
-#ifdef VN
-          << VN
-#else
-          << PACKAGE_VERSION
-#endif
-          << " for " << CANONICAL_TARGET
-          << "\n  libquvi "
-          << quvi_version(QUVI_VERSION_LONG)
-#ifdef HAVE_LIBQUVI_0_4_0
-          << "\n  libquvi-scripts "
-          << quvi_version(QUVI_VERSION_SCRIPTS)
-#endif
-          << std::endl;
-      return application::ok;
-    }
+    return print_version();
+  else if (opts.flags.support)
+    return print_support();
   else if (opts.flags.license)
     {
       std::cout << LICENSE << std::endl;
-      return application::ok;
-    }
-
-  // --support
-
-  quvi::query query; // Throws quvi::error caught in main.cpp
-  query.setup_curl();
-
-  if (opts.flags.support)
-    {
-      std::cout << quvi::support_to_s(query.support()) << std::flush;
       return application::ok;
     }
 
@@ -377,8 +380,13 @@ application::exit_status application::exec(int argc, char **argv)
         return print_format_help();
 
       else if (format == "list")
-        return handle_format_list(map, query);
+        return handle_format_list(map);
     }
+
+  // Deprecated.
+
+  if (strstr(map["filename-format"].as<std::string>().c_str(), "%h"))
+    warn_depr_val("filename-format", "sequence", "%h");
 
   // Parse input.
 
@@ -422,6 +430,8 @@ application::exit_status application::exec(int argc, char **argv)
   input.erase(make_unique(input.begin(), input.end()), input.end());
 
   // Set up quvi.
+
+  quvi::query query; // Throws quvi::error caught in main.cpp
 
   _curl = cc::curl_new();
   cc::curl_setup(_curl);
