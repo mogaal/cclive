@@ -1,7 +1,6 @@
 cclive (0.9.2-1) experimental; urgency=low
 
-  * New upstream release in experimental (unstable release)
-  * Remove patches dir.
+  * New upstream release inside experimental.
   * d/control: 
     - Add libglibmm-2.4-dev in B-D-I.
   * Update fix-rpath.diff patch to new version.
