@@ -64,7 +64,7 @@ Requirements
   http://pcre.org
     $ sudo aptitude install libpcre3-dev
 
-* libboost 1.42.0
+* libboost 1.49.0
   http://www.boost.org/
     $ sudo aptitude install libboost-program-options-dev libboost-system-dev \
                             libboost-filesystem-dev libboost-iostreams-dev \
@@ -74,6 +74,14 @@ Requirements
   http://curl.haxx.se/
     $ sudo aptitude install libcurl4-gnutls-dev
        (or libcurl4-openssl-dev)
+
+* glibmm 2.24.2
+  http://library.gnome.org/devel/glibmm/
+    $ sudo aptitude install libglibmm-2.4-dev
+
+* GLib 2.24.2
+  http://library.gnome.org/devel/glib/
+    $ sudo aptitude install libglib2.0-dev
 
 * pkg-config for tracking the compilation flags needed for libraries
   http://www.freedesktop.org/software/pkgconfig/
@@ -99,4 +107,4 @@ Please see: http://cclive.sourceforge.net/contrib/
 License
 =======
 
-cclive is Free Software, licensed under the GNU GPLv3+.
+cclive is Free Software, licensed under the GNU Affero GPLv3+.

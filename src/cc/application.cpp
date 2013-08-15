@@ -1,18 +1,21 @@
 /* cclive
  * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
+ * This file is part of cclive <http://cclive.sourceforge.net/>.
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include <ccinternal>
@@ -23,16 +26,14 @@
 
 #include <boost/algorithm/string/classification.hpp> // is_any_of
 #include <boost/algorithm/string/split.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>
-#include <boost/random.hpp>
-
-#ifndef foreach
-#define foreach BOOST_FOREACH
-#endif
+#include <boost/format.hpp>
 
 #include <ccquvi>
 #include <ccapplication>
 #include <ccoptions>
+#include <ccinput>
 #include <ccutil>
 #include <cclog>
 #include <ccre>
@@ -40,21 +41,13 @@
 namespace cc
 {
 
-static boost::mt19937 _rng;
-
-static void rand_decor()
-{
-  boost::uniform_int<> r(2,5);
-  boost::variate_generator<boost::mt19937&, boost::uniform_int<> > v(_rng,r);
-
-  const int n = v();
-  for (int i=0; i<n; ++i) cc::log << ".";
-}
-
 static void handle_fetch(const quvi_word type, void*)
 {
-  rand_decor();
+#ifdef HAVE_LIBQUVI_0_9
+  if (type == QUVI_CALLBACK_STATUS_DONE)
+#else
   if (type == QUVISTATUSTYPE_DONE)
+#endif
     cc::log << " ";
 }
 
@@ -65,27 +58,51 @@ static void print_done()
 
 static void handle_verify(const quvi_word type)
 {
-  rand_decor();
+#ifdef HAVE_LIBQUVI_0_9
+  if (type == QUVI_CALLBACK_STATUS_DONE)
+#else
   if (type == QUVISTATUSTYPE_DONE)
+#endif
     print_done();
 }
 
 static void handle_resolve(const quvi_word type)
 {
-  rand_decor();
+#ifdef HAVE_LIBQUVI_0_9
+  if (type == QUVI_CALLBACK_STATUS_DONE)
+#else
   if (type == QUVISTATUSTYPE_DONE)
+#endif
     cc::log << " ";
 }
 
-static int status_callback(long param, void *ptr)
+#ifdef HAVE_LIBQUVI_0_9
+static void status_callback_pt9(const quvi_word status, const quvi_word type,
+                                void *data, void *userdata)
 {
-  const quvi_word status = quvi_loword(param);
-  const quvi_word type   = quvi_hiword(param);
-
+  cc::log << ".";
   switch (status)
     {
-    case QUVISTATUS_FETCH :
-      handle_fetch(type,ptr);
+    case QUVI_CALLBACK_STATUS_FETCH:
+      handle_fetch(type, data);
+      break;
+    case QUVI_CALLBACK_STATUS_HTTP_QUERY_METAINFO:
+      handle_verify(type);
+      break;
+    case QUVI_CALLBACK_STATUS_RESOLVE:
+      handle_resolve(type);
+      break;
+    }
+}
+#else
+static void status_callback_pt4(const quvi_word status, const quvi_word type,
+                                void *data)
+{
+  cc::log << ".";
+  switch (status)
+    {
+    case QUVISTATUS_FETCH:
+      handle_fetch(type, data);
       break;
     case QUVISTATUS_VERIFY:
       handle_verify(type);
@@ -94,22 +111,26 @@ static int status_callback(long param, void *ptr)
       handle_resolve(type);
       break;
     }
+}
+#endif
 
+#ifdef HAVE_LIBQUVI_0_9
+static int status_callback(long status_type, void *data, void *userdata)
+#else
+static int status_callback(long status_type, void *data)
+#endif
+{
+  const quvi_word status = quvi_loword(status_type);
+  const quvi_word type   = quvi_hiword(status_type);
+
+#ifdef HAVE_LIBQUVI_0_9
+  status_callback_pt9(status, type, data, userdata);
+#else
+  status_callback_pt4(status, type, data);
+#endif
   cc::log << std::flush;
 
   return QUVI_OK;
-}
-
-template<class Iterator>
-static Iterator make_unique(Iterator first, Iterator last)
-{
-  while (first != last)
-    {
-      Iterator next(first);
-      last  = std::remove(++next, last, *first);
-      first = next;
-    }
-  return last;
 }
 
 static void print_retrying(const int retry,
@@ -141,101 +162,54 @@ static void print_quvi_error(const quvi::error& e)
   cc::log << "libquvi: error: " << e.what() << std::endl;
 }
 
-static const char depr_msg[] =
-  "[WARNING] '--format {help,list}' are deprecated and will be removed "
-  "in the later\n[WARNING] versions. Use '--print-streams' instead.";
-
-static const char format_usage[] =
-  "Usage:\n"
-  "   --format arg                get format arg of media\n"
-  "   --format list               print domains with formats\n"
-  "   --format list arg           match arg to supported domain names\n"
-  "Examples:\n"
-  "   --format list youtube       print youtube formats\n"
-  "   --format fmt34_360p         get format fmt34_360p of media";
-
-static application::exit_status print_format_help()
-{
-  std::cout << format_usage << "\n" << depr_msg << std::endl;
-  return application::ok;
-}
-
-typedef std::map<std::string,std::string> map_ss;
-
-static void print_host(const map_ss::value_type& t)
-{
-  std::cout
-      << t.first
-      << ":\n  "
-      << t.second
-      << "\n"
-      << std::endl;
-}
-
 namespace po = boost::program_options;
-
 typedef std::vector<std::string> vst;
 
-static application::exit_status
-handle_format_list(const po::variables_map& map)
+static std::string format_streams(const std::string& s)
 {
-  quvi::query q; // Throws quvi::error caught in main.cpp
-  map_ss m = q.support();
+  vst v;
+  boost::split(v, s, boost::is_any_of("|,"));
+  const size_t m = v.size();
 
-  // -f list <pattern>
+  if (m ==0)
+    v.push_back("default");
 
-  if (map.count("url"))
-    {
-      const std::string arg0 = map["url"].as<vst>()[0];
-      foreach (map_ss::value_type& t, m)
+  std::stringstream r;
+  r << "\n";
+
+  size_t i = 0, c = 0;
+  BOOST_FOREACH(const std::string& a, v)
+  {
+    r << boost::format("%|22s|") % a;
+    ++c;
+    if (++i ==3)
       {
-        if (t.first.find(arg0) != std::string::npos)
-          print_host(t);
+        if (c <m)
+          r << "\n";
+        i = 0;
       }
-    }
-
-  // -f list
-
-  else
-    {
-      foreach (map_ss::value_type& t, m)
-      {
-        print_host(t);
-      }
-    }
-
-  std::cout << depr_msg << std::endl;
-
-  return application::ok;
+  }
+  return r.str();
 }
 
 static application::exit_status
 print_streams(const quvi::query& query, const quvi::options &qopts,
-              const vst& input)
+              const vst& input_urls, const po::variables_map& vm)
 {
-  const size_t n = input.size();
+  const size_t n = input_urls.size();
   size_t i = 0;
 
-  foreach (std::string url, input)
+  BOOST_FOREACH(const std::string& url, input_urls)
   {
     try
       {
         print_checking(++i,n);
+        query.setup_curl(vm);
 
         const std::string r = query.streams(url, qopts);
         print_done();
 
-        if (cc::opts.flags.print_streams)
-          {
-            vst a;
-            boost::split(a, r, boost::is_any_of("|,"));
-            foreach (const std::string s, a)
-            {
-              cc::log << s << "\n";
-            }
-          }
-        else
-          cc::log << std::setw(10) << r << " : " << url << std::endl;
+        cc::log << "streams (found):" << format_streams(r) << std::endl;
       }
     catch(const quvi::error& e)
       {
@@ -246,32 +220,11 @@ print_streams(const quvi::query& query, const quvi::options &qopts,
   return application::ok;
 }
 
-static void read_from(std::istream& is, vst& dst)
-{
-  std::string s;
-  char ch = 0;
-
-  while (is.get(ch))
-    s += ch;
-
-  std::istringstream iss(s);
-  std::copy(
-    std::istream_iterator<std::string >(iss),
-    std::istream_iterator<std::string >(),
-    std::back_inserter<vst>(dst)
-  );
-}
-
-static bool is_url(const std::string& s)
-{
-  return strstr(const_cast<char*>(s.c_str()), "://") != NULL;
-}
-
 static void parse_prefer_format(const std::string& url, std::string& fmt,
-                                const po::variables_map& map)
+                                const po::variables_map& vm)
 {
-  vst vb, va = map["prefer-format"].as<vst>();
-  foreach (const std::string s, va)
+  vst vb, va = vm[OPT__PREFER_FORMAT].as<vst>();
+  BOOST_FOREACH(const std::string& s, va)
   {
     boost::split(vb, s, boost::is_any_of(":"));
     if (vb.size() == 2)
@@ -289,177 +242,43 @@ static void parse_prefer_format(const std::string& url, std::string& fmt,
 }
 
 static void set_stream(const std::string& url, quvi::options& qopts,
-                       const po::variables_map& map)
+                       const po::variables_map& vm)
 {
-  std::string s = "default";
-  if (map.count("stream"))
-    s = map["stream"].as<std::string>();
-  else if (map.count("format")) // --format takes precedence
-    s = map["format"].as<std::string>();
-  else
-    {
-      if (map.count("prefer-format"))
-        parse_prefer_format(url, s, map);
-    }
-  qopts.stream = s;
+  std::string r = vm[OPT__STREAM].as<std::string>();
+  if (r == "default" && vm.count(OPT__PREFER_FORMAT))
+    parse_prefer_format(url, r, vm);
+  qopts.stream = r;
 }
 
-static const application::exit_status print_version()
+application::exit_status application::exec(int const argc, char const **argv)
 {
-  std::cout
-      << "cclive "
-#ifdef VN
-      << VN
-#else
-      << PACKAGE_VERSION
-#endif
-      << " for " << CANONICAL_TARGET
-      << "\n  libquvi "
-      << quvi_version(QUVI_VERSION_LONG)
-#ifdef HAVE_LIBQUVI_0_4_0
-      << "\n  libquvi-scripts "
-      << quvi_version(QUVI_VERSION_SCRIPTS)
-#endif
-      << std::endl;
-  return application::ok;
-}
-
-static application::exit_status print_support()
-{
-  quvi::query q; // Throws quvi::error caught in main.cpp
-  std::cout << quvi::support_to_s(q.support()) << std::flush;
-  return application::ok;
-}
-
-static void warn_depr_val(const std::string& o, const std::string& t,
-                          const std::string& v)
-{
-  std::clog
-      << "[WARNING] --" << o << ": " << t << " `" << v
-      << "' is deprecated and will\n[WARNING] be removed in the later "
-      << "versions" << std::endl;
-}
-
-extern char LICENSE[]; // cc/license.cpp
-
-application::exit_status application::exec(int argc, char **argv)
-{
-  opts.parse(argc, argv);
-
-  const po::variables_map map = cc::opts.map();
-
-  // Dump and terminate options.
-
-  if (opts.flags.help)
-    {
-      std::cout << opts << std::flush;
-      return application::ok;
-    }
-  else if (opts.flags.print_config)
-    {
-      opts.dump();
-      return application::ok;
-    }
-  else if (opts.flags.version)
-    return print_version();
-  else if (opts.flags.support)
-    return print_support();
-  else if (opts.flags.license)
-    {
-      std::cout << LICENSE << std::endl;
-      return application::ok;
-    }
-
-  // --format [<id> | [<help> | <list> [<pattern]]]
-
-  if (map.count("format"))
-    {
-      const std::string format = map["format"].as<std::string>();
-
-      if (format == "help")
-        return print_format_help();
-
-      else if (format == "list")
-        return handle_format_list(map);
-    }
-
-  // Deprecated.
-
-  if (strstr(map["filename-format"].as<std::string>().c_str(), "%h"))
-    warn_depr_val("filename-format", "sequence", "%h");
+  const boost::scoped_ptr<cc::options> o(new cc::options(argc, argv));
+  const po::variables_map vm = o->values();
 
   // Parse input.
 
-  vst input;
-
-  if (map.count("url") == 0)
-    read_from(std::cin, input);
-  else
-    {
-      vst args = map["url"].as< vst >();
-      foreach(std::string arg, args)
-      {
-        if (!is_url(arg))
-          {
-            std::ifstream f(arg.c_str());
-            if (f.is_open())
-              read_from(f, input);
-            else
-              {
-                std::clog
-                    << "error: "
-                    << arg
-                    << ": "
-                    << cc::perror("unable to open")
-                    << std::endl;
-              }
-          }
-        else
-          input.push_back(arg);
-      }
-    }
-
-  if (input.size() == 0)
-    {
-      std::clog << "error: no input urls" << std::endl;
-      return application::error;
-    }
-
-  // Remove duplicates.
-
-  input.erase(make_unique(input.begin(), input.end()), input.end());
+  const vst& input_urls = cc::input::parse(vm);
+  const size_t n = input_urls.size();
 
   // Set up quvi.
 
   quvi::query query; // Throws quvi::error caught in main.cpp
 
-  _curl = cc::curl_new();
-  cc::curl_setup(_curl);
-
   quvi::options qopts;
-  qopts.resolve = ! opts.flags.no_resolve;
+  qopts.useragent = vm[OPT__AGENT].as<std::string>(); /* libquvi 0.9+ */
+  qopts.resolve = ! vm[OPT__NO_RESOLVE].as<bool>();
   qopts.statusfunc = status_callback;
-
-  // Seed random generator.
-
-  _rng.seed(static_cast<unsigned int>(std::time(0)));
 
   // Omit flag.
 
-  bool omit = opts.flags.quiet;
+  bool omit = vm[OPT__QUIET].as<bool>();
 
   // Go to background.
 
-#ifdef HAVE_FORK
-  const bool background_given = opts.flags.background;
-
+#if defined(HAVE_WORKING_FORK) || defined(HAVE_WORKING_VFORK)
+  const bool background_given = vm[OPT__BACKGROUND].as<bool>();
   if (background_given)
-    {
-
-      // (Boost) Throws std::runtime_error if fails.
-
-      cc::go_background(map["log-file"].as<std::string>(), omit);
-    }
+    cc::go_background(vm[OPT__LOG_FILE].as<std::string>(), omit);
 #endif
 
   // Omit std output. Note that --background flips this above.
@@ -469,10 +288,11 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Print streams.
 
-  if (opts.flags.print_streams || opts.flags.query_formats)
-    return print_streams(query, qopts, input);
+  if_optsw_given(vm, OPT__PRINT_STREAMS)
+    return print_streams(query, qopts, input_urls, vm);
 
-#if defined (HAVE_FORK) && defined (HAVE_GETPID)
+#if defined(HAVE_WORKING_FORK) || defined(HAVE_WORKING_VFORK)
+  #ifdef HAVE_GETPID
   if (background_given)
     {
       cc::log
@@ -481,19 +301,19 @@ application::exit_status application::exec(int argc, char **argv)
           << ")."
           << std::endl;
     }
+  #endif
 #endif
 
   // For each input URL.
 
-  const size_t n = input.size();
   size_t i = 0;
 
-  const int max_retries  = map["max-retries"].as<int>();
-  const int retry_wait   = map["retry-wait"].as<int>();
+  const int max_retries  = vm[OPT__MAX_RETRIES].as<cc::max_retries>().value();
+  const int retry_wait   = vm[OPT__RETRY_WAIT].as<cc::retry_wait>().value();
 
   exit_status es = ok;
 
-  foreach(std::string url, input)
+  BOOST_FOREACH(const std::string& url, input_urls)
   {
     ++i;
 
@@ -511,7 +331,8 @@ application::exit_status application::exec(int argc, char **argv)
 
             try
               {
-                set_stream(url, qopts, map);
+                set_stream(url, qopts, vm);
+                _curl = query.setup_curl(vm);
                 m = query.parse(url, qopts);
               }
             catch(const quvi::error& e)
@@ -522,7 +343,7 @@ application::exit_status application::exec(int argc, char **argv)
                   print_quvi_error(e);
               }
 
-            cc::get(m, _curl);
+            cc::get(m, _curl, vm);
             break; // Stop retrying.
           }
         es = ok;
@@ -541,12 +362,6 @@ application::exit_status application::exec(int argc, char **argv)
       }
   }
   return es;
-}
-
-void application::_close()
-{
-  curl_free(_curl);
-  _curl = NULL;
 }
 
 } // namespace cc

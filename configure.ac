@@ -14,8 +14,8 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_TARGET
 AC_USE_SYSTEM_EXTENSIONS
 
-AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
-AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
+AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target",
+  [Define to canonical target])
 
 AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
@@ -33,6 +33,13 @@ AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_LN_S
 
+AC_DEFINE_UNQUOTED([CXXFLAGS], "$CXXFLAGS", [Define to compiler flags])
+AC_DEFINE_UNQUOTED([CXX], "$CXX", [Define to compiler])
+
+AC_PATH_PROG([DATE], [date], [no])
+AS_IF([test x"$DATE" != "xno"], [build_time=`$DATE +"%F %T %z"`])
+AC_DEFINE_UNQUOTED([BUILD_TIME], ["$build_time"], [We have build time])
+
 AC_PATH_PROG([A2X], [a2x], [no])
 AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
 AC_SUBST([A2X])
@@ -42,14 +49,22 @@ AS_IF([test x"$A2X" = "xno" && test -d "$srcdir/.git"],
 
 # Checks for libraries.
 
-PKG_CHECK_MODULES([libquvi], [libquvi >= 0.4.0],
-  [AC_DEFINE([HAVE_LIBQUVI_0_4_0], [1], [We have libquvi 0.4.0+])],
-  [PKG_CHECK_MODULES([libquvi], [libquvi >= 0.2.16.1])])
+have_libquvi_0_9=
+PKG_CHECK_MODULES([libquvi], [libquvi-0.9 >= 0.9],
+  [
+    AC_DEFINE([HAVE_LIBQUVI_0_9], [1], [We have libquvi 0.9])
+    have_libquvi_0_9=yes
+  ],
+  [PKG_CHECK_MODULES([libquvi], [libquvi >= 0.4])])
+AM_CONDITIONAL([HAVE_LIBQUVI_0_9], [test x"$have_libquvi_0_9" = "xyes"])
+
 PKG_CHECK_MODULES([libcurl], [libcurl >= 7.18.0])
 PKG_CHECK_MODULES([libpcre], [libpcre >= 8.02])
 PKG_CHECK_MODULES([libpcrecpp], [libpcrecpp >= 8.02])
+PKG_CHECK_MODULES([glibmm], [glibmm-2.4 >= 2.24])
+PKG_CHECK_MODULES([glib], [glib-2.0 >= 2.24])
 
-BOOST_REQUIRE([1.42.0])
+BOOST_REQUIRE([1.49.0])
 # Boost: Header-only libs
 BOOST_FOREACH
 BOOST_FORMAT

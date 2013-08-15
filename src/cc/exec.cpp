@@ -1,18 +1,21 @@
 /* cclive
  * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
+ * This file is part of cclive <http://cclive.sourceforge.net/>.
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include <ccinternal>
@@ -28,10 +31,6 @@
 #include <boost/foreach.hpp>
 #include <pcrecpp.h>
 
-#ifndef foreach
-#define foreach BOOST_FOREACH
-#endif
-
 #include <ccquvi>
 #include <ccoptions>
 #include <ccfile>
@@ -42,9 +41,9 @@
 namespace cc
 {
 
-typedef std::vector<std::string> vst;
+typedef std::vector<std::string> vs;
 
-static int invoke_exec(const vst& args)
+static int invoke_exec(const vs& args)
 {
   const size_t sz = args.size();
   const char **argv = new const char* [sz+2];
@@ -102,7 +101,7 @@ static int invoke_exec(const vst& args)
 
 static void tokenize(const std::string& r,
                      const std::string& s,
-                     vst& dst)
+                     vs& dst)
 {
   pcrecpp::StringPiece sp(s);
   pcrecpp::RE rx(r);
@@ -117,16 +116,16 @@ static void tokenize(const std::string& r,
 
 namespace po = boost::program_options;
 
-void exec(const file& file)
+void exec(const file& file, const po::variables_map& vm)
 {
-  const vst m = cc::opts.map()["exec"].as<vst>();
-  foreach (std::string e, m)
+  const vs m = vm[OPT__EXEC].as<vs>();
+  BOOST_FOREACH(std::string e, m)
   {
     pcrecpp::RE("%f").GlobalReplace(file.path(), &e);
     pcrecpp::RE("%n").GlobalReplace(file.name(), &e);
     pcrecpp::RE("%t").GlobalReplace(file.title(), &e);
 
-    vst args;
+    vs args;
     tokenize("([\"'](.*?)[\"']|\\S+)", e, args);
     invoke_exec(args);
   }

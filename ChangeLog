@@ -1,35 +1,452 @@
-commit 28cb2c5
+commit 15a94c5
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-08-05
+Date:   2013-08-08
 
-    Update NEWS for v0.7.15
+    Update NEWS for v0.9.2
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 NEWS
 
-commit d3d1e65
-Merge: da1f467 4799c21
+commit 86978ab
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-07-26
+Date:   2013-08-08
 
-    Merge branch 'tg/0.7__add__timestamp' into maint-0.7
+    Bump the required Boost version to v1.49
+    
+    Filesystem of Boost v1.42 is outdated and without the much improved v3.
+    It's time to move on.
+    
+    Debian Wheezy packages Boost v1.49 which is why this version was chosen.
+    Squeeze packages Boost v1.42.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
-commit 4799c21
+README
+configure.ac
+
+commit 01f93de
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-07-26
+Date:   2013-08-08
 
-    DOC: cclive(1): Document --timestamp
+    Use HAVE_WORKING_(V)FORK blocks instead of HAVE_FORK
+    
+    With some configurations AC_FUNC_FORK would set only HAVE_VFORK causing
+    cclive to be compiled (incorrectly) without the --background option.
+    
+    * Check for HAVE_WORKING_(V)FORK instead of just HAVE_FORK
+    * Define 'vfork' as 'fork'
+    
+    Links:
+    [1]: http://is.gd/lPa836 (AC_FUNC_FORK)
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/background.cpp
+src/cc/internal.h
+src/cc/options.h
+
+commit 1a56f54
+Merge: ac7250d 1af4d95
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-07
+
+    Merge branch 'tg/next__redo_input' into next
+
+commit 1af4d95
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-07
+
+    DOC: INPUT: Add a "file://" note
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 doc/man1/cclive.1.txt
 
-commit 357e4ac
+commit 6db9fc4
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-07-26
+Date:   2013-08-07
 
-    Add --timestamp: Try to preserve modification time
+    Update main for rewritten cc::input
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/main.cpp
+
+commit bfe9c04
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-07
+
+    Update cc::applications for rewritten cc::input
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 81303f9
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-07
+
+    Improve cc::input (complete rewrite)
+    
+    Instead of testing whether the input URL is a "regular file" and
+    throwing (an obscure) "not an URL or a file" warning:
+    
+      * Check the URL for an URI scheme, append (unless a "file")
+    
+      * If none was found, try opening it (as a file), and if that fails
+        - Throw an error (with a system provided errno-based message)
+    
+    Other notable changes:
+    * More informative error messages
+    * New prerequisite for glibmm
+    * Make cc::input header-only
+    * Add support for "file://"
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/input.h
+
+commit bf400e7
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-07
+
+    Remove cc/input.cpp
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/Makefile.am
+src/cc/input.cpp
+
+commit f9268c0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-07
+
+    Add cc::fstream
+    
+    This is a drop-in (header-only) replacement for the STL file streams.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/Makefile.am
+src/cc/fstream.h
+src/ccfstream
+
+commit 363a69e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-07
+
+    src/Makefile.am: Add glibmm_{CFLAGS,LIBS}
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/Makefile.am
+
+commit bdcec97
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-07
+
+    configure.ac: Add PKG_CHECK_MODULES([glibmm])
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit 8d00c05
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-07
+
+    README: Add glibmm to Requirements
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+README
+
+commit ac7250d
+Merge: 50213d7 6eaeeb7
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-05
+
+    Merge branch 'tg/next__redo_opts' into next
+
+commit 6eaeeb7
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] Network: Reorganize options into alphabetical order
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit b9a5c78
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] Output: Reorganize options into alphabetical order
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 30afedc
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] Informative: Reorganize options into alphabetical order
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 87d9723
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] Core: Reorganize options into alphabetical order
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit b28e1f7
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] Add new option short names
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 1b5b6d1
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] --retry-wait: Add a note about value 0
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 6426f8f
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] --update-interval: Accepts now integers only
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 2d0b4f6
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] Move --agent to Network section
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 70e9043
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] Move --progressbar, --update-interval to Output section
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 83b7050
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-03
+
+    [DOC] --stream: Add missing "config:"
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit e43eada
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    main: Use cc::error, catch cc::options::exit_program
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/main.cpp
+
+commit 9cfb2fb
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Update quvi::query (of compat) for rewritten cc:options
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/query.h
+src/compat/query_pt4.cpp
+src/compat/query_pt9.cpp
+
+commit df0f625
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Update util.h for rewritten cc::options
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/util.h
+
+commit e086cde
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Update cc::application for rewritten cc::options
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/application.h
+
+commit 888d42a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Update cc::progressbar for rewritten cc::options
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/progressbar.cpp
+src/cc/progressbar.h
+
+commit 551a9b0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Update cc::input for rewritten cc::options
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/input.cpp
+src/cc/input.h
+
+commit 5864990
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Update cc::get for rewritten cc::options
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/get.cpp
+
+commit 38605f2
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Update cc::file for rewritten cc::options
+    
+    Other:
+    * Leave CURLOPT_MAX_RECV_SPEED_LARGE for curl_setup
+    * Rely cc::options for setting default values (e.g. --tr)
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+src/cc/file.h
+
+commit 3d1b858
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Update cc/exec.cpp for rewritten cc::options
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/exec.cpp
+
+commit 4938205
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Update cc/curl.cpp for rewritten cc::options
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/curl.cpp
+
+commit c0cb7ec
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Add cc::error (cc/error.h)
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/Makefile.am
+src/cc/error.h
+src/ccerror
+
+commit 8c27a3a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    internal.h: Add Boost.PO version check, if(n)_optsw_given macros
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/internal.h
+
+commit 314e722
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-08-02
+
+    Improve cc:options (complete rewrite)
+    
+    This rewrite addresses some of the inefficiencies of using the
+    Boost.Program_Options.
+    
+    Notable changes:
+    
+    * Add a workaround for the Boost.PO "error: multiple occurrences" bug
+      - Some versions of Boost (confirmed: v1.49) PO do not provide the
+        option name with the "multiple occurrences" error.
+    
+    * cc::options now checks and warns if the option is deprecated
+    
+    * Improved option grouping which benefits the --help output
+    
+    * More informative parser error messages that indicate:
+      - If the error occurred while parsing the config or cmdline
+      - If value (e.g. type) validation failed
+    
+    * The use of "flags" (added in v0.7.12) was replaced with
+      .bool_switch() and .as<bool>()
+    
+    * A short-option name was added for for-each option
+    
+    * cc::options is now header-only
+    
+    Backwards-compatibility breaking changes:
+    
+    * --update-interval now accepts integers only
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/Makefile.am
+src/cc/options.cpp
+src/cc/options.h
+
+commit 50213d7
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-27
+
+    Add --timestamp: Try to preserve modification time (PORT)
     
     Try to preserve the file modification time (as returned by the server,
     if any). Using this option will cause the program to change the
@@ -39,21 +456,95 @@ Date:   2013-07-26
           HTTP header. This header may not always be present in which case
           the program will quietly ignore this option.
     
-    This is otherwise identical to Alexey's patch (thanks!) except that it
-    uses:
-    * Boost.Filesystem (last_write_time) to change the modification time
-    * the 'flags' of cclive's options
-    
-    See also (for the original patch):
-    * http://www.mail-archive.com/cclive-devel@lists.sourceforge.net/msg00001.html
+    Ported from maint-0.7:
+    * Add --timestamp: Try to preserve modification time (357e4acff)
+    * DOC: cclive(1): Document --timestamp (4799c210b)
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
+doc/man1/cclive.1.txt
 src/cc/file.cpp
 src/cc/options.cpp
 src/cc/options.h
 
-commit da1f467
+commit e8a092c
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-16
+
+    Update NEWS for v0.9.1
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+NEWS
+
+commit 7ab7c41
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-16
+
+    FIX: cc/input.cpp: error: "clog" is not a member of "std"
+    
+    Include iostream to fix this with some configurations.
+      (found on Debian Squeeze, gcc 4.4.5, Boost 1.42)
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/input.cpp
+
+commit eb19265
+Merge: 0019e62 65f8373
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-16
+
+    Merge branch 'tg/next__ext__version_output' into next
+
+commit 65f8373
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-16
+
+    --version: Add CXX and CXXFLAGS to the output
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 50a98b1
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-16
+
+    configure.ac: AC_DEFINE_UNQUOTED: CXXFLAGS and CXX
+    
+    Other:
+     * Remove unused AC_DEFINE_UNQUOTED([CANONICAL_HOST])
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit 9e6e50e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-16
+
+    --version: Provide additional info about libquvi
+    
+    When built with libquvi:
+      * 0.9: Append {time,target,(cc)flags,...} to the output
+      * 0.4: Use QUVI_VERSION_LONG instead of QUVI_VERSION
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/util.cpp
+
+commit 0019e62
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-07-09
+
+    FIX: configure.ac: AS_IF for date(1)
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit f19cfc1
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-07-09
 
@@ -65,137 +556,604 @@ Date:   2013-07-09
 
 configure.ac
 
-commit bf2a705
+commit 2294e93
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-06-30
 
-    Update NEWS for v0.7.14
+    --print-streams: Make output similar to quvi(1) 0.9+
     
-    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
-
-NEWS
-
-commit f12faf9
-Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-06-27
-
-    --filename-format: Print a notice of deprecated %h sequence
-    
-    Print a friendly reminder of the impending removal of the %h sequence,
-    when used.
+    The new output format is cleaner and makes better use of the space.
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 src/cc/application.cpp
 
-commit 0a2d004
+commit ed145f4
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-06-27
+Date:   2013-06-28
 
-    Deprecated message: Use "[WARNING]" instead
+    main: catch boost::exception
+    
+    * Implement a static function `print' that dumps the boost::exception
+    * Catch the boost::exception in `main'
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/main.cpp
+
+commit f045a69
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-28
+
+    cc::options::parse: throw error with file name
+    
+    Make a distiction of "command line" and "config file" parsing error.
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 src/cc/options.cpp
 
-commit 261f177
+commit ad214c7
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-06-27
 
-    main: catch exception thrown by cc::options::parse (BACKPORTpt7)
+    --filename-format: Remove depr. support for %h sequence
     
-    Do not catch the std::exception from `cc::options::parse' in
-    `cc::application::exec', but in the `main' function, instead.
+    libquvi 0.9+ removes the "host ID" media property, remove the support
+    for the %h sequence from cclive.
     
-    The rationale behind this is to provide a more eloquent solution
-    {catching the exception in cc::application::exec is completely
-    unnecessary}.
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+
+commit 993a0be
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    Make --stream configurable
     
-    * Rename cc::options::exec -> cc::options::parse
-    * Backported from next (6c863749)
+    Add support for reading the "stream" from the configuration file. The
+    deprecated "prefer-format" value will now only be used if "stream" is
+    "default".
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/options.cpp
+
+commit 75b56d7
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    DOC: Move --prefer-format under Deprecated section
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit f55f70d
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    Deprecate --prefer-format in favor of --stream with libquvi 0.9+
+    
+    Add a notice to suggest using "--stream" instead of "--prefer-format"
+    when cclive was built with libquvi 0.9+.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/options.cpp
+
+commit 6c1f678
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    --version: Print copyr notice to stderr instead of stdout
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 7d94207
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    Rewrite status_callback for libquvi v0.9.2
+    
+    libquvi v0.9.2 adds "user_data" to the quvi_callback_status. Adapt to
+    the changes.
+    
+    Other:
+    * Rename the parameters
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 4ed85b9
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-27
+
+    compat: Use quvi_errcode added in libquvi v0.9.2
+    
+    libquvi v0.9.2 removes the QUVI_INFO_ERROR_CODE and adds the
+    quvi_errcode. Use it, instead.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/error_pt9.cpp
+
+commit 3adb977
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-06-07
+
+    FIX: compat: media_impl inherits media_base
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/media.h
+
+commit 61da6e7
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-31
+
+    Throw "no input URL" from cc::input
+    
+    The exception (std::runtime_error) will be caught in the `main' function.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/input.cpp
+
+commit 3d35e5e
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-31
+
+    Move --support implementation to print_support
+    
+    This allows us to initialize libquvi after parsing the input URLs. The
+    rationale behind this is that it is pointless to initialize libquvi
+    unless we have input.
+    
+    `--support' on the other hand requires this immediately, therefore
+    dedicate the `print_support' function for this purpose.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 6c86374
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-31
+
+    Catch cc::options thrown exception in main
+    
+    Do not catch the std::exception thrown from `cc::options::parse' in
+    `cc::application::exec', catch it in the `main' function instead.
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 src/cc/application.cpp
 src/cc/main.cpp
+
+commit fecf98f
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-31
+
+    Rename cc::options::exec to cc::options::parse
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
 src/cc/options.cpp
 src/cc/options.h
 
-commit 68387d0
+commit 4c02ae4
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-06-27
+Date:   2013-05-31
 
-    Move --support implementation to print_support
+    FIX: Create cc::input instance once
     
-    The rationale behind this is to delay the creation of quvi::query until
-    it is needed.
+    Do not create a cc::input instance more than once.
+    
+    Other:
+    * Set n to input_urls.size only once
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 src/cc/application.cpp
 
-commit 86a09f1
+commit 225f032
+Merge: 47b5258 75d1b5c
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-06-27
+Date:   2013-05-30
 
-    Move --version implementation to print_version
+    Merge branch 'tg/next__improve_input_parsing' into next
+
+commit 75d1b5c
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    DOC: cclive(1): Revise INPUT section
     
-    The rationale behind this is to delay the creation of quvi::query until
-    it is needed.
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit b27e939
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    cc::application: Remove unused functions {read_from,is_url}
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 src/cc/application.cpp
 
-commit a920fc9
+commit 57184a0
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-06-27
+Date:   2013-05-30
 
-    handle_format_list: Create quvi::query object
+    cc::application: Use cc:input
     
-    The rationale behind this is to delay the creation of quvi::query until
-    it is needed.
+    * Remove unused function `make_unique'
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 src/cc/application.cpp
 
-commit 4dba21e
+commit ad1f2e6
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-05-25
+Date:   2013-05-30
 
-    FIX: Warning message for "--query-formats deprecated"
+    Add cc::input -- improve input parsing
     
-    See also:
-      http://sourceforge.net/mailarchive/message.php?msg_id=30894664
+    The new implementation improves the input parsing:
+    * Support reading RFC2483 (making it possible to use with quvi 0.9+)
+    * Input URLs are now properly unescaped automagically
+    
+    The command will read stdin by default. The input is expected to contain
+    URLs. The command arguments are expected to be either URLs or file
+    paths. If the input is read from either stdin or a file, the contents
+    are read as RFC2483.
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
+src/Makefile.am
+src/cc/input.cpp
+src/cc/input.h
+src/ccinput
+
+commit 47b5258
+Merge: 5ea120c 3ebdc5b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    Merge branch 'tg/next__add_prerequisite_glib' into next
+
+commit 3ebdc5b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    README: Add GLib to Requirements
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+README
+
+commit b421eb4
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    Makefile.am: {CPPFLAGS,LDADD}: Add glib
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/Makefile.am
+
+commit 0eb3280
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    configure.ac: Check for glib
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit 5ea120c
+Merge: 8992391 768b0d5
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    Merge branch 'tg/next__relicense_under_agplv3' into next
+
+commit 768b0d5
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    COPYING: Update for AGPLv3+
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+COPYING
+
+commit d10c844
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    DOC: cclive(1): Update LICENSE section for AGPLv3+
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 15b7a45
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    shell scripts: Update license headers for AGPLv3+
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+bootstrap.sh
+gen-news.sh
+gen-ver.sh
+
+commit 1044c88
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    README: Update "License" for AGPLv3+
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+README
+
+commit 6bdfdc1
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    cc: Relicense under AGPLv3+
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/application.h
+src/cc/background.cpp
+src/cc/curl.cpp
+src/cc/error.cpp
+src/cc/exec.cpp
+src/cc/file.cpp
+src/cc/file.h
+src/cc/get.cpp
+src/cc/internal.h
+src/cc/log.cpp
+src/cc/log.h
+src/cc/main.cpp
 src/cc/options.cpp
+src/cc/options.h
+src/cc/progressbar.cpp
+src/cc/progressbar.h
+src/cc/re.cpp
+src/cc/re.h
+src/cc/util.h
+src/cc/wait.cpp
 
-commit bc054ff
+commit 3f384e5
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    compat: Relicense under AGPLv3+
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/error.h
+src/compat/error_pt4.cpp
+src/compat/error_pt9.cpp
+src/compat/media.h
+src/compat/media_pt4.cpp
+src/compat/media_pt9.cpp
+src/compat/options.h
+src/compat/query.h
+src/compat/query_pt4.cpp
+src/compat/query_pt9.cpp
+src/compat/util.cpp
+src/compat/util.h
+
+commit 6643a0c
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    ccquvi: Relicense under AGPLv3+
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/ccquvi
+
+commit 8992391
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-30
+
+    Remove unused depr_msg
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit 64e80a7
+Merge: 9dcf432 5314a8a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-26
+
+    Merge branch 'tg/next__doc_revise' into next
+
+commit 5314a8a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-26
+
+    DOC: --print-streams: Use word "Print" instead of "Query"
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 239d901
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-26
+
+    DOC: EXAMPLES: Add --stream with libquvi 0.9+
+
+doc/man1/cclive.1.txt
+
+commit 7f16389
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-26
+
+    DOC: EXAMPLES: Remove note about quotation marks
+
+doc/man1/cclive.1.txt
+
+commit 401e8c0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-26
+
+    DOC: Revise --stream description
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 9dcf432
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-05-25
 
-    Update NEWS for v0.7.13
+    Update NEWS for v0.9.0
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 NEWS
 
-commit 2b47862
+commit 8e3aa76
 Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-03-06
+Date:   2013-05-24
 
-    Add --print-config
+    cc::application: Remove unused _close function
     
     Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
 
 src/cc/application.cpp
+src/cc/application.h
+
+commit 4cc2af0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    status callbacks: Remove all randomness
+    
+    Decorative. Bloat.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit c470070
+Merge: ca5e80f ff2f805
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    Merge branch 'tg/next__remove_depr_features' into next
+
+commit ff2f805
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    cc/options.cpp: Remove unused warn_depr function
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+
+commit 8d2ac37
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    Remove depr. --subst
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+src/cc/file.cpp
+src/cc/options.cpp
+
+commit 0392fb0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    Remove depr. --regexp
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+src/cc/file.cpp
+src/cc/options.cpp
+
+commit e8114a0
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    Remove depr. --query-formats
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+src/cc/application.cpp
 src/cc/options.cpp
 src/cc/options.h
 
-commit 17b28b8
+commit e32fc26
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    Remove depr. --format
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+src/cc/application.cpp
+src/cc/options.cpp
+
+commit ca5e80f
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    Add build time to --version output
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+src/cc/application.cpp
+
+commit 474c143
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-24
+
+    Merge --version and --license options
+    
+    Add a brief license notice to the --version output.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+src/Makefile.am
+src/cc/application.cpp
+src/cc/license.cpp
+src/cc/options.cpp
+src/cc/options.h
+
+commit 293dbc9
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-05-24
 
@@ -208,7 +1166,7 @@ Date:   2013-05-24
 
 src/cc/file.cpp
 
-commit ae09d95
+commit 3642730
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-05-23
 
@@ -218,7 +1176,7 @@ Date:   2013-05-23
 
 .gitignore
 
-commit 5a678fb
+commit e80cdf2
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-05-23
 
@@ -228,7 +1186,7 @@ Date:   2013-05-23
 
 configure.ac
 
-commit 05f2bd5
+commit 4ed1530
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-05-23
 
@@ -238,7 +1196,7 @@ Date:   2013-05-23
 
 README
 
-commit 0b56b37
+commit b57e47b
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-05-22
 
@@ -257,7 +1215,7 @@ Date:   2013-05-22
 
 src/cc/get.cpp
 
-commit 3a29b7b
+commit 982bbc7
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-05-21
 
@@ -267,7 +1225,17 @@ Date:   2013-05-21
 
 m4/boost.m4
 
-commit 64532f3
+commit 2d00a4a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-05-21
+
+    DOC: cclive(1): Uncomment any 0.9+ related text
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit 3edb4b0
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-05-19
 
@@ -279,7 +1247,7 @@ Date:   2013-05-19
 
 gen-news.sh
 
-commit e57096a
+commit 925976d
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-04-16
 
@@ -289,7 +1257,206 @@ Date:   2013-04-16
 
 gen-news.sh
 
-commit 814a4b4
+commit 8232fc2
+Merge: 90d8d38 3eda725
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-04-14
+
+    Merge branch 'tg/next/0.7__extend_libquvi_compat_to_0.9' into next
+
+commit 3eda725
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    cc: application.cpp: Revise for libquvi 0.9
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit cf0f430
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    cc: curl_setup: Set CURLOPT_USERAGENT if libquvi 0.4
+    
+    Set CURLOPT_USERAGENT only if we're compiling cclive with libquvi 0.4.
+    
+    While it is possible to set CURLOPT_USERAGENT with libquvi 0.9, the
+    preferred method is setting QUVI_OPTION_USER_AGENT.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/curl.cpp
+
+commit d26dee7
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    cc: application.cpp: Reuse libquvi created curl handle
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+
+commit a847638
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    cc::file: _restore: Revise
+    
+    Restore {progress,write,encoding} options for curl. Setting
+    CURLOPT_HEADER to 1L is unneccessary. Remove it. Disable throttling for
+    media page fetches.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+
+commit 6a02958
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    cc: Remove curl_{new,free} functions
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/curl.cpp
+src/cc/util.h
+
+commit f534845
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    compat: quvi::options: add useragent
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/options.h
+
+commit f09799d
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    compat: setup_curl: return curl handle
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/query.h
+src/compat/query_pt4.cpp
+src/compat/query_pt9.cpp
+
+commit 234aa3b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    compat: query.h: Add class query_pt9
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/query.h
+
+commit 17e96d2
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    compat: media.h: Add class media_pt9
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/media.h
+
+commit 85b01db
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    compat: error.h: Add class error_pt9
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/error.h
+
+commit 3b2d591
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    compat: Add query_pt9.cpp
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/query_pt9.cpp
+
+commit 1c3980b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    compat: Add media_pt9.cpp
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/media_pt9.cpp
+
+commit 99d60f5
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    compat: Add error_pt9.cpp
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/compat/error_pt9.cpp
+
+commit a41b8c6
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    src/Makefile.am: Add HAVE_LIBQUVI_0_9 block
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/Makefile.am
+
+commit d2fa54b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    Update ccquvi header for libquvi 0.9+
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/ccquvi
+
+commit 99b47eb
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    README: Bump libquvi prereq. to 0.4.0+
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+README
+
+commit d2cc174
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    configure.ac: Check for libquvi 0.9+
+    
+    Drop check for libquvi 0.2.16.x which has been abandoned
+    for quite sometime now.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+configure.ac
+
+commit 90d8d38
+Merge: 923878a 0684782
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-26
+
+    Merge branch 'tg/next/0.7__asciidoc.conf' into next
+
+commit 0684782
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-03-26
 
@@ -299,7 +1466,7 @@ Date:   2013-03-26
 
 doc/man1/cclive.1.txt
 
-commit a3d9cd0
+commit c1dc8ac
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-03-26
 
@@ -309,54 +1476,7 @@ Date:   2013-03-26
 
 doc/man1/Makefile.am
 
-commit b45e570
-Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-03-23
-
-    FIX: ‘cc::write_data::f’ will be initialized after ...
-    
-    Fixes the error:
-      src/cc/file.cpp:146: error: ‘cc::write_data::f’ will be initialized after
-      src/cc/file.cpp:145: error:   ‘std::ofstream* cc::write_data::o’
-      src/cc/file.cpp:116: error:   when initialized here
-    
-    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
-
-src/cc/file.cpp
-
-commit 0ed7d49
-Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-03-06
-
-    Add short-option for --verbose-libcurl
-
-doc/man1/cclive.1.txt
-src/cc/options.cpp
-
-commit ca05b58
-Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-03-06
-
-    default values to switches that should show with --print-config
-    
-    Add the default values to the switches that should show up
-    in the --print-config output.
-    
-    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
-
-src/cc/options.cpp
-
-commit 37bfa12
-Author: Toni Gundogdu <legatvs@gmail.com>
-Date:   2013-03-06
-
-    cclive.1: Add --print-config
-    
-    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
-
-doc/man1/cclive.1.txt
-
-commit 0863c96
+commit ff426b7
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-03-26
 
@@ -371,6 +1491,72 @@ Date:   2013-03-26
 
 doc/Makefile.am
 doc/asciidoc.conf
+
+commit 923878a
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-23
+
+    FIX: ‘cc::write_data::f’ will be initialized after ...
+    
+    Fixes the error:
+      src/cc/file.cpp:146: error: ‘cc::write_data::f’ will be initialized after
+      src/cc/file.cpp:145: error:   ‘std::ofstream* cc::write_data::o’
+      src/cc/file.cpp:116: error:   when initialized here
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/file.cpp
+
+commit 239ea61
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-06
+
+    Add short-option for --verbose-libcurl
+
+doc/man1/cclive.1.txt
+src/cc/options.cpp
+
+commit 7d8d0d9
+Merge: 8a0f7fe 15b64d6
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-07
+
+    Merge branch 'tg/next/0.7__print_config' into next
+
+commit 15b64d6
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-06
+
+    default values to switches that should show with --print-config
+    
+    Add the default values to the switches that should show up
+    in the --print-config output.
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/options.cpp
+
+commit cc2a163
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-06
+
+    cclive.1: Add --print-config
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+doc/man1/cclive.1.txt
+
+commit bf22b60
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-03-06
+
+    Add --print-config
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/options.cpp
+src/cc/options.h
 
 commit 8a0f7fe
 Author: Toni Gundogdu <legatvs@gmail.com>

@@ -2,12 +2,12 @@
 .\"     Title: cclive
 .\"    Author: [see the "Authors" section]
 .\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
-.\"      Date: 08/05/2013
+.\"      Date: 08/08/2013
 .\"    Manual: cclive Manual
-.\"    Source: cclive 0.7.15
+.\"    Source: cclive 0.9.2
 .\"  Language: English
 .\"
-.TH "CCLIVE" "1" "08/05/2013" "cclive 0\&.7\&.15" "cclive Manual"
+.TH "CCLIVE" "1" "08/08/2013" "cclive 0\&.9\&.2" "cclive Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -39,31 +39,19 @@ cclive \- media stream extraction tool
 cclive is a command line tool for downloading media streams from YouTube and similar websites\&.
 .SH "INPUT"
 .sp
-The program reads input from the \fIstdin\fR by default\&. The arguments may be either an \fIURL\fR or a \fIFILE\fR\&. When the input is read from either \fIstdin\fR or a \fIFILE\fR, the data is expected to be a newline\-separated list of URLs\&.
+The command will read stdin by default\&. The input is expected to contain URLs\&. The command arguments are expected to be either URLs or file paths\&. If the input is read from either stdin or a file, the contents are read as RFC2483\&. The input may also contain URIs (file://) to local files\&.
 .SH "OPTIONS"
 .SS "Core"
-.PP
-\-\-agent <arg>
-.RS 4
-Identify cclive as
-\fIarg\fR
-to the HTTP servers\&. The default value is "Mozilla/5\&.0"\&.
-.RE
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-config:
-  agent = arg
-.fi
-.if n \{\
-.RE
-.\}
 .PP
 \-b, \-\-background
 .RS 4
 Go to background after startup\&. The output written to stdout will be written to the file specified with \-\-log\-file\&.
+.RE
+.PP
+\-F, \-\-config\-file <arg>
+.RS 4
+Read the program arguments from the specified file instead of the default ~/\&.ccliverc file\&. See also
+the section called \(lqFILES\(rq\&.
 .RE
 .PP
 \-c, \-\-continue
@@ -77,6 +65,116 @@ Resume partially downloaded media\&.
 .nf
 config:
   continue = {true|false}
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\-e, \-\-exec <arg>
+.RS 4
+Invoke the specified command after each successfully finished download\&. The command is also invoked if the media is fully retrieved already\&. This option may be specified multiple times\&. See also
+the section called \(lqEXAMPLES\(rq\&.
+
+All occurences of the following sequences will be replaced in the
+\fIarg\fR:
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+  %f  \&.\&. Full path to the downloaded media file
+  %n  \&.\&. Name of the downloaded media file
+  %t  \&.\&. Unfiltered media title
+
+config:
+  exec = arg
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\-n, \-\-no\-download
+.RS 4
+Do not download the media, print the details only\&.
+.RE
+.PP
+\-s, \-\-stream <ID>
+.RS 4
+Download the specified media stream\&. By default the program will get the
+\fIdefault\fR
+stream\&. The stream selection with
+\fBlibquvi\fR(3)
+0\&.4 is basic at most, whereas
+\fBlibquvi\fR(3)
+0\&.9+ provides a more advanced facility for this\&.
+
+\fBlibquvi\fR(3)
+0\&.9+ treats the ID value as a regex PATTERN and matches it against the
+\fBlibquvi-scripts\fR(7)
+returned media stream IDs\&. Additionally, the value of ID may be a
+\fIcomma\-separated list\fR
+of regex PATTERNs\&.
+
+In comparison,
+\fBlibquvi\fR(3)
+0\&.4 only checks whether the strings (the value of ID and the returned media stream ID) are equal\&.
+
+The ID value may also contain the following reserved keywords:
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+
+\fIcroak\fR
+\- tell
+\fBlibquvi\fR(3)
+(0\&.9+) to exit with an error when reached
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+
+\fIbest\fR
+\- tell
+\fBlibquvi\fR(3)
+to choose the best quality stream
+.RE
+.sp
+The
+\fIbest\fR
+quality is determined by
+\fBlibquvi-scripts\fR(7)\&. The method varies, depending on the
+\fBlibquvi\fR(3)
+version and the website\&.
+.sp
+For example,
+\fBlibquvi-scripts\fR(7)
+0\&.9+ would typically compare the media quality properties (e\&.g\&. the video height property)\&. In reality, the method will vary depending on the data provided by the media hosting service, and the implementation of the support script that was written for the website\&.
+.sp
+See the \-\-version output to confirm whether cclive was built with
+\fBlibquvi\fR(3)
+0\&.9 or later\&. See also
+the section called \(lqEXAMPLES\(rq\&.
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+config:
+  stream = arg
 .fi
 .if n \{\
 .RE
@@ -112,101 +210,6 @@ config:
 .if n \{\
 .RE
 .\}
-.PP
-\-\-config\-file <arg>
-.RS 4
-Read the program arguments from the specified file instead of the default ~/\&.ccliverc file\&. See also
-the section called \(lqFILES\(rq\&.
-.RE
-.PP
-\-\-exec <arg>
-.RS 4
-Invoke the specified command after each successfully finished download\&. The command is also invoked if the media is fully retrieved already\&. This option may be specified multiple times\&. See also
-the section called \(lqEXAMPLES\(rq\&.
-
-All occurences of the following sequences will be replaced in the
-\fIarg\fR:
-.RE
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-  %f  \&.\&. Full path to the downloaded media file
-  %n  \&.\&. Name of the downloaded media file
-  %t  \&.\&. Unfiltered media title
-
-config:
-  exec = arg
-.fi
-.if n \{\
-.RE
-.\}
-.PP
-\-n, \-\-no\-download
-.RS 4
-Do not download the media, print the details only\&.
-.RE
-.PP
-\-p, \-\-prefer\-format <arg>
-.RS 4
-Have the program choose the format (media stream) to download by matching the regular expression pattern match to the media URL as specified in the
-\fIarg\fR\&.
-
-This option may be specified multiple times\&. The use of \-\-stream will override the rules specified using this option\&. See also
-the section called \(lqEXAMPLES\(rq\&.
-
-The
-\fIarg\fR
-is a
-\fIstring pair\fR
-separated by a colon\&. The
-\fIstring pair\fR
-consists of:
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-a regular expression pattern
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-format (media stream) to download
-.RE
-.RE
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-config:
-  prefer\-format = arg
-.fi
-.if n \{\
-.RE
-.\}
-.PP
-\-s,\-\-stream <ID>
-.RS 4
-Download the specified media stream\&. By default the program will get the
-\fIdefault\fR
-stream\&. The ID may also be
-\fIbest\fR, in which case
-\fBlibquvi-scripts\fR(7)
-will determine the best available quality stream\&.
-.RE
 .SS "Informative"
 .PP
 \-h, \-\-help
@@ -214,20 +217,101 @@ will determine the best available quality stream\&.
 Print help and exit\&.
 .RE
 .PP
-\-\-license
-.RS 4
-Print the license and exit\&.
-.RE
-.PP
 \-S, \-\-print\-streams
 .RS 4
-Query the available media streams\&. The printed values (media stream IDs) may be used with \-\-stream and \-\-prefer\-format options\&. The available streams are determined by
+Print the available media streams\&. The printed values (media stream IDs) may be used with \-\-stream and \-\-prefer\-format options\&. The available streams are determined by
 \fBlibquvi\fR(3)
 and
 \fBlibquvi-scripts\fR(7)\&.
 .RE
 .PP
-\-\-progressbar <arg>
+\-D, \-\-print\-config
+.RS 4
+Print the value of all defined configuration options to stdout\&.
+.RE
+.PP
+\-u, \-\-support
+.RS 4
+Print the supported website domains and exit\&.
+.RE
+.PP
+\-v, \-\-version
+.RS 4
+Print the program version and exit\&.
+.RE
+.SS "Output"
+.PP
+\-f, \-\-filename\-format <arg>
+.RS 4
+Specify how the downloaded media file should be named\&. All occurences of the following sequences will be replaced in the
+\fIarg\fR:
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+  %t  \&.\&. Media title (after applying \-\-tr)
+  %s  \&.\&. Media file extension
+  %i  \&.\&. Media ID
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+The default value is "%t\&.%s"\&.
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+config:
+  filename\-format = arg
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\-l, \-\-log\-file <arg>
+.RS 4
+Write log output to the specified file\&. The program will ignore this option value unless it is being used together with \-\-background\&. The existing log file will be ovewritten\&. By default, the program will use "cclive_log" as the log file name\&.
+.RE
+.PP
+\-d, \-\-output\-dir <arg>
+.RS 4
+Write downloaded media to the specified directory\&. By default, the program will write the media to the current working directory\&.
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+config:
+  output\-dir = arg
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\-O, \-\-output\-file <arg>
+.RS 4
+Write media to the specified file\&. Overrides \-\-filename\-format\&.
+.RE
+.PP
+\-W, \-\-overwrite
+.RS 4
+Overwrite existing media files\&.
+.RE
+.PP
+\-R, \-\-progressbar <arg>
 .RS 4
 Use the progressbar of the specified type\&. The program will ignore the value of this option with \-\-background\&. The arg may be one of the following values:
 .sp
@@ -276,103 +360,6 @@ config:
 .RE
 .\}
 .PP
-\-\-support
-.RS 4
-Print the supported website domains and exit\&.
-.RE
-.PP
-\-\-update\-interval <arg>
-.RS 4
-Specify the progressbar update interval in seconds\&. Use of decimal fractions (e\&.g\&. "0\&.2") is acceptable\&. The program will use the default value 1\&.
-.RE
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-config:
-  update\-interval = arg
-.fi
-.if n \{\
-.RE
-.\}
-.PP
-\-D, \-\-print\-config
-.RS 4
-Print the value of all defined configuration options to stdout\&.
-.RE
-.PP
-\-v, \-\-version
-.RS 4
-Print the program version and exit\&.
-.RE
-.SS "Output"
-.PP
-\-\-filename\-format <arg>
-.RS 4
-Specify how the downloaded media file should be named\&. All occurences of the following sequences will be replaced in the
-\fIarg\fR:
-.RE
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-  %t  \&.\&. Media title (after applying \-\-tr)
-  %s  \&.\&. Media file extension
-  %i  \&.\&. Media ID
-.fi
-.if n \{\
-.RE
-.\}
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-The default value is "%t\&.%s"\&.
-.fi
-.if n \{\
-.RE
-.\}
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-config:
-  filename\-format = arg
-.fi
-.if n \{\
-.RE
-.\}
-.PP
-\-\-log\-file <arg>
-.RS 4
-Write log output to the specified file\&. The program will ignore this option value unless it is being used together with \-\-background\&. The existing log file will be ovewritten\&. By default, the program will use "cclive_log" as the log file name\&.
-.RE
-.PP
-\-\-output\-dir <arg>
-.RS 4
-Write downloaded media to the specified directory\&. By default, the program will write the media to the current working directory\&.
-.RE
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-config:
-  output\-dir = arg
-.fi
-.if n \{\
-.RE
-.\}
-.PP
-\-O, \-\-output\-file <arg>
-.RS 4
-Write media to the specified file\&. Overrides \-\-filename\-format\&.
-.RE
-.PP
 \-q, \-\-quiet
 .RS 4
 Turn off all output to stdout and stderr with the exception of \-\-verbose\-libcurl\&.
@@ -397,18 +384,47 @@ config:
 .RE
 .\}
 .PP
+\-i, \-\-update\-interval <arg>
+.RS 4
+Specify the progressbar update interval in seconds\&. The default value is 1\&.
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+config:
+  update\-interval = arg
+.fi
+.if n \{\
+.RE
+.\}
+.PP
 \-B, \-\-verbose\-libcurl
 .RS 4
 Enable libcURL verbose output\&.
 .RE
-.PP
-\-W, \-\-overwrite
-.RS 4
-Overwrite existing media files\&.
-.RE
 .SS "Network"
 .PP
-\-\-connect\-timeout <arg>
+\-a, \-\-agent <arg>
+.RS 4
+Identify cclive as
+\fIarg\fR
+to the HTTP servers\&. The default value is "Mozilla/5\&.0"\&.
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+config:
+  agent = arg
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\-C, \-\-connect\-timeout <arg>
 .RS 4
 Maximum time in seconds that the program should allow the connection to the server to take\&. This only limits the connection phase, once it has connected, this option is no more of use\&. Set to 0 to disable connection timeout (it will then only timeout on the system\(cqs internal timeouts)\&. The default is 30\&.
 .RE
@@ -424,7 +440,7 @@ config:
 .RE
 .\}
 .PP
-\-\-dns\-cache\-timeout <arg>
+\-A, \-\-dns\-cache\-timeout <arg>
 .RS 4
 The name resolves will be kept in the memory for this number of seconds\&. Set to 0 to completely disable DNS caching, or to \-1 to make the cached entries to remain in the memory forever\&. The default is 60\&.
 .RE
@@ -440,12 +456,7 @@ config:
 .RE
 .\}
 .PP
-\-\-no\-proxy
-.RS 4
-Disable use of HTTP proxy\&. Overrides \-\-proxy and http_proxy environment settings\&.
-.RE
-.PP
-\-\-max\-retries <arg>
+\-m, \-\-max\-retries <arg>
 .RS 4
 Specify the number of downloading retries before giving up\&. Set to 0 to disable\&. The default is 5\&.
 
@@ -466,9 +477,16 @@ config:
 .RE
 .\}
 .PP
-\-\-retry\-wait <arg>
+\-X, \-\-no\-proxy
 .RS 4
-Wait the specified number of seconds before retrying after a failed attempt\&. The default is 5\&.
+Disable use of HTTP proxy\&. Overrides \-\-proxy and http_proxy environment settings\&.
+.RE
+.PP
+\-r, \-\-no\-resolve
+.RS 4
+Do not resolve HTTP URL redirections\&. Using this option will result in the program not being able to follow URL redirections which are often used by different URL shortening services\&.
+
+When libquvi 0\&.9 or later is being used with cclive, this option will be ignored\&. The library will always resolve any URL redirections\&. See \-\-version output to see if cclive was compiled with libquvi 0\&.9+\&.
 .RE
 .sp
 .if n \{\
@@ -476,13 +494,13 @@ Wait the specified number of seconds before retrying after a failed attempt\&. T
 .\}
 .nf
 config:
-  retry\-wait = arg
+  no\-resolve = {true|false}
 .fi
 .if n \{\
 .RE
 .\}
 .PP
-\-\-proxy I<arg>
+\-x, \-\-proxy I<arg>
 .RS 4
 Use the specified proxy address (e\&.g\&.
 http://foo:1234) for HTTP connections\&. By default, libcURL (which cclive and
@@ -505,9 +523,9 @@ config:
 .RE
 .\}
 .PP
-\-r, \-\-no\-resolve
+\-w, \-\-retry\-wait <arg>
 .RS 4
-Do not resolve HTTP URL redirections\&. Using this option will result in the program not being able to follow URL redirections which are often used by different URL shortening services\&.
+Wait the specified number of seconds before retrying after a failed attempt\&. The default is 5\&. If the value is 0, the program will skip this step\&.
 .RE
 .sp
 .if n \{\
@@ -515,29 +533,13 @@ Do not resolve HTTP URL redirections\&. Using this option will result in the pro
 .\}
 .nf
 config:
-  no\-resolve = {true|false}
+  retry\-wait = arg
 .fi
 .if n \{\
 .RE
 .\}
 .PP
-\-\-transfer\-timeout <arg>
-.RS 4
-Maximum time in seconds that the program should allow the transfer operation to take\&. Normally, name lookups can take a considerable amount of time, and limiting operations to less than a few minutes will risk aborting perfectly normal operations\&. This option will cause libcURL to use the SIGALRM to enable the timeout system calls\&. The default is 0 (disabled)\&.
-.RE
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-config:
-  transfer\-timeout = arg
-.fi
-.if n \{\
-.RE
-.\}
-.PP
-\-\-throttle <arg>
+\-H, \-\-throttle <arg>
 .RS 4
 Do not exceed the specified transfer rate (Ki/s)\&. If
 \fIarg\fR
@@ -554,46 +556,80 @@ config:
 .if n \{\
 .RE
 .\}
-.SS "Deprecated"
 .PP
-\-f, \-\-format <ID>
+\-T, \-\-transfer\-timeout <arg>
 .RS 4
-Identical to \-\-stream\&. Deprecated as of 0\&.7\&.12\&.
+Maximum time in seconds that the program should allow the transfer operation to take\&. Normally, name lookups can take a considerable amount of time, and limiting operations to less than a few minutes will risk aborting perfectly normal operations\&. This option will cause libcURL to use the SIGALRM to enable the timeout system calls\&. The default is 0 (disabled)\&.
 .RE
-.PP
-\-F, \-\-query\-formats
-.RS 4
-Identical to \-\-print\-streams\&. Deprecated as of 0\&.7\&.12\&.
-.RE
-.PP
-\-\-regexp <arg>
-.RS 4
-Specify the regular expression pattern to cleanup the media title before it is used to format the media file name\&. The specifiers
-\fIg\fR
-and
-\fIi\fR
-are supported\&. Use \-\-tr, instead\&.
-.RE
-.PP
-\-\-subst <arg>
-.RS 4
-Replace the matched occurences in the media file name\&. This option may not be specified multiple times: to specify multiple substitutions, separate each regular expression pattern with a whitespace\&. The specifiers
-\fIg\fR
-and
-\fIi\fR
-are supported\&. Use \-\-tr, instead\&.
-
-Supported delimiters: <> {} () /
-
-Note that
-\fIs/old/new/\fR
-is invalid, whereas
-\fIs/old//new/\fR
-is accepted\&.
-.RE
-.SH "EXAMPLES"
 .sp
-As a general rule of thumb: always put the URLs inside quotes\&. You can find more examples at \fIhttp://cclive\&.sourceforge\&.net/\fR\&.
+.if n \{\
+.RS 4
+.\}
+.nf
+config:
+  transfer\-timeout = arg
+.fi
+.if n \{\
+.RE
+.\}
+.SS "Deprecated"
+.sp
+These options will be removed eventually in the later versions of cclive\&.
+.PP
+\-p, \-\-prefer\-format <arg>
+.RS 4
+The
+\fI\-\-stream\fR
+is intended to replace this option, eventually\&. The stream selection will be provided by libquvi 0\&.9+\&. This was done previously by cclive\&. See also
+the section called \(lqEXAMPLES\(rq\&.
+
+Have the program choose the format (media stream) to download by matching the regular expression pattern match to the media URL as specified in the
+\fIarg\fR\&.
+
+This option may be specified multiple times\&. The use of \-\-stream will override the rules specified using this option\&.
+
+The
+\fIarg\fR
+is a
+\fIstring pair\fR
+separated by a colon\&. The
+\fIstring pair\fR
+consists of:
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+a regular expression pattern
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+format (media stream) to download
+.RE
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+config:
+  prefer\-format = arg
+.fi
+.if n \{\
+.RE
+.\}
+.SH "EXAMPLES"
 .sp
 .RS 4
 .ie n \{\
@@ -666,30 +702,22 @@ $ cclive \-s best "URL"
 .sp -1
 .IP \(bu 2.3
 .\}
-Get the YouTube itag 43 format whenever possible:
+With
+\fBlibquvi\fR(3)
+0\&.9+, you can pass a list of stream ID patterns to match:
 .sp
 .if n \{\
 .RS 4
 .\}
 .nf
-# Save \*(Aqprefer\-format\*(Aq permanently to ~/\&.ccliverc file\&.
-$ echo "prefer\-format = ^\&.*youtube\&.*\e\&.com:fmt43_360p" \e
-          >> ~/\&.ccliverc"
-
-# The above would cause the program to try to get fmt43_360p
-# with media  URLs of http://youtube\&.com/ if available\&.
-$ cclive "YOUTUBE_URL"
-
-# Using of \-\-stream will override the \-\-prefer\-format
-# setting\&.  Get fmt22_720p (if available)\&.
-$ cclive \-s fmt22_720p "YOUTUBE_URL"
+$ cclive \-s foo,baz,best "URL"
 .fi
 .if n \{\
 .RE
 .\}
-.RE
 .sp
-See also the section called \(lqSTREAMS\(rq\&.
+See the \-\-stream description for more details\&.
+.RE
 .sp
 .RS 4
 .ie n \{\
@@ -896,6 +924,24 @@ quvi: fmt22_720p
 .RE
 .\}
 .RE
+.PP
+libquvi\-scripts 0\&.9 and later
+.RS 4
+The
+\fIiXX\fR
+prefix is used in the media stream IDs\&. For example:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+itag: 22
+quvi: hd720_mp4_i22_720p
+.fi
+.if n \{\
+.RE
+.\}
+.RE
 .sp
 For more information about the YouTube video quality and codecs, visit http://en\&.wikipedia\&.org/wiki/YouTube#Quality_and_codecs\&.
 .SH "EXIT STATUS"
@@ -915,7 +961,7 @@ Author\&.
 Report bugs to the cclive\-devel mailing list <cclive\-devel@lists\&.sourceforge\&.net> where the development and the maintenance is primarily done\&. You do not have to be subscribed to the list to send a message there\&.
 .SH "LICENSE"
 .sp
-cclive is Free Software licensed under the GNU GPLv3+
+cclive is Free Software, licensed under the GNU Affero GPLv3+\&.
 .SH "SEE ALSO"
 .sp
 \fBlibquvi-scripts\fR(7), \fBlibquvi\fR(3)

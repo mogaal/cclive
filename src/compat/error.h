@@ -1,18 +1,21 @@
 /* cclive
  * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
+ * This file is part of cclive <http://cclive.sourceforge.net/>.
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef compat_error_h
@@ -78,7 +81,7 @@ public:
   inline error_pt4(): error_impl()                    { }
   inline error_pt4(const error_pt4& a): error_impl(a) { }
   inline ~error_pt4()                                 { }
-  inline error_pt4(quvi_t q, long qc): error_impl()
+  inline error_pt4(quvi_t q, const long qc): error_impl()
   {
     _quvi_code = qc;
     _init(q);
@@ -96,7 +99,35 @@ public:
   std::string to_s() const;
 };
 
+class error_pt9 : public error_impl
+{
+  void _init(quvi_t);
+public:
+  inline error_pt9(): error_impl()                    { }
+  inline error_pt9(const error_pt9& a): error_impl(a) { }
+  inline ~error_pt9()                                 { }
+  inline error_pt9(quvi_t q, const long qc=-1): error_impl()
+  {
+    _init(q); // Sets _quvi_code
+  }
+  inline error_pt9& operator=(const error_pt9& a)
+  {
+    if (this != &a)
+      _copy(a);
+    return *this;
+  }
+  inline bool cannot_retry() const
+  {
+    return (_resp_code >= 400 || _quvi_code != QUVI_OK);
+  }
+  std::string to_s() const;
+};
+
+#ifdef HAVE_LIBQUVI_0_9
+typedef class error_pt9 error;
+#else
 typedef class error_pt4 error;
+#endif
 
 } // namespace quvi
 
