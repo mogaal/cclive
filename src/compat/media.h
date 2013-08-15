@@ -1,18 +1,21 @@
 /* cclive
  * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
+ * This file is part of cclive <http://cclive.sourceforge.net/>.
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #ifndef compat_media_h
@@ -27,7 +30,7 @@ protected:
   inline virtual ~media_base() { }
 };
 
-class media_impl
+class media_impl : media_base
 {
 protected:
   std::string _content_type;
@@ -81,7 +84,27 @@ public:
   }
 };
 
+class media_pt9 : public media_impl
+{
+  void _init(quvi_t, quvi_media_t);
+public:
+  inline media_pt9(const media_pt9& a): media_impl(a)       { }
+  inline media_pt9(quvi_t q, quvi_media_t qm): media_impl() { _init(q, qm); }
+  inline media_pt9(): media_impl()                          { }
+  inline virtual ~media_pt9() { }
+  inline media_pt9& operator=(const media_pt9& a)
+  {
+    if (this != &a)
+      _copy(a);
+    return *this;
+  }
+};
+
+#ifdef HAVE_LIBQUVI_0_9
+typedef class media_pt9 media;
+#else
 typedef class media_pt4 media;
+#endif
 
 } // namespace quvi
 

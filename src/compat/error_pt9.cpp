@@ -18,39 +18,27 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef compat_options_h
-#define compat_options_h
+#include <boost/format.hpp>
+#include <ccquvi>
 
-namespace quvi {
-
-class options
+namespace quvi
 {
-  inline void _copy(const options& a)
-  {
-    statusfunc = a.statusfunc;
-    useragent  = a.useragent;
-    resolve    = a.resolve;
-    stream     = a.stream;
-  }
-public:
-  inline options(const options& a):statusfunc(NULL), resolve(true) { _copy(a); }
-  inline options():statusfunc(NULL), resolve(true)                 { }
-  inline options& operator=(const options& a)
-  {
-    if (this != &a)
-      _copy(a);
-    return *this;
-  }
-  inline virtual ~options() { statusfunc=NULL; }
-public:
-  quvi_callback_status statusfunc;
-  std::string useragent;
-  std::string stream;
-  bool resolve;
-};
+
+void error_pt9::_init(quvi_t q)
+{
+  _what = quvi_errmsg(q);
+  quvi_get(q, QUVI_INFO_RESPONSE_CODE, &_resp_code);
+  _quvi_code = quvi_errcode(q);
+}
+
+std::string error_pt9::to_s() const
+{
+  return (boost::format("what=%s, resp_code=%ld, quvi_code=%ld")
+          % _what.c_str()
+          % _resp_code
+          % _quvi_code).str();
+}
 
 } // namespace quvi
-
-#endif // compat_options_h
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

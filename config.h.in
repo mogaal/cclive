@@ -1,10 +1,16 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* ... */
-#undef CANONICAL_HOST
+/* We have build time */
+#undef BUILD_TIME
 
-/* ... */
+/* Define to canonical target */
 #undef CANONICAL_TARGET
+
+/* Define to compiler */
+#undef CXX
+
+/* Define to compiler flags */
+#undef CXXFLAGS
 
 /* Defined if the requested minimum BOOST version is satisfied */
 #undef HAVE_BOOST
@@ -46,8 +52,8 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* We have libquvi 0.4.0+ */
-#undef HAVE_LIBQUVI_0_4_0
+/* We have libquvi 0.9 */
+#undef HAVE_LIBQUVI_0_9
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H

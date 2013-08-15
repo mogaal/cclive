@@ -1,18 +1,21 @@
 /* cclive
  * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
+ * This file is part of cclive <http://cclive.sourceforge.net/>.
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include <ccinternal>
@@ -37,9 +40,9 @@ namespace cc
 
 namespace io = boost::iostreams;
 
+#if defined(HAVE_WORKING_FORK) || defined(HAVE_WORKING_VFORK)
 void go_background(const std::string& log_file, bool& omit)
 {
-#ifdef HAVE_FORK
   const pid_t pid = fork();
 
   if (pid < 0)
@@ -74,8 +77,8 @@ void go_background(const std::string& log_file, bool& omit)
   cc::log.push(io::tee(cc::flushable_file_sink(log_file)));
 
   omit = true;
-#endif // HAVE_FORK
 }
+#endif // HAVE_WORKING_(V)FORK
 
 } // namespace cc
 

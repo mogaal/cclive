@@ -52,6 +52,16 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
+@HAVE_LIBQUVI_0_9_TRUE@am__append_1 = \
+@HAVE_LIBQUVI_0_9_TRUE@  compat/error_pt9.cpp\
+@HAVE_LIBQUVI_0_9_TRUE@  compat/media_pt9.cpp\
+@HAVE_LIBQUVI_0_9_TRUE@  compat/query_pt9.cpp
+
+@HAVE_LIBQUVI_0_9_FALSE@am__append_2 = \
+@HAVE_LIBQUVI_0_9_FALSE@  compat/error_pt4.cpp\
+@HAVE_LIBQUVI_0_9_FALSE@  compat/media_pt4.cpp\
+@HAVE_LIBQUVI_0_9_FALSE@  compat/query_pt4.cpp
+
 bin_PROGRAMS = cclive$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
@@ -68,17 +78,33 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__objects_1 = application.$(OBJEXT) background.$(OBJEXT) \
+am__cclive_SOURCES_DIST = cc/application.cpp cc/background.cpp \
+	cc/curl.cpp cc/error.cpp cc/exec.cpp cc/file.cpp cc/get.cpp \
+	cc/log.cpp cc/main.cpp cc/progressbar.cpp cc/re.cpp \
+	cc/wait.cpp compat/error_pt9.cpp compat/media_pt9.cpp \
+	compat/query_pt9.cpp compat/error_pt4.cpp compat/media_pt4.cpp \
+	compat/query_pt4.cpp compat/util.cpp ccapplication ccerror \
+	ccfile ccfstream ccinput ccinternal cclog ccoptions \
+	ccprogressbar ccquvi ccre ccutil cc/application.h cc/error.h \
+	cc/file.h cc/fstream.h cc/input.h cc/internal.h cc/log.h \
+	cc/options.h cc/progressbar.h cc/re.h cc/util.h compat/error.h \
+	compat/media.h compat/options.h compat/query.h compat/util.h
+@HAVE_LIBQUVI_0_9_TRUE@am__objects_1 = error_pt9.$(OBJEXT) \
+@HAVE_LIBQUVI_0_9_TRUE@	media_pt9.$(OBJEXT) query_pt9.$(OBJEXT)
+@HAVE_LIBQUVI_0_9_FALSE@am__objects_2 = error_pt4.$(OBJEXT) \
+@HAVE_LIBQUVI_0_9_FALSE@	media_pt4.$(OBJEXT) \
+@HAVE_LIBQUVI_0_9_FALSE@	query_pt4.$(OBJEXT)
+am__objects_3 = application.$(OBJEXT) background.$(OBJEXT) \
 	curl.$(OBJEXT) error.$(OBJEXT) exec.$(OBJEXT) file.$(OBJEXT) \
-	get.$(OBJEXT) license.$(OBJEXT) log.$(OBJEXT) main.$(OBJEXT) \
-	options.$(OBJEXT) progressbar.$(OBJEXT) re.$(OBJEXT) \
-	wait.$(OBJEXT) error_pt4.$(OBJEXT) media_pt4.$(OBJEXT) \
-	query_pt4.$(OBJEXT) util.$(OBJEXT)
-am__objects_2 =
-am_cclive_OBJECTS = $(am__objects_1) $(am__objects_2)
+	get.$(OBJEXT) log.$(OBJEXT) main.$(OBJEXT) \
+	progressbar.$(OBJEXT) re.$(OBJEXT) wait.$(OBJEXT) \
+	$(am__objects_1) $(am__objects_2) util.$(OBJEXT)
+am__objects_4 =
+am_cclive_OBJECTS = $(am__objects_3) $(am__objects_4)
 cclive_OBJECTS = $(am_cclive_OBJECTS)
 am__DEPENDENCIES_1 =
 cclive_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
@@ -132,7 +158,7 @@ AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(cclive_SOURCES)
-DIST_SOURCES = $(cclive_SOURCES)
+DIST_SOURCES = $(am__cclive_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -178,6 +204,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATE = @DATE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
@@ -255,6 +282,10 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+glib_CFLAGS = @glib_CFLAGS@
+glib_LIBS = @glib_LIBS@
+glibmm_CFLAGS = @glibmm_CFLAGS@
+glibmm_LIBS = @glibmm_LIBS@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -296,25 +327,27 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 src = cc/application.cpp cc/background.cpp cc/curl.cpp cc/error.cpp \
-	cc/exec.cpp cc/file.cpp cc/get.cpp cc/license.cpp cc/log.cpp \
-	cc/main.cpp cc/options.cpp cc/progressbar.cpp cc/re.cpp \
-	cc/wait.cpp compat/error_pt4.cpp compat/media_pt4.cpp \
-	compat/query_pt4.cpp compat/util.cpp
-hdr = ccapplication ccfile ccinternal cclog ccoptions ccprogressbar \
-	ccquvi ccre ccutil cc/application.h cc/file.h cc/internal.h \
+	cc/exec.cpp cc/file.cpp cc/get.cpp cc/log.cpp cc/main.cpp \
+	cc/progressbar.cpp cc/re.cpp cc/wait.cpp $(am__append_1) \
+	$(am__append_2) compat/util.cpp
+hdr = ccapplication ccerror ccfile ccfstream ccinput ccinternal cclog \
+	ccoptions ccprogressbar ccquvi ccre ccutil cc/application.h \
+	cc/error.h cc/file.h cc/fstream.h cc/input.h cc/internal.h \
 	cc/log.h cc/options.h cc/progressbar.h cc/re.h cc/util.h \
 	compat/error.h compat/media.h compat/options.h compat/query.h \
 	compat/util.h
 cclive_SOURCES = $(src) $(hdr)
 AM_CPPFLAGS = -I$(top_srcdir)/src $(libquvi_CFLAGS) $(libcurl_CFLAGS) \
-	$(libpcre_CFLAGS) $(libpcrepp_CFLAGS) $(BOOST_CPPFLAGS)
+	$(libpcre_CFLAGS) $(libpcrepp_CFLAGS) $(glibmm_CFLAGS) \
+	$(glib_CFLAGS) $(BOOST_CPPFLAGS)
 cclive_LDFLAGS = $(BOOST_DATE_TIME_LDFLAGS) \
 	$(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_IOSTREAMS_LDFLAGS) \
 	$(BOOST_FILESYSTEM_LDFLAGS) $(BOOST_SYSTEM_LDFLAGS)
 cclive_LDADD = $(libquvi_LIBS) $(libcurl_LIBS) $(libpcre_LIBS) \
-	$(libpcrecpp_LIBS) $(BOOST_DATE_TIME_LIBS) \
-	$(BOOST_PROGRAM_OPTIONS_LIBS) $(BOOST_IOSTREAMS_LIBS) \
-	$(BOOST_FILESYSTEM_LIBS) $(BOOST_SYSTEM_LIBS)
+	$(libpcrecpp_LIBS) $(glibmm_LIBS) $(glib_LIBS) \
+	$(BOOST_DATE_TIME_LIBS) $(BOOST_PROGRAM_OPTIONS_LIBS) \
+	$(BOOST_IOSTREAMS_LIBS) $(BOOST_FILESYSTEM_LIBS) \
+	$(BOOST_SYSTEM_LIBS)
 all: all-am
 
 .SUFFIXES:
@@ -410,16 +443,17 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/curl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error_pt4.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error_pt9.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/exec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/get.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/license.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/media_pt4.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/options.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/media_pt9.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progressbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/query_pt4.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/query_pt9.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/re.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wait.Po@am__quote@
@@ -543,20 +577,6 @@ get.obj: cc/get.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o get.obj `if test -f 'cc/get.cpp'; then $(CYGPATH_W) 'cc/get.cpp'; else $(CYGPATH_W) '$(srcdir)/cc/get.cpp'; fi`
 
-license.o: cc/license.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT license.o -MD -MP -MF $(DEPDIR)/license.Tpo -c -o license.o `test -f 'cc/license.cpp' || echo '$(srcdir)/'`cc/license.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/license.Tpo $(DEPDIR)/license.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cc/license.cpp' object='license.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o license.o `test -f 'cc/license.cpp' || echo '$(srcdir)/'`cc/license.cpp
-
-license.obj: cc/license.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT license.obj -MD -MP -MF $(DEPDIR)/license.Tpo -c -o license.obj `if test -f 'cc/license.cpp'; then $(CYGPATH_W) 'cc/license.cpp'; else $(CYGPATH_W) '$(srcdir)/cc/license.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/license.Tpo $(DEPDIR)/license.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cc/license.cpp' object='license.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o license.obj `if test -f 'cc/license.cpp'; then $(CYGPATH_W) 'cc/license.cpp'; else $(CYGPATH_W) '$(srcdir)/cc/license.cpp'; fi`
-
 log.o: cc/log.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT log.o -MD -MP -MF $(DEPDIR)/log.Tpo -c -o log.o `test -f 'cc/log.cpp' || echo '$(srcdir)/'`cc/log.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/log.Tpo $(DEPDIR)/log.Po
@@ -584,20 +604,6 @@ main.obj: cc/main.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cc/main.cpp' object='main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o main.obj `if test -f 'cc/main.cpp'; then $(CYGPATH_W) 'cc/main.cpp'; else $(CYGPATH_W) '$(srcdir)/cc/main.cpp'; fi`
-
-options.o: cc/options.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT options.o -MD -MP -MF $(DEPDIR)/options.Tpo -c -o options.o `test -f 'cc/options.cpp' || echo '$(srcdir)/'`cc/options.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/options.Tpo $(DEPDIR)/options.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cc/options.cpp' object='options.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o options.o `test -f 'cc/options.cpp' || echo '$(srcdir)/'`cc/options.cpp
-
-options.obj: cc/options.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT options.obj -MD -MP -MF $(DEPDIR)/options.Tpo -c -o options.obj `if test -f 'cc/options.cpp'; then $(CYGPATH_W) 'cc/options.cpp'; else $(CYGPATH_W) '$(srcdir)/cc/options.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/options.Tpo $(DEPDIR)/options.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cc/options.cpp' object='options.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o options.obj `if test -f 'cc/options.cpp'; then $(CYGPATH_W) 'cc/options.cpp'; else $(CYGPATH_W) '$(srcdir)/cc/options.cpp'; fi`
 
 progressbar.o: cc/progressbar.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT progressbar.o -MD -MP -MF $(DEPDIR)/progressbar.Tpo -c -o progressbar.o `test -f 'cc/progressbar.cpp' || echo '$(srcdir)/'`cc/progressbar.cpp
@@ -640,6 +646,48 @@ wait.obj: cc/wait.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cc/wait.cpp' object='wait.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wait.obj `if test -f 'cc/wait.cpp'; then $(CYGPATH_W) 'cc/wait.cpp'; else $(CYGPATH_W) '$(srcdir)/cc/wait.cpp'; fi`
+
+error_pt9.o: compat/error_pt9.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT error_pt9.o -MD -MP -MF $(DEPDIR)/error_pt9.Tpo -c -o error_pt9.o `test -f 'compat/error_pt9.cpp' || echo '$(srcdir)/'`compat/error_pt9.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/error_pt9.Tpo $(DEPDIR)/error_pt9.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='compat/error_pt9.cpp' object='error_pt9.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o error_pt9.o `test -f 'compat/error_pt9.cpp' || echo '$(srcdir)/'`compat/error_pt9.cpp
+
+error_pt9.obj: compat/error_pt9.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT error_pt9.obj -MD -MP -MF $(DEPDIR)/error_pt9.Tpo -c -o error_pt9.obj `if test -f 'compat/error_pt9.cpp'; then $(CYGPATH_W) 'compat/error_pt9.cpp'; else $(CYGPATH_W) '$(srcdir)/compat/error_pt9.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/error_pt9.Tpo $(DEPDIR)/error_pt9.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='compat/error_pt9.cpp' object='error_pt9.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o error_pt9.obj `if test -f 'compat/error_pt9.cpp'; then $(CYGPATH_W) 'compat/error_pt9.cpp'; else $(CYGPATH_W) '$(srcdir)/compat/error_pt9.cpp'; fi`
+
+media_pt9.o: compat/media_pt9.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT media_pt9.o -MD -MP -MF $(DEPDIR)/media_pt9.Tpo -c -o media_pt9.o `test -f 'compat/media_pt9.cpp' || echo '$(srcdir)/'`compat/media_pt9.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/media_pt9.Tpo $(DEPDIR)/media_pt9.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='compat/media_pt9.cpp' object='media_pt9.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o media_pt9.o `test -f 'compat/media_pt9.cpp' || echo '$(srcdir)/'`compat/media_pt9.cpp
+
+media_pt9.obj: compat/media_pt9.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT media_pt9.obj -MD -MP -MF $(DEPDIR)/media_pt9.Tpo -c -o media_pt9.obj `if test -f 'compat/media_pt9.cpp'; then $(CYGPATH_W) 'compat/media_pt9.cpp'; else $(CYGPATH_W) '$(srcdir)/compat/media_pt9.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/media_pt9.Tpo $(DEPDIR)/media_pt9.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='compat/media_pt9.cpp' object='media_pt9.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o media_pt9.obj `if test -f 'compat/media_pt9.cpp'; then $(CYGPATH_W) 'compat/media_pt9.cpp'; else $(CYGPATH_W) '$(srcdir)/compat/media_pt9.cpp'; fi`
+
+query_pt9.o: compat/query_pt9.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT query_pt9.o -MD -MP -MF $(DEPDIR)/query_pt9.Tpo -c -o query_pt9.o `test -f 'compat/query_pt9.cpp' || echo '$(srcdir)/'`compat/query_pt9.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/query_pt9.Tpo $(DEPDIR)/query_pt9.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='compat/query_pt9.cpp' object='query_pt9.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o query_pt9.o `test -f 'compat/query_pt9.cpp' || echo '$(srcdir)/'`compat/query_pt9.cpp
+
+query_pt9.obj: compat/query_pt9.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT query_pt9.obj -MD -MP -MF $(DEPDIR)/query_pt9.Tpo -c -o query_pt9.obj `if test -f 'compat/query_pt9.cpp'; then $(CYGPATH_W) 'compat/query_pt9.cpp'; else $(CYGPATH_W) '$(srcdir)/compat/query_pt9.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/query_pt9.Tpo $(DEPDIR)/query_pt9.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='compat/query_pt9.cpp' object='query_pt9.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o query_pt9.obj `if test -f 'compat/query_pt9.cpp'; then $(CYGPATH_W) 'compat/query_pt9.cpp'; else $(CYGPATH_W) '$(srcdir)/compat/query_pt9.cpp'; fi`
 
 error_pt4.o: compat/error_pt4.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT error_pt4.o -MD -MP -MF $(DEPDIR)/error_pt4.Tpo -c -o error_pt4.o `test -f 'compat/error_pt4.cpp' || echo '$(srcdir)/'`compat/error_pt4.cpp

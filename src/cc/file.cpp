@@ -1,25 +1,27 @@
 /* cclive
  * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
+ * This file is part of cclive <http://cclive.sourceforge.net/>.
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include <ccinternal>
 
 #include <stdexcept>
 #include <fstream>
-#include <sstream>
 #include <iomanip>
 
 #ifdef HAVE_UNISTD_H
@@ -48,7 +50,6 @@
 
 #include <ccquvi>
 #include <ccoptions>
-#include <ccprogressbar>
 #include <ccre>
 #include <ccutil>
 #include <cclog>
@@ -59,12 +60,12 @@ namespace cc
 
 namespace po = boost::program_options;
 
-file::file(const quvi::media& media)
+file::file(const quvi::media& media, const po::variables_map& vm)
   : _initial_length(0), _nothing_todo(false)
 {
   try
     {
-      _init(media);
+      _init(media, vm);
     }
   catch (const cc::nothing_todo_error&)
     {
@@ -113,7 +114,8 @@ static std::string io_error(const cc::file& f)
 class write_data
 {
 public:
-  inline write_data(cc::file *f):o(NULL), f(f) { }
+  inline write_data(cc::file *f, const po::variables_map& vm)
+    : vm(vm), o(NULL), f(f) { }
   inline ~write_data()
   {
     if (o == NULL)
@@ -129,7 +131,7 @@ public:
   {
     std::ios_base::openmode mode = std::ofstream::binary;
 
-    if (cc::opts.flags.overwrite)
+    if_optsw_given(vm, OPT__OVERWRITE)
       mode |= std::ofstream::trunc;
     else
       {
@@ -142,6 +144,7 @@ public:
       throw std::runtime_error(io_error(*f));
   }
 public:
+  po::variables_map vm;
   std::ofstream *o;
   cc::file *f;
 };
@@ -185,7 +188,8 @@ static int progress_cb(void *ptr, double, double now, double, double)
 }
 
 static void _set(write_data *w, const quvi::media& m, CURL *c,
-                 progressbar *pb, const double initial_length)
+                 progressbar *pb, const double initial_length,
+                 const po::variables_map& vm)
 {
   curl_easy_setopt(c, CURLOPT_URL, m.stream_url().c_str());
 
@@ -199,13 +203,8 @@ static void _set(write_data *w, const quvi::media& m, CURL *c,
   curl_easy_setopt(c, CURLOPT_ENCODING, "identity");
   curl_easy_setopt(c, CURLOPT_HEADER, 0L);
 
-  if (cc::opts.flags.timestamp)
+  if_optsw_given(vm, OPT__TIMESTAMP)
     curl_easy_setopt(c, CURLOPT_FILETIME, 1L);
-
-  const po::variables_map map = cc::opts.map();
-
-  curl_easy_setopt(c, CURLOPT_MAX_RECV_SPEED_LARGE,
-                   static_cast<curl_off_t>(map["throttle"].as<int>()*1024));
 
   curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE,
                    static_cast<curl_off_t>(initial_length));
@@ -213,12 +212,14 @@ static void _set(write_data *w, const quvi::media& m, CURL *c,
 
 static void _restore(CURL *c)
 {
-  curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE, 0L);
-  curl_easy_setopt(c, CURLOPT_NOPROGRESS, 1L);
-  curl_easy_setopt(c, CURLOPT_HEADER, 1L);
+  curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, NULL);
+  curl_easy_setopt(c, CURLOPT_ENCODING, "");
 
-  curl_easy_setopt(c, CURLOPT_MAX_RECV_SPEED_LARGE,
-                   static_cast<curl_off_t>(0L));
+  curl_easy_setopt(c, CURLOPT_PROGRESSFUNCTION, NULL);
+  curl_easy_setopt(c, CURLOPT_PROGRESSDATA, NULL);
+  curl_easy_setopt(c, CURLOPT_NOPROGRESS, 1L);
+
+  curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE, 0L);
 }
 
 static bool _handle_error(const long resp_code, const CURLcode rc,
@@ -245,13 +246,14 @@ static bool _handle_error(const long resp_code, const CURLcode rc,
 
 namespace fs = boost::filesystem;
 
-bool file::write(const quvi::media& m, CURL *curl) const
+bool file::write(const quvi::media& m, CURL *curl,
+                 const po::variables_map& vm) const
 {
-  write_data w(const_cast<cc::file*>(this));
+  write_data w(const_cast<cc::file*>(this), vm);
   w.open_file();
 
-  progressbar pb(*this, m);
-  _set(&w, m, curl, &pb, _initial_length);
+  progressbar pb(*this, m, vm);
+  _set(&w, m, curl, &pb, _initial_length, vm);
 
 #ifdef WITH_SIGNAL
   recv_usr1 = 0;
@@ -306,7 +308,7 @@ bool file::write(const quvi::media& m, CURL *curl) const
   pb.finish();
   cc::log << std::endl;
 
-  if (cc::opts.flags.timestamp)
+  if_optsw_given(vm, OPT__TIMESTAMP)
     {
       long ft = -1;
       curl_easy_getinfo(curl, CURLINFO_FILETIME, &ft);
@@ -332,29 +334,22 @@ std::string file::to_s(const quvi::media& m) const
   return fmt.str();
 }
 
-static fs::path output_dir(const po::variables_map& map)
+static fs::path output_dir(const po::variables_map& vm)
 {
-  fs::path dir;
-  if (map.count("output-dir"))
-    dir = map["output-dir"].as<std::string>();
-  return fs::system_complete(dir);
+  return fs::system_complete(vm[OPT__OUTPUT_DIR].as<std::string>());
 }
 
-typedef std::vector<std::string> vst;
-
-void file::_init(const quvi::media& media)
+void file::_init(const quvi::media& media, const po::variables_map& vm)
 {
   _title = media.title();
 
-  const po::variables_map map = cc::opts.map();
-
-  if (map.count("output-file"))
+  if (vm.count(OPT__OUTPUT_FILE))
     {
       // Overrides --filename-format.
 
-      fs::path p = output_dir(map);
+      fs::path p = output_dir(vm);
 
-      p /= map["output-file"].as<std::string>();
+      p /= vm[OPT__OUTPUT_FILE].as<std::string>();
 
 #if BOOST_FILESYSTEM_VERSION > 2
       _name = p.filename().string();
@@ -364,69 +359,38 @@ void file::_init(const quvi::media& media)
       _path           = p.string();
       _initial_length = file::exists(_path);
 
-      if ( _initial_length >= media.content_length() && ! opts.flags.overwrite)
-        throw cc::nothing_todo_error();
+      if ( _initial_length >= media.content_length()
+           && ! vm[OPT__OVERWRITE].as<bool>())
+        {
+          throw cc::nothing_todo_error();
+        }
     }
-
   else
     {
       // Cleanup media title.
 
+      const cc::vtr& tr = vm[OPT__TR].as<cc::vtr>();
       std::string title = media.title();
-      vst tr;
 
-      if (map.count("tr"))
-        tr = map["tr"].as<vst>();
-      else // Use built-in default value.
-        {
-          if (map.count("regexp")) // Deprecated.
-            cc::re::capture(map["regexp"].as<std::string>(), title);
-          else
-            tr.push_back("/(\\w|\\pL|\\s)/g");
-        }
+      BOOST_FOREACH(const cc::tr& t, tr)
+        cc::re::tr(t.str(), title);
 
-      foreach (const std::string r, tr)
-      {
-        cc::re::tr(r, title);
-      }
       cc::re::trim(title);
 
       // --filename-format
 
-      std::string fname_format = map["filename-format"].as<std::string>();
+      std::string fname_fmt = vm[OPT__FILENAME_FORMAT].as<std::string>();
 
-      pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_format);
-      pcrecpp::RE("%t").GlobalReplace(title, &fname_format);
-      pcrecpp::RE("%h").GlobalReplace("nohostseq", &fname_format);
-      pcrecpp::RE("%s").GlobalReplace(media.file_ext(), &fname_format);
-
-      if (map.count("subst")) // Deprecated.
-        {
-          std::istringstream iss(map["subst"].as<std::string>());
-          vst v;
-
-          std::copy(
-            std::istream_iterator<std::string >(iss),
-            std::istream_iterator<std::string >(),
-            std::back_inserter<vst>(v)
-          );
-
-          foreach (const std::string s, v)
-          {
-            cc::re::subst(s, fname_format);
-          }
-        }
-
-      std::stringstream b;
-
-      b << fname_format;
+      pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_fmt);
+      pcrecpp::RE("%t").GlobalReplace(title, &fname_fmt);
+      pcrecpp::RE("%s").GlobalReplace(media.file_ext(), &fname_fmt);
 
       // Output dir.
 
-      const fs::path out_dir = output_dir(map);
+      const fs::path out_dir = output_dir(vm);
       fs::path templ_path    = out_dir;
 
-      templ_path /= b.str();
+      templ_path /= fname_fmt;
 
       // Path, name.
 
@@ -439,7 +403,7 @@ void file::_init(const quvi::media& media)
 #endif
       _path = p.string();
 
-      if (! opts.flags.overwrite)
+      ifn_optsw_given(vm, OPT__OVERWRITE)
         {
           for (int i=0; i<INT_MAX; ++i)
             {
@@ -453,7 +417,7 @@ void file::_init(const quvi::media& media)
 
               else
                 {
-                  if (opts.flags.cont)
+                  if_optsw_given(vm, OPT__CONTINUE)
                     break;
                 }
 
@@ -472,7 +436,7 @@ void file::_init(const quvi::media& media)
         }
     }
 
-  if (opts.flags.overwrite)
+  if_optsw_given(vm, OPT__OVERWRITE)
     _initial_length = 0;
 }
 

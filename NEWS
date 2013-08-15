@@ -1,32 +1,58 @@
-v0.7.15  [2013-08-05]
+v0.9.2  [2013-08-08]
 
 Toni Gundogdu:
-  - Add --timestamp: Try to preserve modification time [357e4ac]
-      (many thanks to Alexey Dokuchaev for the patch!)
-  - configure.ac: Require a2x when building from git [da1f467]
+  [!] glibmm 2.24+ is now a prerequisite
+  - Add --timestamp: Try to preserve modification time (PORT) [50213d7]
+  - Bump the required Boost version to v1.49 [86978ab]
+  - [DOC] --update-interval: Accepts now integers only [6426f8f]
+  - Improve cc::input (complete rewrite) [81303f9]
+  - Improve cc:options (complete rewrite) [314e722]
 
- 5 files changed, 34 insertions(+), 2 deletions(-)
-
-
-v0.7.14  [2013-06-30]
-
-Toni Gundogdu:
-  - --filename-format: Print a notice of deprecated %h sequence [f12faf9]
-  - FIX: Warning message for "--query-formats deprecated" [4dba21e]
-
- 4 files changed, 64 insertions(+), 48 deletions(-)
+ 28 files changed, 1434 insertions(+), 873 deletions(-)
 
 
-v0.7.13  [2013-05-25]
+v0.9.1  [2013-07-16]
 
 Toni Gundogdu:
-  - Add --print-config [2b47862]
-  - Add short-option for --verbose-libcurl [0ed7d49]
-  - FIX: Regression in retrying introduced by 4b118378 [0b56b37]
-  - FIX: Skip transfer with USR1, do not retry transfer [17b28b8]
-  - Update m4/boost.m4 to the latest [3a29b7b]
+  [!] GLib 2.24+ is now a prerequisite
+  [!] Relicense under AGPLv3+
+  - Add cc::input -- improve input parsing [ad1f2e6]
+  - DOC: cclive(1): Revise INPUT section [75d1b5c]
+  - DOC: Revise --stream description [401e8c0]
+  - FIX: configure.ac: AS_IF for date(1) [0019e62]
+  - Deprecate --prefer-format in favor of --stream with libquvi 0.9+ [f55f70d]
+  - Rewrite status_callback for libquvi v0.9.2 [7d94207]
+  - Make --stream configurable [993a0be]
+  - Move --support implementation to print_support [3d35e5e]
+  - --filename-format: Remove depr. support for %h sequence [ad214c7]
+  - --print-streams: Make output similar to quvi(1) 0.9+ [2294e93]
+  - --version: Add CXX and CXXFLAGS to the output [65f8373]
+  - --version: Print copyr notice to stderr instead of stdout [6c1f678]
+  - --version: Provide additional info about libquvi [9e6e50e]
 
- 14 files changed, 328 insertions(+), 92 deletions(-)
+ 45 files changed, 976 insertions(+), 616 deletions(-)
+
+
+v0.9.0  [2013-05-25]
+
+Toni Gundogdu:
+  - Add libquvi 0.9+ compatibility layer
+  - Add --print-config [bf22b60]
+  - Add short-option for --verbose-libcurl [239ea61]
+  - Drop libquvi 0.2.16.x support
+    - README: Bump libquvi prereq. to 0.4.0+ [99b47eb]
+  - FIX: Regression in retrying introduced by 4b118378 [b57e47b]
+  - FIX: Skip transfer with USR1, do not retry transfer [293dbc9]
+  - Merge --version and --license options [474c143]
+    - Add build time to --version output [ca5e80f]
+  - Remove all deprecated options/features
+    - Remove depr. --format [e32fc26]
+    - Remove depr. --query-formats [e8114a0]
+    - Remove depr. --regexp [0392fb0]
+    - Remove depr. --subst [8d2ac37]
+  - Update m4/boost.m4 to the latest [982bbc7]
+
+ 28 files changed, 782 insertions(+), 422 deletions(-)
 
 
 v0.7.12 -- [2013-02-10, r:Toni Gundogdu]

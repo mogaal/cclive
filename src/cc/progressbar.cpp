@@ -1,18 +1,21 @@
 /* cclive
  * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
+ * This file is part of cclive <http://cclive.sourceforge.net/>.
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include <ccinternal>
@@ -41,11 +44,10 @@
 #include <boost/program_options/variables_map.hpp>
 #include <boost/filesystem.hpp>
 
-#include <ccoptions>
 #include <ccquvi>
+#include <ccoptions>
 #include <ccfile>
 #include <cclog>
-#include <ccprogressbar>
 
 #if defined(SIGWINCH) && defined(TIOCGWINSZ)
 #define WITH_RESIZE
@@ -76,7 +78,8 @@ static size_t get_term_width()
 
 namespace po = boost::program_options;
 
-progressbar::progressbar(const file& f, const quvi::media& m)
+progressbar::progressbar(const file& f, const quvi::media& m,
+                         const po::variables_map& vm)
   : _update_interval(1),
     _expected_bytes(m.content_length()),
     _initial_bytes(f.initial_length()),
@@ -106,24 +109,17 @@ progressbar::progressbar(const file& f, const quvi::media& m)
 #else
   _term_width = default_term_width;
 #endif
-
   _width = _term_width;
 
-  const po::variables_map map = cc::opts.map();
   time(&_time_started);
 
-  if (opts.flags.background)
-    _mode = dotline;
+  ifn_optsw_given(vm, OPT__BACKGROUND)
+   _mode = vm[OPT__PROGRESSBAR].as<cc::progressbar_mode>().value();
   else
-    {
-      const std::string s = map["progressbar"].as<std::string>();
-      if (s == "simple")
-        _mode = simple;
-      else if (s == "dotline")
-        _mode = dotline;
-    }
+    _mode = dotline;
 
-  _update_interval = fabs(map["update-interval"].as<double>());
+  const int n = vm[OPT__UPDATE_INTERVAL].as<update_interval>().value();
+  _update_interval = fabs(static_cast<double>(n));
 }
 
 static double to_mb(const double bytes)

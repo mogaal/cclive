@@ -1,18 +1,21 @@
 /* cclive
  * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
+ * This file is part of cclive <http://cclive.sourceforge.net/>.
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include <pcrecpp.h>
@@ -27,7 +30,17 @@ namespace quvi
 
 std::string version()
 {
-  return quvi_version(QUVI_VERSION);
+#ifdef HAVE_LIBQUVI_0_9
+  std::stringstream s;
+  s << quvi_version(QUVI_VERSION)                               << "\n  "
+    << "  built on " << quvi_version(QUVI_VERSION_BUILD_TIME)   << " "
+    << "for "        << quvi_version(QUVI_VERSION_BUILD_TARGET) << "\n    "
+    << "  with " << quvi_version(QUVI_VERSION_BUILD_CC_CFLAGS)  << "\n    "
+    << "configuration: " << quvi_version(QUVI_VERSION_CONFIGURATION);
+  return s.str();
+#else
+  return quvi_version(QUVI_VERSION_LONG);
+#endif
 }
 
 typedef std::map<std::string,std::string>::const_iterator smci;
