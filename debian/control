@@ -5,7 +5,7 @@ Maintainer: Alejandro Garrido Mota <alejandro@debian.org>
 Uploaders: Ansgar Burchardt <ansgar@debian.org>
 Build-Depends: debhelper (>= 9), dh-autoreconf, libcurl4-gnutls-dev, libpcre3-dev,
          libquvi-dev (>= 0.2.16.1), libboost-filesystem-dev, libboost-iostreams-dev,
-         libboost-program-options-dev, libboost-date-time-dev, asciidoc
+         libboost-program-options-dev, libboost-date-time-dev, asciidoc, libglibmm-2.4-dev
 Standards-Version: 3.9.4
 Homepage: http://cclive.sourceforge.net
 Vcs-Git: git://github.com/mogaal/cclive.git
