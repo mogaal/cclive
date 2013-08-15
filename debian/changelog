@@ -1,3 +1,9 @@
+cclive (0.9.2-1) experimental; urgency=low
+
+  * New upstream release 
+
+ -- Alejandro Garrido Mota <alejandro@debian.org>  Thu, 15 Aug 2013 15:36:28 +0200
+
 cclive (0.7.15-1) unstable; urgency=low
 
   * New upstream release.
