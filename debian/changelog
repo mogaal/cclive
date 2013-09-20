@@ -2,6 +2,8 @@ cclive (0.7.16-1) unstable; urgency=low
 
   * Adapt d/watch to stable version only (0.7.X)
   * New upstream release.
+  * (cosmetic) Improve d/control structure.
+  * Add copyright of m4/boost.m4 in d/copyright
 
  -- Alejandro Garrido Mota <alejandro@debian.org>  Fri, 20 Sep 2013 10:22:56 -0430
 
