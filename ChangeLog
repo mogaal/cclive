@@ -1,3 +1,36 @@
+commit 00de269
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-09-14
+
+    Update NEWS for v0.7.16
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+NEWS
+
+commit 7ce83bd
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2013-09-13
+
+    FIX: Network options work only partially or not at all
+    
+    Do not create another libcurl (easy) handle for the HTTP connections.
+    Instead, reuse the one that libquvi creates, and apply the cclive
+    network options (e.g. --verbose-libcurl and --no-proxy) to this handle.
+    
+    This commit fixes the following reported issues:
+    * http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=722616
+    * http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=720870
+    
+    Signed-off-by: Toni Gundogdu <legatvs@gmail.com>
+
+src/cc/application.cpp
+src/cc/application.h
+src/cc/curl.cpp
+src/cc/util.h
+src/compat/query.h
+src/compat/query_pt4.cpp
+
 commit 28cb2c5
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2013-08-05
