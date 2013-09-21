@@ -7,11 +7,13 @@ to make finding problems easier.
 
 --- a/configure.ac
 +++ b/configure.ac
-@@ -18,7 +18,7 @@
+@@ -17,8 +17,8 @@
+ AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
  AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
  
- AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
+-AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 -AM_SILENT_RULES([yes])
++AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar subdir-objects])
 +AM_SILENT_RULES([no])
  
  # GNU Automake 1.12 requires this macro. Earlier versions do not
