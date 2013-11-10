@@ -1,6 +1,7 @@
 Description: Do not set rpath
 Author: Ansgar Burchardt <ansgar@debian.org>
 Origin: vendor
+Last-Update: 2013-09-20
 
 Do not set rpath for Boost libraries.  While at it, also disable silent rules
 to make finding problems easier.

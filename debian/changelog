@@ -1,3 +1,11 @@
+cclive (0.7.16-2) unstable; urgency=low
+
+  * fix-rpath.diff: Add Last-Update statement. 
+  * Add pkg-config to BD in d/control (Closes: #747766)
+  * Update Standards-Version to 3.9.5
+
+ -- Alejandro Garrido Mota <alejandro@debian.org>  Sun, 11 May 2014 16:51:26 -0430
+
 cclive (0.7.16-1) unstable; urgency=low
 
   * Adapt d/watch to stable version only (0.7.X).

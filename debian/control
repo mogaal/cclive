@@ -11,8 +11,10 @@ Build-Depends: debhelper (>= 9),
  libboost-filesystem-dev,
  libboost-iostreams-dev,
  libboost-program-options-dev,
- libboost-date-time-dev, asciidoc
-Standards-Version: 3.9.4
+ libboost-date-time-dev,
+ asciidoc,
+ pkg-config
+Standards-Version: 3.9.5
 Homepage: http://cclive.sourceforge.net
 Vcs-Git: git://github.com/mogaal/cclive.git
 Vcs-Browser: https://github.com/mogaal/cclive
